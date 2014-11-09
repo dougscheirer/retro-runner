@@ -14,37 +14,51 @@
 ActiveRecord::Schema.define(version: 20141109191302) do
 
   create_table "actions", force: true do |t|
-    t.string   "new"
+    t.string   "description"
+    t.integer  "retrospective_id"
+    t.integer  "issue_id"
+    t.string   "assigned_to"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "issues", force: true do |t|
-    t.string   "new"
+    t.integer  "retrospective_id"
+    t.string   "type"
+    t.string   "member"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "projects", force: true do |t|
-    t.string   "new"
+    t.string   "name"
+    t.string   "description"
+    t.integer  "owner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "retros", force: true do |t|
-    t.string   "new"
+    t.integer  "project_id"
+    t.datetime "meeting_date"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
-    t.string   "new"
+    t.string   "email"
+    t.string   "glyphicon"
+    t.string   "password"
+    t.string   "handle"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "votes", force: true do |t|
-    t.string   "new"
+    t.integer  "issue_id"
+    t.integer  "member_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

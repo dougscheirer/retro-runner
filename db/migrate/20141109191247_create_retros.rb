@@ -1,8 +1,9 @@
 class CreateRetros < ActiveRecord::Migration
   def change
     create_table :retros do |t|
-      t.string :new
-
+      t.integer :project_id
+      t.datetime :meeting_date
+      t.string :status
       t.timestamps
     end
   end
