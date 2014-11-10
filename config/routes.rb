@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
-  get 'actions/new'
-  get 'votes/new'
-  get 'issues/new'
-  get 'retros/new'
-  get 'projects/new'
-  get 'users/new'
+  resource :projects
+  resource :actions
+  resource :votes
+  resource :issues
+  resource :users
+  resource :retros
+
+  root "projects#show"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
