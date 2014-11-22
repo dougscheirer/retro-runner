@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Retrospective:</strong>
+  <%= @issue.retrospective_id %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @issue.issue_type %>
+</p>
+
+<p>
+  <strong>Member:</strong>
+  <%= @issue.member %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @issue.description %>
+</p>
+
+<%= link_to 'Edit', edit_issue_path(@issue) %> |
+<%= link_to 'Back', issues_path %>

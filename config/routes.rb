@@ -2,11 +2,11 @@ Rails.application.routes.draw do
   resource :projects
   resource :actions
   resource :votes
-  resource :issues
   resource :users
   resource :retros
+  resources :issues
 
-  root "projects#show"
+  root "issues#index"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

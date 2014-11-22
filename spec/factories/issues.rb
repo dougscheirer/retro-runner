@@ -1,6 +1,9 @@
 FactoryGirl.define do
-  factory :issue, :class => 'Issues' do
-    new "MyString"
+  factory :issue do
+    retrospective_id 1
+type ""
+member "MyString"
+description "MyString"
   end
 
 end
