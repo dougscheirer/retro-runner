@@ -43,7 +43,7 @@ RSpec.describe IssuesController, :type => :controller do
     it "assigns all issues as @issues" do
       issue = Issue.create! valid_attributes
       get :index, {}, valid_session
-      expect(assigns(:issues)).to eq([issue])
+      expect(assigns(:good_issues)).to eq([issue])
     end
   end
 
