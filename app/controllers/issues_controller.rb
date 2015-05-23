@@ -4,9 +4,9 @@ class IssuesController < ApplicationController
   # GET /issues
   # GET /issues.json
   def index
-    @good_issues = Issue.where('issue_type = "Good"')
-    @meh_issues = Issue.where('issue_type = "Meh"')
-    @bad_issues = Issue.where('issue_type = "Bad"')
+    @good_issues = Issue.where("issue_type = 'Good'")
+    @meh_issues = Issue.where("issue_type = 'Meh'")
+    @bad_issues = Issue.where("issue_type = 'Bad'")
 
     @max_issues = [@good_issues.size, @meh_issues.size, @bad_issues.size].max
   end
