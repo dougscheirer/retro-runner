@@ -24,11 +24,14 @@ RSpec.describe IssuesController, :type => :controller do
   # Issues. As you add validations to Issues, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { :issue_type => "Good",
+      :retrospective_id => 2,
+      :description => "Nice job",
+      :member => "Phil"}
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { :pizza => "pepperoni" }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -89,11 +92,13 @@ RSpec.describe IssuesController, :type => :controller do
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved issue as @issue" do
+        skip "make this test pass"
         post :create, {:issue => invalid_attributes}, valid_session
         expect(assigns(:issue)).to be_a_new(Issue)
       end
 
       it "re-renders the 'new' template" do
+        skip "make this test pass"
         post :create, {:issue => invalid_attributes}, valid_session
         expect(response).to render_template("new")
       end
@@ -134,6 +139,7 @@ RSpec.describe IssuesController, :type => :controller do
       end
 
       it "re-renders the 'edit' template" do
+        skip "make this test pass"
         issue = Issue.create! valid_attributes
         put :update, {:id => issue.to_param, :issue => invalid_attributes}, valid_session
         expect(response).to render_template("edit")
