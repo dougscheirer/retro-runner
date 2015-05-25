@@ -1,2 +1,28 @@
-<h1>Retros#new</h1>
-<p>Find me in app/views/retros/new.html.erb</p>
+<form class="form-horizontal" action="/retros" method="POST">
+  <fieldset>
+
+    <!-- Form Name -->
+    <legend>New retrospective</legend>
+
+    <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="today">Today's date</label>
+      <div class="col-md-4">
+        <input id="today" name="retro[meeting_date]" type="text" value="<%= Date.today.to_date %>" class="form-control input-md" required="" readonly>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="submit"></label>
+      <div class="col-md-4">
+        <button id="submit" name="submit" class="btn btn-primary">Start retrospective</button>
+      </div>
+    </div>
+
+  </fieldset>
+</form>
+
+<%= link_to 'Back', retros_path %>

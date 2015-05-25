@@ -24,7 +24,6 @@ class IssuesController < ApplicationController
 
   # GET /issues/1/edit
   def edit
-    puts @issue
   end
 
   # POST /issues

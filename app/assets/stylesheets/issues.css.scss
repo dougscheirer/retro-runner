@@ -5,18 +5,24 @@
 .tr {
   margin-top: 10px;
   margin-bottom: 0;
-  border-top: none;
-  border-color: none;
+  border: none;
 }
 
-.th .td .table {
-  border-top: none;
-  border-color: none;
+.th {
+  border: none;
+}
+
+.td {
+  border: none;
+}
+
+.table {
+  border: none;
 }
 
 .retro-header {
   font-weight: bold;
-  border-top: none;
+  border: none;
 }
 
 .retro-good {

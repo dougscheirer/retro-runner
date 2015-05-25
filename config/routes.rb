@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :retros
+
   resource :projects
   resource :actions
   resource :votes
@@ -10,7 +12,7 @@ Rails.application.routes.draw do
   get '/issues/new/meh' => 'issues#new_meh'
   get '/issues/new/bad' => 'issues#new_bad'
 
-  root "issues#index"
+  root "retros#show"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -18,7 +18,6 @@
         </td>
         <td class="col-md-4 <% if @meh_issues[index] %> retro-meh <% end %>" >
           <% if @meh_issues[index] %>
-            retro-meh">
             [<%= @meh_issues[index].member %>] <%= @meh_issues[index].description %>
           <% else %>
             &nbsp;
