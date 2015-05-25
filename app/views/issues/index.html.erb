@@ -1,33 +1,38 @@
-<h1>Listing issues</h1>
-
-<table>
+<h4>This week's issues</h4>
+<table class="table">
   <thead>
     <tr>
-      <th>The good</th>
-      <th>The meh</th>
-      <th>The ugly</th>
+      <div class="col-md-4 retro-header retro-good"><a href="/issues/new?type=Good"><span class="glyphicon glyphicon-plus"></span></a> The good</div>
+      <div class="col-md-4 retro-header retro-meh"><a href="/issues/new?type=Meh"><span class="glyphicon glyphicon-plus"></span></a> The meh <a href="/issues/new"></div>
+      <div class="col-md-4 retro-header retro-bad"><a href="/issues/new?type=Bad"><span class="glyphicon glyphicon-plus"></span></a> The ugly</div>
     </tr>
-  </thead>
+  <thead>
 
   <tbody>
 
-    <% for index in 0..@max_issues %>
+    <% for index in 0..@max_issues-1 %>
       <tr>
-        <td>
+        <div class="col-md-4 retro-good">
           <% if @good_issues[index] %>
             [<%= @good_issues[index].member %>] <%= @good_issues[index].description %>
+          <% else %>
+            &nbsp;
           <% end %>
-        </td>
-        <td>
+        </div>
+        <div class="col-md-4 retro-meh">
           <% if @meh_issues[index] %>
               [<%= @meh_issues[index].member %>] <%= @meh_issues[index].description %>
+          <% else %>
+              &nbsp;
           <% end %>
-        </td>
-        <td>
+        </div>
+        <div class="col-md-4 retro-bad">
           <% if @bad_issues[index] %>
               [<%= @bad_issues[index].member %>] <%= @bad_issues[index].description %>
+          <% else %>
+              &nbsp;
           <% end %>
-        </td>
+        </div>
       </tr>
     <% end %>
   </tbody>

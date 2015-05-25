@@ -18,11 +18,13 @@ class IssuesController < ApplicationController
 
   # GET /issues/new
   def new
+    @issue_type=params[:type]
     @issue = Issue.new
   end
 
   # GET /issues/1/edit
   def edit
+    puts @issue
   end
 
   # POST /issues
@@ -74,5 +76,6 @@ class IssuesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def issue_params
       params.require(:issue).permit(:retrospective_id, :issue_type, :member, :description)
+      params[:issue]
     end
 end

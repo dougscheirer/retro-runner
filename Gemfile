@@ -18,9 +18,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 
+gem 'bootstrap-sass', '~> 3.3.4'
 gem 'sass-rails', '4.0.3'
-gem 'bootstrap-sass', '3.2.0.2'
-gem 'bootstrap-datepicker-rails'
+gem 'bootstrap_form'
 
 group :doc do
   gem 'sdoc', '~> 0.4.0'

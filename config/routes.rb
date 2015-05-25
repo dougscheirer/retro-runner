@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   resource :retros
   resources :issues
 
+  get '/issues/new/good' => 'issues#new_good'
+  get '/issues/new/meh' => 'issues#new_meh'
+  get '/issues/new/bad' => 'issues#new_bad'
+
   root "issues#index"
 
   # The priority is based upon order of creation: first created -> highest priority.
