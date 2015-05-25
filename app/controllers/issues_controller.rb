@@ -4,11 +4,14 @@ class IssuesController < ApplicationController
   # GET /issues
   # GET /issues.json
   def index
-    @good_issues = Issue.where("issue_type = 'Good'")
-    @meh_issues = Issue.where("issue_type = 'Meh'")
-    @bad_issues = Issue.where("issue_type = 'Bad'")
+    @good_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Good'")
+    @meh_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Meh'")
+    @bad_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Bad'")
 
     @max_issues = [@good_issues.size, @meh_issues.size, @bad_issues.size].max
+
+    @retro = Retro.find(params[:retro_id])
+    @project = Project.find(@retro.project_id)
   end
 
   # GET /issues/1
@@ -19,6 +22,7 @@ class IssuesController < ApplicationController
   # GET /issues/new
   def new
     @issue_type=params[:type]
+    @retro = Retro.find(params[:retro_id])
     @issue = Issue.new
   end
 
@@ -70,10 +74,11 @@ class IssuesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_issue
       @issue = Issue.find(params[:id])
+      @retro = Retro.find(@issue.retro_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def issue_params
-      params.require(:issue).permit(:retrospective_id, :issue_type, :member, :description)
+      params.require(:issue).permit(:retro_id, :issue_type, :member, :description)
     end
 end

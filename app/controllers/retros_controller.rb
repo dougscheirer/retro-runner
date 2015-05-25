@@ -10,6 +10,7 @@ class RetrosController < ApplicationController
   # GET /retros/1
   # GET /retros/1.json
   def show
+    redirect_to retro_issues_path(@retro)
   end
 
   # GET /retros/new

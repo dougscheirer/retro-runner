@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150525161812) do
+ActiveRecord::Schema.define(version: 20150525164508) do
 
   create_table "actions", force: true do |t|
     t.string   "description"
-    t.integer  "retrospective_id"
+    t.integer  "retro_id"
     t.integer  "issue_id"
     t.string   "assigned_to"
     t.datetime "created_at"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20150525161812) do
   end
 
   create_table "issues", force: true do |t|
-    t.integer  "retrospective_id"
+    t.integer  "retro_id"
     t.string   "issue_type"
     t.string   "member"
     t.string   "description"

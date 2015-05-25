@@ -2,7 +2,7 @@
 
 <p>
   <strong>Retrospective:</strong>
-  <%= @issue.retrospective_id %>
+  <%= @issue.retro_id %>
 </p>
 
 <p>
@@ -21,4 +21,4 @@
 </p>
 
 <%= link_to 'Edit', edit_issue_path(@issue) %> |
-<%= link_to 'Back', issues_path %>
+<%= link_to 'Back', retro_issues_path(@retro) %>

@@ -1,6 +1,8 @@
 FactoryGirl.define do
-  factory :project, :class => 'Projects' do
-    new "MyString"
+  factory :project do
+    name "MyString"
+description "MyString"
+owner_id 1
   end
 
 end

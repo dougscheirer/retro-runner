@@ -1,13 +1,13 @@
 <h1>New issue</h1>
 
-<form class="form-horizontal" action="/issues" method="post">
+<form class="form-horizontal" action="<%= retro_issues_path %>" method="post">
   <fieldset>
 
     <!-- Form Name -->
     <legend>New item</legend>
 
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
-    <input name="issue[retrospective_id]" value="1" type="hidden" />
+    <input name="issue[retro_id]" value="<%= @retro.id %>" type="hidden" />
 
     <!-- Select Multiple -->
     <div class="form-group">
@@ -52,4 +52,4 @@
 
   </fieldset>
 </form>
-<%= link_to 'Back', issues_path %>
+<%= link_to 'Back', retro_issues_path %>

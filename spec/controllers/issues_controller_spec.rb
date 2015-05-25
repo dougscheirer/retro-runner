@@ -25,7 +25,7 @@ RSpec.describe IssuesController, :type => :controller do
   # adjust the attributes here as well.
   let(:valid_attributes) {
     { :issue_type => "Good",
-      :retrospective_id => 2,
+      :retro_id => 2,
       :description => "Nice job",
       :member => "Phil"}
   }

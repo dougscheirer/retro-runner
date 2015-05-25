@@ -1,18 +1,16 @@
 Rails.application.routes.draw do
-  resources :retros
 
-  resource :projects
-  resource :actions
-  resource :votes
+  resources :projects, shallow: true do
+    resources :retros do
+      resources :issues
+      resources :actions
+      resources :votes
+    end
+  end
+
   resource :users
-  resource :retros
-  resources :issues
 
-  get '/issues/new/good' => 'issues#new_good'
-  get '/issues/new/meh' => 'issues#new_meh'
-  get '/issues/new/bad' => 'issues#new_bad'
-
-  root "retros#show"
+  root "projects#index"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
