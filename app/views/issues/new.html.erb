@@ -7,13 +7,13 @@
     <legend>New item</legend>
 
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
-    <input name="issue['retrospective_id']" value="1" type="hidden" />
+    <input name="issue[retrospective_id]" value="1" type="hidden" />
 
     <!-- Select Multiple -->
     <div class="form-group">
       <label class="col-md-4 control-label" for="issue_type">Type</label>
       <div class="col-md-4">
-        <select id="issue_type" name="issue['issue_type']" class="form-control">
+        <select id="issue_type" name="issue[issue_type]" class="form-control">
           <% for type in ["Good","Meh","Bad"] %>
             <option
               <% if @issue_type == type %>
@@ -29,7 +29,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="user">User</label>
       <div class="col-md-4">
-        <input id="user" name="issue['user']" type="text" placeholder="User" class="form-control input-md" required="">
+        <input id="user" name="issue[member]" type="text" placeholder="User" class="form-control input-md" required="">
 
       </div>
     </div>
@@ -38,7 +38,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="textinput">Description</label>
       <div class="col-md-4">
-        <input id="description" name="issue['description']" type="text" placeholder="Description" class="form-control input-md" required="">
+        <input id="description" name="issue[description]" type="text" placeholder="Description" class="form-control input-md" required="">
       </div>
     </div>
 

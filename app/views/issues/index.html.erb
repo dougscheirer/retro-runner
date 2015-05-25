@@ -12,25 +12,31 @@
 
     <% for index in 0..@max_issues-1 %>
       <tr>
-        <div class="col-md-4 retro-good">
+        <div class="col-md-4
           <% if @good_issues[index] %>
+            retro-good">
             [<%= @good_issues[index].member %>] <%= @good_issues[index].description %>
           <% else %>
+            ">
             &nbsp;
           <% end %>
         </div>
-        <div class="col-md-4 retro-meh">
+        <div class="col-md-4
           <% if @meh_issues[index] %>
-              [<%= @meh_issues[index].member %>] <%= @meh_issues[index].description %>
+            retro-meh">
+            [<%= @meh_issues[index].member %>] <%= @meh_issues[index].description %>
           <% else %>
-              &nbsp;
+            ">
+            &nbsp;
           <% end %>
         </div>
-        <div class="col-md-4 retro-bad">
+        <div class="col-md-4
           <% if @bad_issues[index] %>
-              [<%= @bad_issues[index].member %>] <%= @bad_issues[index].description %>
+            retro-bad">
+            [<%= @bad_issues[index].member %>] <%= @bad_issues[index].description %>
           <% else %>
-              &nbsp;
+            ">
+            &nbsp;
           <% end %>
         </div>
       </tr>
