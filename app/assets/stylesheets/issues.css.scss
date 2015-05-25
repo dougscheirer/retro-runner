@@ -5,10 +5,18 @@
 .tr {
   margin-top: 10px;
   margin-bottom: 0;
+  border-top: none;
+  border-color: none;
+}
+
+.th .td .table {
+  border-top: none;
+  border-color: none;
 }
 
 .retro-header {
   font-weight: bold;
+  border-top: none;
 }
 
 .retro-good {
@@ -26,7 +34,6 @@
 [class*="retro-"] {
   padding-top: 15px;
   padding-bottom: 15px;
-  border: 1px solid rgba(86,61,124,.2);
   border-radius: 25px;
   padding: 20px;
 }
