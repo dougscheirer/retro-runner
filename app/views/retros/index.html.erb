@@ -1,0 +1,29 @@
+<h1>Listing retros</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Meeting date</th>
+      <th>Project</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @retros.each do |retro| %>
+      <tr>
+        <td><%= retro.meeting_date %></td>
+        <td><%= retro.project_id %></td>
+        <td><%= retro.status %></td>
+        <td><%= link_to 'Show', retro %></td>
+        <td><%= link_to 'Destroy', retro, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Retro', new_project_retro_path %>
+<%= link_to 'Back', projects_path %>

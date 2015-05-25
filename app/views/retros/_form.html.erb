@@ -1,0 +1,29 @@
+<%= form_for(@retro) do |f| %>
+  <% if @retro.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@retro.errors.count, "error") %> prohibited this retro from being saved:</h2>
+
+      <ul>
+      <% @retro.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :meeting_date %><br>
+    <%= f.datetime_select :meeting_date %>
+  </div>
+  <div class="field">
+    <%= f.label :project_id %><br>
+    <%= f.number_field :project_id %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br>
+    <%= f.text_field :status %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

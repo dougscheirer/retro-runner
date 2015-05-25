@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Meeting date:</strong>
+  <%= @retro.meeting_date %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @retro.project_id %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @retro.status %>
+</p>
+
+<%= link_to 'Edit', edit_retro_path(@retro) %> |
+<%= link_to 'Back', project_retros_path(@retro) %>
