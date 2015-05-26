@@ -1,3 +1,17 @@
 // Place all the styles related to the Projects controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.project-card {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-radius: 25px;
+  padding: 20px;
+  margin: 10px;
+  border-color: red;
+  border-width: 5px;
+  background-color: #eee;
+  .hover {
+    background-color: #ddd;
+  }
+}

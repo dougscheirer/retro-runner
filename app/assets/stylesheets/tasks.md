@@ -4,7 +4,7 @@
 1. (Done) Make new project
 1. (Done) List projects (landing)
 1. (Dpne) Add retro item
-1. Edit/delete retro item
+1. (Done) Edit/delete retro item
 1. Styling project to item
 1. Review workflow (L->R, T->B)
 1. Add points, close pointing

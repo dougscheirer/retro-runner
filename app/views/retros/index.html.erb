@@ -1,8 +1,9 @@
 <h1>Listing retros</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
+      <th>Retro ID</th>
       <th>Meeting date</th>
       <th>Project</th>
       <th>Status</th>
@@ -13,8 +14,9 @@
   <tbody>
     <% @retros.each do |retro| %>
       <tr>
-        <td><%= retro.meeting_date %></td>
-        <td><%= retro.project_id %></td>
+        <td><%= retro.id %></td>
+        <td><a href="<%= retro_path(retro) %>"><%= retro.meeting_date %></a></td>
+        <td><a href="<%= project_path(@project) %>"><%= retro.project_id %></a></td>
         <td><%= retro.status %></td>
         <td><%= link_to 'Show', retro %></td>
         <td><%= link_to 'Destroy', retro, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -25,5 +27,5 @@
 
 <br>
 
-<%= link_to 'New Retro', new_project_retro_path %>
+<%= link_to 'New Retro', new_project_retro_path %> |
 <%= link_to 'Back', projects_path %>

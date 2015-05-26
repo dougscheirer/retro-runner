@@ -1,10 +1,12 @@
 class RetrosController < ApplicationController
   before_action :set_retro, only: [:show, :edit, :update, :destroy]
+  before_action :set_project
 
   # GET /retros
   # GET /retros.json
   def index
-    @retros = Retro.all
+    @retros = Retro.where("project_id = #{params[:project_id]}")
+    puts @retros.size
   end
 
   # GET /retros/1
@@ -70,6 +72,10 @@ class RetrosController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_retro
       @retro = Retro.find(params[:id])
+    end
+
+    def set_project
+      @project = Project.find(params[:project_id] || @retro.project_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
