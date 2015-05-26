@@ -1,33 +1,59 @@
-<%= form_for(@issue) do |f| %>
-  <% if @issue.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@issue.errors.count, "error") %> prohibited this issue from being saved:</h2>
+<h1><%= title %></h1>
 
-      <ul>
-      <% @issue.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<form class="form-horizontal" action="<%= action %>" method="POST">
+  <fieldset>
+
+    <% if action_method == "PATCH" %>
+      <input name="_method" type="hidden" value="patch" />
+    <% end %>
+
+    <!-- Form Name -->
+    <legend><%= title %></legend>
+
+    <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+    <input name="issue[retro_id]" value="<%= @retro.id %>" type="hidden" />
+
+    <!-- Select Multiple -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="issue_type">Type</label>
+      <div class="col-md-4">
+        <select id="issue_type" name="issue[issue_type]" class="form-control">
+          <% for type in ["Good","Meh","Bad"] %>
+              <option
+              <% if @issue.issue_type == type %>
+              selected="selected"
+              <% end %>
+              value="<%= type %>"><%= type %></option>
+          <% end %>
+        </select>
+      </div>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :retro_id %><br>
-    <%= f.number_field :retro_id %>
-  </div>
-  <div class="field">
-    <%= f.label :issue_type %><br>
-    <%= f.text_field :issue_type %>
-  </div>
-  <div class="field">
-    <%= f.label :member %><br>
-    <%= f.text_field :member %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_field :description %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="user">User</label>
+      <div class="col-md-4">
+        <input id="user" name="issue[member]" type="text" placeholder="User" class="form-control input-md" required="" value="<%= @issue.member %>">
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="textinput">Description</label>
+      <div class="col-md-4">
+        <input id="description" name="issue[description]" type="text" placeholder="Description" class="form-control input-md" required="" value="<%= @issue.description %>">
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="singlebutton"></label>
+      <div class="col-md-4">
+        <button id="submit" name="submit" class="btn btn-primary">
+          <%= button_title %>
+        </button>
+      </div>
+    </div>
+
+  </fieldset>
+</form>

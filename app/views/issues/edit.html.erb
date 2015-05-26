@@ -1,6 +1,8 @@
-<h1>Editing issue</h1>
-
-<%= render 'form' %>
+<%= render partial: "issues/form", locals: {
+    title: "Edit issue",
+    button_title: "Modify",
+    action: issue_path,
+    action_method: "PATCH" } %>
 
 <%= link_to 'Show', @issue %> |
-<%= link_to 'Back', issues_path %>
+<%= link_to 'Back', retro_issues_path(@retro) %>

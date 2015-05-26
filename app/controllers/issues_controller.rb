@@ -21,9 +21,9 @@ class IssuesController < ApplicationController
 
   # GET /issues/new
   def new
-    @issue_type=params[:type]
-    @retro = Retro.find(params[:retro_id])
     @issue = Issue.new
+    @issue.issue_type = params[:type]
+    @retro = Retro.find(params[:retro_id])
   end
 
   # GET /issues/1/edit
@@ -65,7 +65,7 @@ class IssuesController < ApplicationController
   def destroy
     @issue.destroy
     respond_to do |format|
-      format.html { redirect_to issues_url, notice: 'Issue was successfully destroyed.' }
+      format.html { redirect_to issue_url, notice: 'Issue was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

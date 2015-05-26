@@ -1,35 +1,28 @@
 <h4>This week's issues</h4>
 <table class="table">
   <thead>
-      <th class="col-md-4 retro-header retro-good"><a href="<%= new_retro_issue_path %>?type=Good"><span class="glyphicon glyphicon-plus"></span></a> The good</th>
-      <th class="col-md-4 retro-header retro-meh"><a href="<%= new_retro_issue_path %>?type=Meh"><span class="glyphicon glyphicon-plus"></span></a> The meh</th>
-      <th class="col-md-4 retro-header retro-bad"><a href="<%= new_retro_issue_path %>?type=Bad"><span class="glyphicon glyphicon-plus"></span></a> The ugly</th>
+      <th class="col-md-4 retro-header retro-good">
+        <a href="<%= new_retro_issue_path %>?type=Good"><span class="glyphicon glyphicon-plus"></span></a>
+        The good
+      </th>
+      <th class="col-md-4 retro-header retro-meh">
+        <a href="<%= new_retro_issue_path %>?type=Meh">
+          <span class="glyphicon glyphicon-plus"></span></a>
+        The meh
+      </th>
+      <th class="col-md-4 retro-header retro-bad">
+        <a href="<%= new_retro_issue_path %>?type=Bad">
+          <span class="glyphicon glyphicon-plus"></span></a>
+        The ugly
+      </th>
   </thead>
 
   <tbody>
     <% for index in 0..@max_issues-1 %>
       <tr>
-        <td class="col-md-4 <% if @good_issues[index] %> retro-good <% end %>" >
-          <% if @good_issues[index] %>
-            [<%= @good_issues[index].member %>] <%= @good_issues[index].description %>
-          <% else %>
-            &nbsp;
-          <% end %>
-        </td>
-        <td class="col-md-4 <% if @meh_issues[index] %> retro-meh <% end %>" >
-          <% if @meh_issues[index] %>
-            [<%= @meh_issues[index].member %>] <%= @meh_issues[index].description %>
-          <% else %>
-            &nbsp;
-          <% end %>
-        </td>
-        <td class="col-md-4 <% if @bad_issues[index] %> retro-bad <% end %>" >
-          <% if @bad_issues[index] %>
-            [<%= @bad_issues[index].member %>] <%= @bad_issues[index].description %>
-          <% else %>
-            &nbsp;
-          <% end %>
-        </td>
+        <%= render partial: "issues/issuetemplate", locals: { issue: @good_issues[index], issue_class: 'retro-good' } %>
+        <%= render partial: "issues/issuetemplate", locals: { issue: @meh_issues[index], issue_class: 'retro-meh' } %>
+        <%= render partial: "issues/issuetemplate", locals: { issue: @bad_issues[index], issue_class: 'retro-bad' } %>
       </tr>
     <% end %>
   </tbody>
@@ -37,5 +30,5 @@
 
 <br>
 
-<%= link_to 'New Issue', new_retro_issue_path %>
+<%= link_to 'New Issue', new_retro_issue_path %> |
 <%= link_to 'Back', project_retros_path(@project) %>
