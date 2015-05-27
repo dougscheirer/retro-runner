@@ -1,7 +1,7 @@
 <div class="container table">
   <% @projects.each do |project| %>
     <div class="col-md-3 project-card">
-      <a href="<%= project_retros_path(project) %>"
+      <a href="<%= project_retros_path(project) %>">
       [<%= project.id %>] <%= project.name %><br>
       <%= project.description %><br>
       Owned by <%= project.owner_id %><br>

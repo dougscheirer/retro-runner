@@ -6,11 +6,17 @@
 1. (Dpne) Add retro item
 1. (Done) Edit/delete retro item
 1. Styling project to item
+   - change item successfully created/edited to original page with toast
+   - list retros in reverse date order
+   - check retros for "already running one"
+1. Users/Owners
 1. Review workflow (L->R, T->B)
-1. Add points, close pointing
-1. Post point review (in point order)
-1. Create additional tasks
-1. Close retro
+   - start review (owner) (with navigation, overlay, show timer)
+   - open for pointing
+   - close pointing (owner)
+   - pointed review (owner)
+   - generate task from review
+   - close retro
 1. Show retro's outstanding tasks
 1. Close retro's outstanding tasks
 1. Nag task targets
