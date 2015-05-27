@@ -1,6 +1,10 @@
 <div class="container table">
   <% @projects.each do |project| %>
     <div class="col-md-3 project-card">
+      <a href="<%= project_path(project) %>" style="float: right;" data-method="DELETE" data-confirm="Are you sure?" rel="nofollow">
+        <span class="glyphicon glyphicon-trash"></span>
+      </a>
+      <a href="<%= edit_project_path(project) %>" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></a>
       <a href="<%= project_retros_path(project) %>">
       [<%= project.id %>] <%= project.name %><br>
       <%= project.description %><br>

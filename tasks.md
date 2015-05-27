@@ -3,13 +3,13 @@
 1. (Done) List retros (landing)
 1. (Done) Make new project
 1. (Done) List projects (landing)
-1. (Dpne) Add retro item
+1. (Done) Add retro item
 1. (Done) Edit/delete retro item
-1. Styling project to item
+1. (Done) Styling project to item
    - change item successfully created/edited to original page with toast
    - list retros in reverse date order
-   - check retros for "already running one"
-1. Users/Owners
+1. Users and Owners
+1. Limit creating duplicates
 1. Review workflow (L->R, T->B)
    - start review (owner) (with navigation, overlay, show timer)
    - open for pointing

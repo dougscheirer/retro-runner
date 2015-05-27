@@ -1,47 +1,7 @@
-<form class="form-horizontal" action="<%= projects_path %>" method="POST">
-<fieldset>
-
-<!-- Form Name -->
-<legend>New project</legend>
-
-<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="project_name">Project Name</label>  
-  <div class="col-md-4">
-  <input id="project_name" name="project[name]" type="text" placeholder="Your team name here" class="form-control input-md" required="">
-    
-  </div>
-</div>
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="description">Description</label>  
-  <div class="col-md-4">
-  <input id="description" name="project[description]" type="text" placeholder="Optional" class="form-control input-md">
-    
-  </div>
-</div>
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="owner">Owner</label>  
-  <div class="col-md-4">
-  <input id="owner" name="project[owner_id]" type="number" placeholder="Owner's user id, you by default" class="form-control input-md">
-    
-  </div>
-</div>
-
-<!-- Button -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="submit"></label>
-  <div class="col-md-4">
-    <button id="submit" name="submit" class="btn btn-primary">Add new project</button>
-  </div>
-</div>
-
-</fieldset>
-</form>
+<%= render partial: "projects/form", locals: {
+        title: "New project",
+        button_title: "Create project",
+        action: projects_path,
+        action_method: "POST" } %>
 
 <%= link_to 'Back', projects_path %>

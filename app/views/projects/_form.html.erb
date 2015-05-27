@@ -1,29 +1,49 @@
-<%= form_for(@project) do |f| %>
-  <% if @project.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+<form class="form-horizontal" action="<%= action %>" method="POST">
+  <fieldset>
 
-      <ul>
-      <% @project.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <!-- Form Name -->
+    <legend><%= title %></legend>
+    <% if action_method == "PATCH" %>
+        <input name="_method" type="hidden" value="patch" />
+    <% end %>
+
+    <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="project_name">Project Name</label>
+      <div class="col-md-4">
+        <input id="project_name" name="project[name]" type="text" placeholder="Your team name here" class="form-control input-md" required="" value="<%= @project.name %>">
+
+      </div>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_field :description %>
-  </div>
-  <div class="field">
-    <%= f.label :owner_id %><br>
-    <%= f.number_field :owner_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="description">Description</label>
+      <div class="col-md-4">
+        <input id="description" name="project[description]" type="text" placeholder="Optional" class="form-control input-md" value="<%= @project.description %>">
+
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="owner">Owner</label>
+      <div class="col-md-4">
+        <input id="owner" name="project[owner_id]" type="number" placeholder="Owner's user id, you by default" class="form-control input-md" value="<%= @project.owner_id %>">
+
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="submit"></label>
+      <div class="col-md-4">
+        <button id="submit" name="submit" class="btn btn-primary"><%= button_title %></button>
+      </div>
+    </div>
+
+  </fieldset>
+</form>
+

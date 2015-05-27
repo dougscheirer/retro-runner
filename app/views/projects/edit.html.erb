@@ -1,6 +1,7 @@
-<h1>Editing project</h1>
+<%= render partial: "projects/form", locals: {
+        title: "Edit project",
+        button_title: "Change project",
+        action: project_path,
+        action_method: "PATCH" } %>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @project %> |
 <%= link_to 'Back', projects_path %>

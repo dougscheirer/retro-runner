@@ -23,6 +23,7 @@ class IssuesController < ApplicationController
   def new
     @issue = Issue.new
     @issue.issue_type = params[:type]
+    @issue.retro_id = params[:retro_id]
     @retro = Retro.find(params[:retro_id])
   end
 
@@ -34,12 +35,15 @@ class IssuesController < ApplicationController
   # POST /issues.json
   def create
     @issue = Issue.new(issue_params)
+    @retro = Retro.find(params[:retro_id])
 
     respond_to do |format|
       if @issue.save
-        format.html { redirect_to @issue, notice: 'Issue was successfully created.' }
+        flash[:success] = "Issue #{@issue.id} was successfully created."
+        format.html { redirect_to @retro }
         format.json { render :show, status: :created, location: @issue }
       else
+        flash[:error] = @issue.errors
         format.html { render :new }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
       end
@@ -51,9 +55,11 @@ class IssuesController < ApplicationController
   def update
     respond_to do |format|
       if @issue.update(issue_params)
-        format.html { redirect_to @issue, notice: 'Issue was successfully updated.' }
+        flash[:success] = "Issue #{@issue.id} was successfully updated."
+        format.html { redirect_to @retro }
         format.json { render :show, status: :ok, location: @issue }
       else
+        flash[:error] = @issue.errors
         format.html { render :edit }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
       end
@@ -65,7 +71,8 @@ class IssuesController < ApplicationController
   def destroy
     @issue.destroy
     respond_to do |format|
-      format.html { redirect_to issue_url, notice: 'Issue was successfully destroyed.' }
+      flash[:success] = "Issue #{@issue.id} was successfully destroyed."
+      format.html { redirect_to @retro }
       format.json { head :no_content }
     end
   end

@@ -16,3 +16,9 @@
 //= require_tree .
 //= require jquery
 //= require bootstrap-sprockets
+
+$(document).ready(function(){
+    setTimeout(function(){
+        $('.flash').fadeOut(2000);
+    }, 2000);
+})
