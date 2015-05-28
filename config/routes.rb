@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :users
+
   resources :projects, shallow: true do
     resources :retros do
       resources :issues

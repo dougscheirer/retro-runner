@@ -1,6 +1,8 @@
 FactoryGirl.define do
-  factory :user, :class => 'Users' do
-    new "MyString"
+  factory :user do
+    email "MyString"
+hashed_password "MyString"
+name "MyString"
   end
 
 end
