@@ -1,4 +1,4 @@
-<td class="col-md-4 <% if issue %><%= issue_class %><% end %>">
+<td class="col-xs-4 col-md-4 <% if issue %><%= issue_class %><% end %>">
     <% if issue %>
         [<%= issue.member %>] <%= issue.description %>
         <a href="<%= issue_path(issue) %>" style="float: right;" data-method="DELETE" data-confirm="Are you sure?" rel="nofollow">
