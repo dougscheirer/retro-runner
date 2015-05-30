@@ -1,8 +1,9 @@
 FactoryGirl.define do
   factory :user do
     email "MyString"
-hashed_password "MyString"
-name "MyString"
+    password "MyPassword"
+    password_confirmation "MyPassword"
+    name "MyString"
   end
 
 end

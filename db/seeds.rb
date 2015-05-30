@@ -11,6 +11,14 @@ Project.create(:name=>"Test two",:description=>"Test project number two",:owner_
 Project.create(:name=>"Test three",:description=>"Test project number three",:owner_id=>1)
 Project.create(:name=>"Test four",:description=>"Test project number four",:owner_id=>1)
 
+user1=User.create(:name=>"Doug",:email=>"dscheirer@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
+user2=User.create(:name=>"Phil",:email=>"phil@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
+user3=User.create(:name=>"Joe",:email=>"joe@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
+user4=User.create(:name=>"Wendy",:email=>"wendy@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
+user5=User.create(:name=>"Dave",:email=>"dave@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
+user6=User.create(:name=>"Alex",:email=>"alex@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
+user7=User.create(:name=>"Alau_branch",:email=>"alau@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
+
 base_retro = Retro.create(:meeting_date=>Date.today().to_date.to_s, :project_id=>base_project.id, :status=>"New")
 Retro.create(:meeting_date=>Date.today().to_date.to_s, :project_id=>base_project.id, :status=>"New")
 Retro.create(:meeting_date=>Date.today().to_date.to_s, :project_id=>base_project.id, :status=>"New")
@@ -20,3 +28,15 @@ Issue.create(:issue_type=>"Good",:member=>"Phil",:description=>"that was awesome
 Issue.create(:issue_type=>"Meh",:member=>"Phil",:description=>"that was ok",:retro_id=>base_retro.id)
 Issue.create(:issue_type=>"Bad",:member=>"Phil",:description=>"that was terrible",:retro_id=>base_retro.id)
 Issue.create(:issue_type=>"Good",:member=>"Doug",:description=>"that was great",:retro_id=>base_retro.id)
+
+
+my_password = BCrypt::Password.create("notsecure")
+
+puts my_password.version              #=> "2a"
+puts my_password.cost                 #=> 10
+puts my_password == "notsecure"     #=> true
+puts my_password == "not my password" #=> false
+
+puts my_password = BCrypt::Password.new("$2a$10$aidjK7V7Ht2stok9tbXLEu1rw/yp1TKxhua/cwiPo47Gzjj6mjupW")
+puts my_password == "notsecure"     #=> true
+puts my_password == "not my password" #=> false
