@@ -1,16 +1,13 @@
 <form class="form-horizontal" method="POST" action="<%= users_path %>">
   <fieldset>
 
-    <!-- Form Name -->
-    <legend>Sign up</legend>
-
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
 
     <!-- Text input-->
     <div class="form-group">
       <label class="col-md-4 control-label" for="email">Email</label>
       <div class="col-md-4">
-        <input id="email" name="user[email]" type="text" placeholder="you@there.com" class="form-control input-md" required="">
+        <input id="email" name="user[email]" type="text" placeholder="you@there.com" class="form-control input-md" required="" value="<%= @user.email %>">
 
       </div>
     </div>
@@ -19,7 +16,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="user[name]">Name</label>
       <div class="col-md-4">
-        <input id="user[name]" name="user[name]" type="text" placeholder="Your name" class="form-control input-md" required="">
+        <input id="user[name]" name="user[name]" type="text" placeholder="Your name" class="form-control input-md" required="" value="<%= @user.name %>">
 
       </div>
     </div>
@@ -46,7 +43,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="submit"></label>
       <div class="col-md-4">
-        <button id="submit" name="submit" class="btn btn-primary">Create user</button>
+        <button id="submit" name="submit" class="btn btn-primary">Submit</button>
       </div>
     </div>
 

@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate!, only: [ :index, :show ]
 
   # GET /projects
   # GET /projects.json
@@ -29,7 +30,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.save
         flash[:success] = "Project #{@project.name} was successfully created."
-        format.html { redirect_to project_retros_url(@project) }
+        format.html { redirect_to project_retros_path(@project) }
         format.json { render :show, status: :created, location: @project }
       else
         flash[:error] = @project.errors

@@ -1,6 +1,8 @@
 class RetrosController < ApplicationController
   before_action :set_retro, only: [:show, :edit, :update, :destroy]
   before_action :set_project
+  skip_before_action :authenticate!, only: [ :index, :show ]
+  before_action :admin_access?, only: [ :destroy ]
 
   # GET /retros
   # GET /retros.json
@@ -67,7 +69,7 @@ class RetrosController < ApplicationController
     @retro.destroy
     respond_to do |format|
       flash[:success] = "Retro #{@retro.id} was successfully destroyed."
-      format.html { redirect_to retros_url }
+      format.html { redirect_to project_retros_path }
       format.json { head :no_content }
     end
   end

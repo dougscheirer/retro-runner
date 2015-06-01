@@ -1,5 +1,7 @@
 class IssuesController < ApplicationController
   before_action :set_issue, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate!, only: [ :index, :show ]
+  before_action :owner, only: [ :destroy ]
 
   # GET /issues
   # GET /issues.json
@@ -87,5 +89,9 @@ class IssuesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def issue_params
       params.require(:issue).permit(:retro_id, :issue_type, :member, :description)
+    end
+
+    def owner
+      redirect_to owner_required if @issue.owner_id != @current_user.id
     end
 end

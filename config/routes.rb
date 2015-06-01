@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :users
+  resources :users
 
   root   'projects#index'
 
@@ -20,4 +20,5 @@ Rails.application.routes.draw do
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
 
+  get    'admin_access_required' => 'page#admin_access_required'
 end
