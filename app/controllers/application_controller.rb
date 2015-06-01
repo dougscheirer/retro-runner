@@ -9,8 +9,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate!
-    puts request.inspect
-    puts request.methods
     session[:redirect_after_login] = request.original_url if !logged_in?
     redirect_to login_path if !logged_in?
   end

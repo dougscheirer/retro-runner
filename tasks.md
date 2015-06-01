@@ -9,6 +9,7 @@
    - change item successfully created/edited to original page with toast
    - list retros in reverse date order
 1. (Done) Users and Owners
+1. (Done) Authorization
 1. TESTS!!!!
 1. MORE TESTS!!!
 1. Limit creating duplicates
@@ -23,4 +24,3 @@
 1. Close retro's outstanding tasks
 1. Nag task targets
 1. Pick retro icons
-1. Authorization (landing)
