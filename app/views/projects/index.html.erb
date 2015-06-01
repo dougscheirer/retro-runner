@@ -9,7 +9,7 @@
           <a href="<%= edit_project_path(project) %>" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></a>
           [<%= project.id %>] <%= project.name %><br>
           <%= project.description %><br>
-          Owned by <%= project.owner_id %><br>
+          Owned by <a href="<%= user_path(user(project.owner_id)) %>"><%= user(project.owner_id).name %></a><br>
       </div>
   <% end %>
   </div>

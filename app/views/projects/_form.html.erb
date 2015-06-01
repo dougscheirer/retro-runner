@@ -27,12 +27,19 @@
       </div>
     </div>
 
-    <!-- Text input-->
+    <!-- Select input-->
     <div class="form-group">
-      <label class="col-md-4 control-label" for="owner">Owner</label>
+      <label class="col-md-4 control-label" for="project[owner]">Owner</label>
       <div class="col-md-4">
-        <input id="owner" name="project[owner_id]" type="number" placeholder="Owner's user id, you by default" class="form-control input-md" value="<%= @project.owner_id %>">
-
+        <select id="owner" name="project[owner_id]" class="form-control">
+          <% for user in @users %>
+              <option value="<%= user.id %>"
+              <% if @project.owner_id == user.id %>
+                  selected="<%= user.id %>"
+              <% end %>
+                  ><%= user.name %> (<%= user.email %>)></option>
+          <% end %>
+        </select>
       </div>
     </div>
 

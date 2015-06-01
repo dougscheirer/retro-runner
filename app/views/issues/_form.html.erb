@@ -7,9 +7,6 @@
       <input name="_method" type="hidden" value="patch" />
     <% end %>
 
-    <!-- Form Name -->
-    <legend><%= title %></legend>
-
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
     <input name="issue[retro_id]" value="<%= @retro.id %>" type="hidden" />
 
@@ -26,14 +23,6 @@
               value="<%= type %>"><%= type %></option>
           <% end %>
         </select>
-      </div>
-    </div>
-
-    <!-- Text input-->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="user">User</label>
-      <div class="col-md-4">
-        <input id="user" name="issue[member]" type="text" placeholder="User" class="form-control input-md" required="" value="<%= @issue.member %>">
       </div>
     </div>
 

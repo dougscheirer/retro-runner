@@ -17,4 +17,10 @@ module ApplicationHelper
     nil
   end
 
+  def user(id)
+    user = User.find(id) if !id.nil?
+    return user if !user.nil?
+    User.new(:name=>"Unknown", :email=>"unknown@example.com")
+  end
+
 end

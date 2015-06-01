@@ -31,6 +31,7 @@ class RetrosController < ApplicationController
   # POST /retros.json
   def create
     @retro = Retro.new(retro_params)
+    @retro.creator_id = current_user.id
     @retro.project_id = params[:project_id]
     @retro.status = "New"
 
@@ -69,7 +70,7 @@ class RetrosController < ApplicationController
     @retro.destroy
     respond_to do |format|
       flash[:success] = "Retro #{@retro.id} was successfully destroyed."
-      format.html { redirect_to project_retros_path }
+      format.html { redirect_to project_retros_path(@retro.project_id) }
       format.json { head :no_content }
     end
   end

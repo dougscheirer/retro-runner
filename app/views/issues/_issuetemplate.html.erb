@@ -1,10 +1,15 @@
 <td class="col-xs-4 col-md-4 <% if issue %><%= issue_class %><% end %>">
-    <% if issue %>
-        [<%= issue.member %>] <%= issue.description %>
-        <a href="<%= issue_path(issue) %>" style="float: right;" data-method="DELETE" data-confirm="Are you sure?" rel="nofollow">
-          <span class="glyphicon glyphicon-trash"></span>
-        </a>
-        <a href="<%= edit_issue_path(issue) %>" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></a>
+    <% if !issue.nil? %>
+      <% if issue.creator_id.nil? %>
+        Unknown
+      <% else %>
+        [<%= link_to user(issue.creator_id).name, user_path(issue.creator_id) %>]
+      <% end %>
+      <%= issue.description %>
+      <a href="<%= issue_path(issue) %>" style="float: right;" data-method="DELETE" data-confirm="Are you sure?" rel="nofollow">
+        <span class="glyphicon glyphicon-trash"></span>
+      </a>
+      <a href="<%= edit_issue_path(issue) %>" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></a>
     <% else %>
         &nbsp;
     <% end %>

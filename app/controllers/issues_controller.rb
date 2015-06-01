@@ -25,7 +25,6 @@ class IssuesController < ApplicationController
   def new
     @issue = Issue.new
     @issue.issue_type = params[:type]
-    @issue.retro_id = params[:retro_id]
     @retro = Retro.find(params[:retro_id])
   end
 
@@ -37,6 +36,8 @@ class IssuesController < ApplicationController
   # POST /issues.json
   def create
     @issue = Issue.new(issue_params)
+    @issue.retro_id = params[:retro_id]
+    @issue.creator_id = current_user.id
     @retro = Retro.find(params[:retro_id])
 
     respond_to do |format|

@@ -8,7 +8,9 @@
 1. (Done) Styling project to item
    - change item successfully created/edited to original page with toast
    - list retros in reverse date order
-1. Users and Owners
+1. (Done) Users and Owners
+1. TESTS!!!!
+1. MORE TESTS!!!
 1. Limit creating duplicates
 1. Review workflow (L->R, T->B)
    - start review (owner) (with navigation, overlay, show timer)
