@@ -27,7 +27,7 @@ RSpec.describe IssuesController, :type => :controller do
     { :issue_type => "Good",
       :retro_id => 2,
       :description => "Nice job",
-      :member => "Phil"}
+      :creator_id => 1 }
   }
 
   let(:invalid_attributes) {
@@ -40,7 +40,7 @@ RSpec.describe IssuesController, :type => :controller do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all issues as @issues" do
+    it "assigns types of issues" do
       issue = Issue.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:good_issues)).to eq([issue])
