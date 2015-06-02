@@ -1,8 +1,9 @@
 FactoryGirl.define do
   factory :retro do
-    meeting_date "2015-05-25 09:18:12"
-project_id 1
-status "MyString"
+    meeting_date "2015-05-25 00:00:00"
+    project_id 1
+    status "New"
+    creator_id 1  
   end
 
 end
