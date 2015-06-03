@@ -34,7 +34,7 @@ RSpec.describe RetrosController, :type => :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # RetrosController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { { 'user-id' => 1 } }
 
   context 'login is not required' do
     describe "GET index" do
@@ -55,11 +55,6 @@ RSpec.describe RetrosController, :type => :controller do
   end
 
   context 'login is required' do
-
-    before :all do
-      skip('need to figure out auth')
-    end
-
     describe "GET new" do
       it "assigns a new retro as @retro" do
         get :new, {}, valid_session

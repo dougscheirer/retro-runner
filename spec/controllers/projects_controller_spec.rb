@@ -36,7 +36,7 @@ RSpec.describe ProjectsController, :type => :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ProjectsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { { 'user_id' => 1} }
 
   context 'when login not required' do
     describe "GET index" do
@@ -57,13 +57,6 @@ RSpec.describe ProjectsController, :type => :controller do
   end
 
   context 'when login is required' do
-
-    before :all do
-      # @user = User.create!(:email => "user@example.com", :password => "password", :password_confirmation => "password", :name => "user")
-      # session[:user_id] = @user.id
-      skip('need to figure out auth')
-    end
-
     describe "GET new" do
       it "assigns a new project as @project" do
         get :new, {}, valid_session

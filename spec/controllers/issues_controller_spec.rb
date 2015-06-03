@@ -24,7 +24,7 @@ RSpec.describe IssuesController, :type => :controller do
   # Issues. As you add validations to Issues, be sure to
   # adjust the attributes here as well.
   let(:retro_attributes) {
-    :retro_id => 1
+    { :retro_id => 1 }
   }
 
   let(:valid_attributes) {
@@ -69,8 +69,6 @@ RSpec.describe IssuesController, :type => :controller do
   end
 
   context 'login is required' do
-    before :all do
-    end
 
     describe "GET new" do
       it "assigns a new issue as @issue" do
