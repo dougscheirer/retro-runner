@@ -25,6 +25,6 @@ Retro.create(:meeting_date=>Date.today().to_date.to_s, :project_id=>base_project
 Retro.create(:meeting_date=>Date.today().to_date.to_s, :project_id=>base_project.id, :status=>"New")
 
 Issue.create(:issue_type=>"Good",:creator_id=>phil.id,:description=>"that was awesome",:retro_id=>base_retro.id)
-Issue.create(:issue_type=>"Meh",:member=>phil.id,:description=>"that was ok",:retro_id=>base_retro.id)
-Issue.create(:issue_type=>"Bad",:member=>phil.id,:description=>"that was terrible",:retro_id=>base_retro.id)
-Issue.create(:issue_type=>"Good",:member=>doug.id,:description=>"that was great",:retro_id=>base_retro.id)
+Issue.create(:issue_type=>"Meh",:creator_id=>phil.id,:description=>"that was ok",:retro_id=>base_retro.id)
+Issue.create(:issue_type=>"Bad",:creator_id=>phil.id,:description=>"that was terrible",:retro_id=>base_retro.id)
+Issue.create(:issue_type=>"Good",:creator_id=>doug.id,:description=>"that was great",:retro_id=>base_retro.id)
