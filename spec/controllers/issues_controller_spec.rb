@@ -23,9 +23,13 @@ RSpec.describe IssuesController, :type => :controller do
   # This should return the minimal set of attributes required to create a valid
   # Issues. As you add validations to Issues, be sure to
   # adjust the attributes here as well.
+  let(:retro_attributes) {
+    :retro_id => 1
+  }
+
   let(:valid_attributes) {
     { :issue_type => "Good",
-      :retro_id => 2,
+      :retro_id => 1,
       :description => "Nice job",
       :creator_id => 1 }
   }
@@ -34,16 +38,23 @@ RSpec.describe IssuesController, :type => :controller do
     { :pizza => "pepperoni" }
   }
 
+  before :all do
+    project = FactoryGirl.create(:project)
+    project.save
+    retro = FactoryGirl.create(:retro)
+    retro.save
+  end
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # IssuesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { { 'user_id' => 1 } }
 
   context 'login not required' do
     describe "GET index" do
       it "assigns types of issues" do
         issue = Issue.create! valid_attributes
-        get :index, {}, valid_session
+        get :index, { :retro_id => 1 }
         expect(assigns(:good_issues)).to eq([issue])
       end
     end
@@ -59,12 +70,11 @@ RSpec.describe IssuesController, :type => :controller do
 
   context 'login is required' do
     before :all do
-      skip('need to figure out auth')
     end
 
     describe "GET new" do
       it "assigns a new issue as @issue" do
-        get :new, {}, valid_session
+        get :new, { :retro_id => 1 }, valid_session
         expect(assigns(:issue)).to be_a_new(Issue)
       end
     end

@@ -5,5 +5,4 @@ FactoryGirl.define do
     status "New"
     creator_id 1  
   end
-
 end
