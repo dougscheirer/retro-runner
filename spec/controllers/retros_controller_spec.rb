@@ -40,7 +40,7 @@ RSpec.describe RetrosController, :type => :controller do
   # This should return the minimal set of attributes required to create a valid
   # Issues. As you add validations to Issues, be sure to
   # adjust the attributes here as well.
-  before :all do
+  before :each do
     @project = FactoryGirl.create(:project)
     @project.save
     @user = FactoryGirl.create(:user)
