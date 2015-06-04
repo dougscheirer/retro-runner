@@ -89,10 +89,10 @@ class IssuesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def issue_params
-      params.require(:issue).permit(:retro_id, :issue_type, :member, :description)
+      params.require(:issue).permit(:retro_id, :issue_type, :creator_id, :description)
     end
 
     def owner
-      redirect_to owner_required if @issue.owner_id != @current_user.id
+      redirect_to owner_required if @issue.creator_id != @current_user.id
     end
 end
