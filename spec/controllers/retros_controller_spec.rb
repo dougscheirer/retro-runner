@@ -23,24 +23,35 @@ RSpec.describe RetrosController, :type => :controller do
   # This should return the minimal set of attributes required to create a valid
   # Retro. As you add validations to Retro, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
-
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { :pizza => "pepperoni" }
   }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # RetrosController. Be sure to keep this updated too.
-  let(:valid_session) { { 'user-id' => 1 } }
+  let(:valid_session) { { 'user_id' => 1 } }
+
+  let(:valid_attributes) {
+    { :project_id => 1,
+      :creator_id => 1,
+      :meeting_date => DateTime.new.to_s,
+      :status => 'New'
+    }
+  }
+
+  # This should return the minimal set of attributes required to create a valid
+  # Issues. As you add validations to Issues, be sure to
+  # adjust the attributes here as well.
+  before :all do
+    @project = FactoryGirl.create(:project)
+    @project.save
+    @user = FactoryGirl.create(:user)
+    @user.save
+  end
 
   context 'login is not required' do
     describe "GET index" do
       it "assigns all retros as @retros" do
         retro = Retro.create! valid_attributes
-        get :index, {}, valid_session
+        get :index, { :project_id => 1 }, valid_session
         expect(assigns(:retros)).to eq([retro])
       end
     end
@@ -48,7 +59,7 @@ RSpec.describe RetrosController, :type => :controller do
     describe "GET show" do
       it "assigns the requested retro as @retro" do
         retro = Retro.create! valid_attributes
-        get :show, {:id => retro.to_param}, valid_session
+        get :show, {:project_id => 1, :id => retro.to_param}, valid_session
         expect(assigns(:retro)).to eq(retro)
       end
     end
@@ -57,7 +68,7 @@ RSpec.describe RetrosController, :type => :controller do
   context 'login is required' do
     describe "GET new" do
       it "assigns a new retro as @retro" do
-        get :new, {}, valid_session
+        get :new, {:project_id => 1}, valid_session
         expect(assigns(:retro)).to be_a_new(Retro)
       end
     end
@@ -65,7 +76,7 @@ RSpec.describe RetrosController, :type => :controller do
     describe "GET edit" do
       it "assigns the requested retro as @retro" do
         retro = Retro.create! valid_attributes
-        get :edit, {:id => retro.to_param}, valid_session
+        get :edit, {:project_id => 1, :id => retro.to_param}, valid_session
         expect(assigns(:retro)).to eq(retro)
       end
     end
@@ -74,30 +85,30 @@ RSpec.describe RetrosController, :type => :controller do
       describe "with valid params" do
         it "creates a new Retro" do
           expect {
-            post :create, {:retro => valid_attributes}, valid_session
+            post :create, {:project_id => 1, :retro => valid_attributes}, valid_session
           }.to change(Retro, :count).by(1)
         end
 
         it "assigns a newly created retro as @retro" do
-          post :create, {:retro => valid_attributes}, valid_session
+          post :create, {:project_id => 1, :retro => valid_attributes}, valid_session
           expect(assigns(:retro)).to be_a(Retro)
           expect(assigns(:retro)).to be_persisted
         end
 
         it "redirects to the created retro" do
-          post :create, {:retro => valid_attributes}, valid_session
+          post :create, {:project_id => 1, :retro => valid_attributes}, valid_session
           expect(response).to redirect_to(Retro.last)
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved retro as @retro" do
-          post :create, {:retro => invalid_attributes}, valid_session
+          post :create, {:project_id => 1, :retro => invalid_attributes}, valid_session
           expect(assigns(:retro)).to be_a_new(Retro)
         end
 
         it "re-renders the 'new' template" do
-          post :create, {:retro => invalid_attributes}, valid_session
+          post :create, {:project_id => 1, :retro => invalid_attributes}, valid_session
           expect(response).to render_template("new")
         end
       end
@@ -106,25 +117,31 @@ RSpec.describe RetrosController, :type => :controller do
     describe "PUT update" do
       describe "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          { :project_id => 1,
+            :creator_id => 1,
+            :meeting_date => DateTime.new.to_s,
+            :status => 'Finished'
+          }
         }
 
         it "updates the requested retro" do
           retro = Retro.create! valid_attributes
-          put :update, {:id => retro.to_param, :retro => new_attributes}, valid_session
+          put :update, {:project_id => 1, :id => retro.to_param, :retro => new_attributes}, valid_session
           retro.reload
-          skip("Add assertions for updated state")
+          new_attributes.each { |key,value|
+            expect(retro[key]).to eq(value)
+          }
         end
 
         it "assigns the requested retro as @retro" do
           retro = Retro.create! valid_attributes
-          put :update, {:id => retro.to_param, :retro => valid_attributes}, valid_session
+          put :update, {:project_id => 1, :id => retro.to_param, :retro => valid_attributes}, valid_session
           expect(assigns(:retro)).to eq(retro)
         end
 
         it "redirects to the retro" do
           retro = Retro.create! valid_attributes
-          put :update, {:id => retro.to_param, :retro => valid_attributes}, valid_session
+          put :update, {:project_id => 1, :id => retro.to_param, :retro => valid_attributes}, valid_session
           expect(response).to redirect_to(retro)
         end
       end
@@ -132,14 +149,14 @@ RSpec.describe RetrosController, :type => :controller do
       describe "with invalid params" do
         it "assigns the retro as @retro" do
           retro = Retro.create! valid_attributes
-          put :update, {:id => retro.to_param, :retro => invalid_attributes}, valid_session
+          put :update, {:project_id => 1, :id => retro.to_param, :retro => invalid_attributes}, valid_session
           expect(assigns(:retro)).to eq(retro)
         end
 
         it "re-renders the 'edit' template" do
           retro = Retro.create! valid_attributes
-          put :update, {:id => retro.to_param, :retro => invalid_attributes}, valid_session
-          expect(response).to render_template("edit")
+          put :update, {:project_id => 1, :id => retro.to_param, :retro => invalid_attributes}, valid_session
+          expect(response).to redirect_to(retro_url)
         end
       end
     end
@@ -148,14 +165,14 @@ RSpec.describe RetrosController, :type => :controller do
       it "destroys the requested retro" do
         retro = Retro.create! valid_attributes
         expect {
-          delete :destroy, {:id => retro.to_param}, valid_session
+          delete :destroy, {:project_id => 1, :id => retro.to_param}, valid_session
         }.to change(Retro, :count).by(-1)
       end
 
       it "redirects to the retros list" do
         retro = Retro.create! valid_attributes
-        delete :destroy, {:id => retro.to_param}, valid_session
-        expect(response).to redirect_to(retros_url)
+        delete :destroy, {:project_id => 1, :id => retro.to_param}, valid_session
+        expect(response).to redirect_to(project_retros_url({:project_id => 1}))
       end
     end
   end

@@ -8,7 +8,6 @@ class RetrosController < ApplicationController
   # GET /retros.json
   def index
     @retros = Retro.where("project_id = #{params[:project_id]}").order("meeting_date DESC")
-    puts @retros.size
   end
 
   # GET /retros/1

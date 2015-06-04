@@ -23,9 +23,9 @@ RSpec.describe IssuesController, :type => :controller do
 
   let(:valid_attributes) {
     {
-      :issue_type => "Good",
+      :issue_type => 'Good',
       :retro_id => 1,
-      :description => "Nice job",
+      :description => 'Nice job',
       :creator_id => 1
     }
   }
@@ -40,17 +40,12 @@ RSpec.describe IssuesController, :type => :controller do
   # Issues. As you add validations to Issues, be sure to
   # adjust the attributes here as well.
   before :all do
-    DatabaseCleaner.start
     @project = FactoryGirl.create(:project)
     @project.save
     @retro = FactoryGirl.create(:retro)
     @retro.save
     @user = FactoryGirl.create(:user)
     @user.save
-  end
-
-  after :all do
-    DatabaseCleaner.clean
   end
 
   # This should return the minimal set of values that should be in the session
@@ -166,7 +161,6 @@ RSpec.describe IssuesController, :type => :controller do
         end
 
         it "re-renders the 'edit' template" do
-          skip "make this test pass"
           issue = Issue.create! valid_attributes
           put :update, {:id => issue.to_param, :issue => invalid_attributes, :retro_id => 1}, valid_session
           expect(response).to render_template("edit")
