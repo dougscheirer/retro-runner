@@ -163,7 +163,7 @@ RSpec.describe IssuesController, :type => :controller do
         it "re-renders the 'edit' template" do
           issue = Issue.create! valid_attributes
           put :update, {:id => issue.to_param, :issue => invalid_attributes, :retro_id => 1}, valid_session
-          expect(response).to render_template("edit")
+          expect(response).to redirect_to(Retro.find(1))
         end
       end
     end
