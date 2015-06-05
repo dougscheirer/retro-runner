@@ -35,7 +35,12 @@ RSpec.describe ProjectsController, :type => :controller do
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
-  # ProjectsController. Be sure to keep this updated too.
+  # ProjectsController. vBe sure to keep this updated too.
+  before :each do
+    @user = FactoryGirl.create(:user)
+    @user.save
+  end
+
   let(:valid_session) { { 'user_id' => 1} }
 
   context 'when login not required' do
@@ -88,7 +93,7 @@ RSpec.describe ProjectsController, :type => :controller do
 
         it "redirects to the created project" do
           post :create, {:project => valid_attributes}, valid_session
-          expect(response).to redirect_to(Project.last)
+          expect(response).to redirect_to(project_retros_url(1))
         end
       end
 
@@ -124,10 +129,10 @@ RSpec.describe ProjectsController, :type => :controller do
           expect(assigns(:project)).to eq(project)
         end
 
-        it "redirects to the project" do
+        it "redirects to the projects view" do
           project = Project.create! valid_attributes
           put :update, {:id => project.to_param, :project => valid_attributes}, valid_session
-          expect(response).to redirect_to(project)
+          expect(response).to redirect_to(root_url)
         end
       end
 
@@ -157,7 +162,7 @@ RSpec.describe ProjectsController, :type => :controller do
       it "redirects to the projects list" do
         project = Project.create! valid_attributes
         delete :destroy, {:id => project.to_param}, valid_session
-        expect(response).to redirect_to(projects_url)
+        expect(response).to redirect_to(root_url)
       end
     end
   end
