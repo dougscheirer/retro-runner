@@ -4,6 +4,10 @@ RSpec.describe "Users", :type => :request do
 
   let(:valid_session) { { 'user_id' => 1 } }
 
+  before :each do
+    FactoryGirl.create(:user).save
+  end
+
   describe "GET /users" do
     it "works! (now write some real specs)" do
       get users_path, {}, valid_session
