@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   skip_before_filter :authenticate!, only: [:new, :create]
-  before_action :owner_or_admin_access?, only: [ :edit, :update ]
+  before_action :owner_or_admin_access?, only: [ :edit, :update, :destroy ]
 
   def index
     @users = User.all
@@ -32,11 +32,27 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
-    if @user.update_attributes(user_params)
-      # Handle a successful update.
-    else
-      render 'edit'
+    respond_to do |format|
+      if @user.update(user_params)
+        flash[:success] = "User #{@user.id} was successfully updated."
+        format.html { redirect_to users_path }
+        format.json { render :show, status: :ok, location: @retro }
+      else
+        flash[:error] = @user.errors
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /projects/1
+  # DELETE /projects/1.json
+  def destroy
+    @user.destroy
+    respond_to do |format|
+      flash[:success] = "User #{@user.name} was successfully destroyed."
+      format.html { redirect_to users_path }
+      format.json { head :no_content }
     end
   end
 

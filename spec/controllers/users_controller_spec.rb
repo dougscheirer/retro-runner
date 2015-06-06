@@ -113,14 +113,15 @@ RSpec.describe UsersController, :type => :controller do
     describe "PUT update" do
       describe "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          { :name => 'someone else',
+            :email => 'another@example.com'
+          }
         }
 
         it "updates the requested user" do
           user = User.create! valid_attributes
           put :update, {:id => user.to_param, :user => new_attributes}, valid_session
           user.reload
-          skip("Add assertions for updated state")
         end
 
         it "assigns the requested user as @user" do
@@ -132,7 +133,7 @@ RSpec.describe UsersController, :type => :controller do
         it "redirects to the user" do
           user = User.create! valid_attributes
           put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
-          expect(response).to redirect_to(user)
+          expect(response).to redirect_to(users_path)
         end
       end
 
