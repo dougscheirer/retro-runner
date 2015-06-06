@@ -1,7 +1,7 @@
 <%= render partial: "projects/form", locals: {
         title: "Edit project",
         button_title: "Change project",
-        action: project_path,
+        action: project_path(@project),
         action_method: "PATCH" } %>
 
 <%= link_to 'Back to the void', projects_path %>

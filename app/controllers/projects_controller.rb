@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_users, only: [:edit, :update]
   skip_before_action :authenticate!, only: [ :index, :show ]
 
   # GET /projects
@@ -17,7 +18,6 @@ class ProjectsController < ApplicationController
   def new
     @project = Project.new
     @project.owner_id = current_user.id
-    @users = User.all
   end
 
   # GET /projects/1/edit
@@ -73,6 +73,10 @@ class ProjectsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
+    end
+
+    def set_users
+      @users = User.all
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
