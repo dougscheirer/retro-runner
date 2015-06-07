@@ -10,9 +10,9 @@
    - list retros in reverse date order
 1. (Done) Users and Owners
 1. (Done) Authorization
-1. TESTS!!!!
-1. MORE TESTS!!!
-1. Limit creating duplicates
+1. (Done) TESTS!!!!
+1. (Done) MORE TESTS!!!
+1. (Done) Limit creating duplicates
 1. Review workflow (L->R, T->B)
    - start review (owner) (with navigation, overlay, show timer)
    - open for pointing
@@ -20,6 +20,7 @@
    - pointed review (owner)
    - generate task from review
    - close retro
+   - feature specs to test
 1. Show retro's outstanding tasks
 1. Close retro's outstanding tasks
 1. Nag task targets

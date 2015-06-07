@@ -3,7 +3,7 @@ class Retro < ActiveRecord::Base
   has_many :issues
 
   validates :creator_id, presence: true
-  validates :meeting_date, presence: true
+  validates :meeting_date, presence: true, uniqueness: true
   validates :project_id, presence: true
   validates :status, presence: true
 end

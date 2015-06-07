@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :retro do
-    meeting_date "2015-05-25 00:00:00"
+    meeting_date { Faker::Date.between(1_000_000.days.ago, Date.today) }
     project_id 1
     status "New"
     creator_id 1

@@ -3,5 +3,5 @@ class Project < ActiveRecord::Base
 
   validates :owner_id, presence: true
   validates :description, presence: true
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
 end
