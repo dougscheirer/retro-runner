@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
-  before_action :set_users, only: [:edit, :update]
+  before_action :set_users, only: [:edit, :update, :new]
   skip_before_action :authenticate!, only: [ :index, :show ]
 
   # GET /projects

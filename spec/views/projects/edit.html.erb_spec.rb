@@ -11,6 +11,8 @@ RSpec.describe "projects/edit.html.erb", :type => :view do
 
     expect(rendered).to match /#{@project.name}/
     expect(rendered).to match /#{@project.description}/
-    expect(rendered).to match /#{@user.name}/
+    expect(rendered).to match /#{CGI.escapeHTML(@user.name)}/
+    expect(rendered).to match /Change project/
+    expect(rendered).to have_link('Back to Projects page', href: projects_path)
   end
 end

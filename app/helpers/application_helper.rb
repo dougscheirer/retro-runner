@@ -18,9 +18,9 @@ module ApplicationHelper
   end
 
   def user(id)
-    user = User.find(id) if !id.nil?
+    user = User.find_by_id(id) if !id.nil?
     return user if !user.nil?
-    User.new(:name=>"Unknown", :email=>"unknown@example.com")
+    User.new(:name=>"Unknown", :email=>"unknown@example.com", :id=>id)
   end
 
 end

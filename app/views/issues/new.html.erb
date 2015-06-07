@@ -1,7 +1,7 @@
 <%= render partial: "issues/form", locals: {
     title: "New issue",
     button_title: "Add item",
-    action: retro_issues_path,
+    action: retro_issues_path(@retro),
     action_method: "POST" } %>
 
-<%= link_to 'Back to the Retro', retro_issues_path %>
+<%= link_to 'Back to the Retro', retro_issues_path(@retro) %>

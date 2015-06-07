@@ -1,8 +1,8 @@
-<form class="form-horizontal" action="<%= project_retros_path %>" method="POST">
+<form class="form-horizontal" action="<%= project_retros_path(@project) %>" method="POST">
   <fieldset>
 
     <!-- Form Name -->
-    <legend>New retrospective for <%= project_name %></legend>
+    <legend>New retrospective for <%= @project.name %></legend>
 
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
 
@@ -25,4 +25,4 @@
   </fieldset>
 </form>
 
-<%= link_to 'Cancel', project_retros_path %>
+<%= link_to 'Cancel', project_retros_path(@project) %>

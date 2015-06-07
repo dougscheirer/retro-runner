@@ -1,7 +1,7 @@
 <%= render partial: "issues/form", locals: {
     title: "Edit issue",
     button_title: "Modify",
-    action: issue_path,
+    action: issue_path(@issue),
     action_method: "PATCH" } %>
 
 <%= link_to 'Show', @issue %> |

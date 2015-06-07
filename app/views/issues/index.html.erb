@@ -1,17 +1,17 @@
-<h4><%= project_name %> - <%= @retro.meeting_date %></h4>
+<h4><%= @project.name %> - <%= @retro.meeting_date %></h4>
 <table class="table">
   <thead>
       <th class="col-md-4 retro-header retro-good">
-        <a href="<%= new_retro_issue_path %>?type=Good"><span class="glyphicon glyphicon-plus"></span></a>
+        <a href="<%= new_retro_issue_path(@retro) %>?type=Good"><span class="glyphicon glyphicon-plus"></span></a>
         The good
       </th>
       <th class="col-md-4 retro-header retro-meh">
-        <a href="<%= new_retro_issue_path %>?type=Meh">
+        <a href="<%= new_retro_issue_path(@retro) %>?type=Meh">
           <span class="glyphicon glyphicon-plus"></span></a>
         The meh
       </th>
       <th class="col-md-4 retro-header retro-bad">
-        <a href="<%= new_retro_issue_path %>?type=Bad">
+        <a href="<%= new_retro_issue_path(@retro) %>?type=Bad">
           <span class="glyphicon glyphicon-plus"></span></a>
         The ugly
       </th>
@@ -30,5 +30,5 @@
 
 <br>
 
-<%= link_to 'New Issue', new_retro_issue_path %> |
+<%= link_to 'New Issue', new_retro_issue_path(@retro) %> |
 <%= link_to 'All Retros', project_retros_path(@project) %>
