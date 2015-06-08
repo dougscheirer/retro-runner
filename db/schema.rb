@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(version: 20150608012614) do
   create_table "retros", force: true do |t|
     t.datetime "meeting_date"
     t.integer  "project_id"
-    t.string   "status_string"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "creator_id"
