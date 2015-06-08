@@ -13,7 +13,14 @@
 1. (Done) TESTS!!!!
 1. (Done) MORE TESTS!!!
 1. (Done) Limit creating duplicates
-1. Review workflow (L->R, T->B)
+1. Review workflow
+   - retro states: 
+   		new - nothing, waiting to add
+   		adding_issues - users may add/edit/remove issues
+   		in_review - discuss each item (time limit), L->R, T->B
+   		voting - users add/remove up to three points per retro, signal "done"
+   		voted_review - ordered by highest - lowest points
+   		complete - review is done
    - start review (owner) (with navigation, overlay, show timer)
    - open for pointing
    - close pointing (owner)
