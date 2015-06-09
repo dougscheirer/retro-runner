@@ -11,7 +11,7 @@ RSpec.describe "projects/index.html.erb", :type => :view do
       expect(rendered).to match /#{project.name}/
       expect(rendered).to match /#{project.description}/
       expect(rendered).to match /#{project.id}/
-      expect(rendered).to match /#{@users[0].name}/
+      expect(rendered).to match /#{CGI.escapeHTML(@users[0].name)}/
     }
     expect(rendered).to have_link('New Project', href: new_project_path)
   end
