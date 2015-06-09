@@ -19,10 +19,10 @@ dave=User.create(:name=>"Dave",:email=>"dave@perforce.com",:password=>"notsecure
 alex=User.create(:name=>"Alex",:email=>"alex@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
 alau=User.create(:name=>"Alau_branch",:email=>"alau@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
 
-base_retro = Retro.create(:meeting_date=>Date.today(), :project_id=>base_project.id, :status=>"New", :creator_id => doug.id)
-Retro.create(:meeting_date=>Date.tomorrow(), :project_id=>base_project.id, :status=>"New", :creator_id => doug.id)
-Retro.create(:meeting_date=>1.days.ago, :project_id=>base_project.id, :status=>"New", :creator_id => doug.id)
-Retro.create(:meeting_date=>-2.days.ago, :project_id=>base_project.id, :status=>"New", :creator_id => doug.id)
+base_retro = Retro.create(:meeting_date=>Date.today(), :project_id=>base_project.id, :status=>'not_started', :creator_id => doug.id)
+Retro.create(:meeting_date=>Date.tomorrow(), :project_id=>base_project.id, :status=>'not_started', :creator_id => doug.id)
+Retro.create(:meeting_date=>1.days.ago, :project_id=>base_project.id, :status=>'not_started', :creator_id => doug.id)
+Retro.create(:meeting_date=>-2.days.ago, :project_id=>base_project.id, :status=>'not_started', :creator_id => doug.id)
 
 Issue.create(:issue_type=>"Good",:creator_id=>phil.id,:description=>"that was awesome",:retro_id=>base_retro.id)
 Issue.create(:issue_type=>"Meh",:creator_id=>phil.id,:description=>"that was ok",:retro_id=>base_retro.id)

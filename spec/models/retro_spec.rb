@@ -9,7 +9,7 @@ RSpec.describe Retro, :type => :model do
     expect(Retro.create({
       :meeting_date=>'2015/06/01',
       :project_id=>1,
-      :status=>'New'
+      :status=>Retro.not_started
     })).not_to be_valid
   end
 
@@ -17,7 +17,7 @@ RSpec.describe Retro, :type => :model do
     expect(Retro.create({
       :creator_id=>1,
       :project_id=>1,
-      :status=>'New'
+      :status=>Retro.not_started
     })).not_to be_valid
   end
 
@@ -25,7 +25,7 @@ RSpec.describe Retro, :type => :model do
     expect(Retro.create({
       :creator_id=>1,
       :meeting_date=>'2015/06/01',
-      :status=>'New'
+      :status=>Retro.not_started
     })).not_to be_valid
   end
 
@@ -40,12 +40,12 @@ RSpec.describe Retro, :type => :model do
   it 'is invalid if the meeting dates match' do
     Retro.create({   :creator_id=>1,
                             :meeting_date=>'2015/06/01',
-                            :status=>'New',
+                            :status=>Retro.not_started,
                             :project_id=>1
                         })
     expect(Retro.create({   :creator_id=>1,
                             :meeting_date=>'2015/06/01',
-                            :status=>'New',
+                            :status=>Retro.not_started,
                             :project_id=>1
                         })).not_to be_valid
   end
