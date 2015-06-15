@@ -8,6 +8,12 @@ feature 'User signs up' do
     expect(page).to have_content('Log out')
   end
 
+  scenario 'with already created user' do
+    sign_in
+
+    expect(page).to have_content('Log out')
+  end
+
   scenario 'with invalid email' do
     sign_up_with 'invalid_email', 'valid', 'password'
 
@@ -26,12 +32,4 @@ feature 'User signs up' do
     expect(page).to have_content('Log in')
   end
 
-  def sign_up_with(email, name, password)
-    visit signup_path
-    fill_in 'Email', with: email
-    fill_in 'Name', with: name
-    fill_in 'Password', with: password
-    fill_in 'Confirm password', with: password
-    click_button 'Submit'
-  end
 end
