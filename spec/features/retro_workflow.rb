@@ -7,7 +7,7 @@ feature 'Retro workflow' do
     expect(page).to have_content('Start retro')
   end
 
-  scenario 'as the retro creator' do
+  feature 'as the retro creator' do
     scenario 'with started retro' do
       create_project_and_retro
       click 'Start retro'
