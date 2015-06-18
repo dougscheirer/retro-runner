@@ -10,7 +10,7 @@ feature 'Retro workflow' do
   feature 'as the retro creator' do
     scenario 'with started retro' do
       create_project_and_retro
-      click 'Start retro'
+      click_button 'Start retro'
       add_issues
 
       # add some checks that the issues are here
@@ -19,9 +19,9 @@ feature 'Retro workflow' do
 
     scenario 'with issues added' do
       create_project_and_retro
-      click 'Start retro'
+      click_button 'Start retro'
       add_issues
-      click 'Review issues'
+      click_button 'Review issues'
 
       expect(page).to have_content('Next issue')
       # expect(page).to have_content('Timer')
@@ -29,12 +29,12 @@ feature 'Retro workflow' do
 
     scenario 'with issues reviewed' do
       create_project_and_retro
-      click 'Start retro'
+      click_button 'Start retro'
       add_issues
-      click 'Review issues'
+      click_button 'Review issues'
 
       while page.match /Next issue/ do
-        click 'Next issue'
+        click_button 'Next issue'
       end
 
       expect(page).to have_content 'Start pointing'
@@ -42,12 +42,12 @@ feature 'Retro workflow' do
 
     scenario 'with issues reviewed' do
       create_project_and_retro
-      click 'Start retro'
+      click_button 'Start retro'
       add_issues
-      click 'Review issues'
+      click_button 'Review issues'
 
       while page.match /Next issue/ do
-        click 'Next issue'
+        click_button 'Next issue'
       end
 
       expect(page).to have_content 'Start pointing'
@@ -55,32 +55,32 @@ feature 'Retro workflow' do
 
     scenario 'with issues reviewed' do
       create_project_and_retro
-      click 'Start retro'
+      click_button 'Start retro'
       add_issues
-      click 'Review issues'
+      click_button 'Review issues'
 
       while page.match /Next issue/ do
-        click 'Next issue'
+        click_button 'Next issue'
       end
 
-      click 'Start pointing'
+      click_button 'Start pointing'
 
       expect(page).to have_content 'Finish pointing'
     end
 
     scenario 'with pointing completed' do
       create_project_and_retro
-      click 'Start retro'
+      click_button 'Start retro'
       add_issues
-      click 'Review issues'
+      click_button 'Review issues'
 
       while page.match /Next issue/ do
-        click 'Next issue'
+        click_button 'Next issue'
       end
 
-      click 'Start pointing'
+      click_button 'Start pointing'
       add_points
-      click 'Finish pointing'
+      click_button 'Finish pointing'
 
       expect(page).to have_content 'Review top issues'
     end
