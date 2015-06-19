@@ -1,6 +1,6 @@
 class RetrosController < ApplicationController
-  before_action :set_retro, only: [:show, :edit, :update, :destroy]
-  before_action :set_project
+  before_action :set_retro, only: [ :show, :edit, :update, :destroy, :transition_status ]
+  before_action :set_project, only: [ :index ]
   skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :admin_access?, only: [ :destroy ]
 
@@ -48,6 +48,13 @@ class RetrosController < ApplicationController
     end
   end
 
+  # POST /retros/1/status/adding_issues
+  def transition_status
+    # TODO: make sure the transition is valid
+    @retro.status = params[:status]
+    redirect_to retro_issues_path(@retro)
+  end
+
   # PATCH/PUT /retros/1
   # PATCH/PUT /retros/1.json
   def update
@@ -79,10 +86,11 @@ class RetrosController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_retro
       @retro = Retro.find(params[:id])
+      set_project
     end
 
     def set_project
-        @project = Project.find(params[:project_id] || @retro.project_id)
+      @project ||= Project.find(params[:project_id] || @retro.project_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

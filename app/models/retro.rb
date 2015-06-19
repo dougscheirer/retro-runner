@@ -8,4 +8,5 @@ class Retro < ActiveRecord::Base
   validates :meeting_date, presence: true, uniqueness: true
   validates :project_id, presence: true
   validates_inclusion_of :status, in: Retro.statuses.keys
+
 end

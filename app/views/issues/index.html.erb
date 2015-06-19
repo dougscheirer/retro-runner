@@ -1,5 +1,11 @@
 <h4>
-  <span class="btn btn-primary">Start retro</span><%= @project.name %> - <%= @retro.meeting_date %></h4>
+<form method="post" action="<%= transition_retro_status_path(:status => next_status) %>">
+  <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+  <button id="submit" name="submit" class="btn btn-primary">
+    <%= status_title %>
+  </button>
+  <%= @project.name %> - <%= @retro.meeting_date %></h4>
+</form>
 <table class="table">
   <thead>
       <th class="col-md-4 retro-header retro-good">
