@@ -1,88 +1,80 @@
 # test signing up
 require 'rails_helper'
+require_relative '../helpers/retro'
+
+RSpec.configure do |c|
+  c.include Helpers
+end
 
 feature 'Retro workflow' do
-  scenario 'with new retro' do
-    create_project_and_retro
-    expect(page).to have_content('Start retro')
-  end
-
   feature 'as the retro creator' do
+    scenario 'with a new retro' do
+      create_project_and_retro
+      expect(find_button('submit')).to have_content('Start Retro')
+    end
+
     scenario 'with started retro' do
       create_project_and_retro
-      click_button 'Start retro'
+      click_button 'Start Retro'
       add_issues
 
-      # add some checks that the issues are here
-      expect(page).to have_content('Review issues')
+      # add some checks that the issues are here?
+      expect(find_button('submit')).to have_content('Review Issues')
     end
 
     scenario 'with issues added' do
       create_project_and_retro
-      click_button 'Start retro'
+      click_button 'Start Retro'
       add_issues
-      click_button 'Review issues'
+      click_button 'Review Issues'
 
-      expect(page).to have_content('Next issue')
-      # expect(page).to have_content('Timer')
+      expect(find_button('submit')).to have_content('Complete Review')
     end
 
-    scenario 'with issues reviewed' do
+    scenario 'with review completed' do
       create_project_and_retro
-      click_button 'Start retro'
+      click_button 'Start Retro'
       add_issues
-      click_button 'Review issues'
+      click_button 'Review Issues'
+      click_button 'Complete Review'
 
-      while page.match /Next issue/ do
-        click_button 'Next issue'
-      end
-
-      expect(page).to have_content 'Start pointing'
+      expect(find_button('submit')).to have_content('Close Voting')
     end
 
-    scenario 'with issues reviewed' do
+    scenario 'with voting completed' do
       create_project_and_retro
-      click_button 'Start retro'
+      click_button 'Start Retro'
       add_issues
-      click_button 'Review issues'
+      click_button 'Review Issues'
+      click_button 'Complete Review'
+      click_button 'Close Voting'
 
-      while page.match /Next issue/ do
-        click_button 'Next issue'
-      end
-
-      expect(page).to have_content 'Start pointing'
+      expect(find_button('submit')).to have_content('Finish Retro')
     end
 
-    scenario 'with issues reviewed' do
+    scenario 'with retro completed' do
       create_project_and_retro
-      click_button 'Start retro'
+      click_button 'Start Retro'
       add_issues
-      click_button 'Review issues'
+      click_button 'Review Issues'
+      click_button 'Complete Review'
+      click_button 'Close Voting'
+      click_button 'Finish Retro'
 
-      while page.match /Next issue/ do
-        click_button 'Next issue'
-      end
-
-      click_button 'Start pointing'
-
-      expect(page).to have_content 'Finish pointing'
+      expect(find_button('submit')).to have_content('Restart')
     end
 
-    scenario 'with pointing completed' do
+    scenario 'with retro restarted' do
       create_project_and_retro
-      click_button 'Start retro'
+      click_button 'Start Retro'
       add_issues
-      click_button 'Review issues'
+      click_button 'Review Issues'
+      click_button 'Complete Review'
+      click_button 'Close Voting'
+      click_button 'Finish Retro'
+      click_button 'Restart'
 
-      while page.match /Next issue/ do
-        click_button 'Next issue'
-      end
-
-      click_button 'Start pointing'
-      add_points
-      click_button 'Finish pointing'
-
-      expect(page).to have_content 'Review top issues'
+      expect(find_button('submit')).to have_content('Start Retro')
     end
 
     # add more tests here for:

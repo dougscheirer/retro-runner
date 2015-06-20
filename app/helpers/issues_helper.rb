@@ -12,10 +12,16 @@ module IssuesHelper
   end
 
   def next_status
-    Retro.statuses.find { |k,v| Integer(v) == status_to_int + 1 }[0]
+    status = status_to_int
+    Retro.statuses.find { |k,v| Integer(v) == status + 1 }[0]
   end
 
   def status_title
-    ['Start Retro','Review Issues','Complete Review','Close Voting','Finish Retro'][status_to_int]
+    ['Start Retro',
+     'Review Issues',
+     'Complete Review',
+     'Close Voting',
+     'Finish Retro',
+     'Restart'][status_to_int]
   end
 end

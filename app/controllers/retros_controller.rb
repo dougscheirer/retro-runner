@@ -51,7 +51,13 @@ class RetrosController < ApplicationController
   # POST /retros/1/status/adding_issues
   def transition_status
     # TODO: make sure the transition is valid
-    @retro.status = params[:status]
+    status = params[:status]
+    if (Retro.statuses[status] == Retro.statuses[:restart])
+      @retro.not_started!
+    else
+      @retro.status = status
+    end
+    @retro.save!
     redirect_to retro_issues_path(@retro)
   end
 

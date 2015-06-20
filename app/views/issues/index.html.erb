@@ -1,5 +1,5 @@
 <h4>
-<form method="post" action="<%= transition_retro_status_path(:status => next_status) %>">
+<form method="post" action="<%= transition_retro_status_path(:id=>@retro.id, :status => next_status) %>">
   <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
   <button id="submit" name="submit" class="btn btn-primary">
     <%= status_title %>
