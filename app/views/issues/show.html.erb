@@ -9,8 +9,8 @@
 </p>
 
 <p>
-  <strong>Member:</strong>
-  <%= @issue.member %>
+  <strong>Owner:</strong>
+  <%= user(@issue.creator_id).name %>
 </p>
 
 <p>

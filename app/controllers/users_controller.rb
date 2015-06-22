@@ -68,6 +68,6 @@ class UsersController < ApplicationController
     end
 
     def owner_or_admin_access?
-      redirect_to '/admin_access_required' if !@current_user.admin? || @current_user.id != @user.id
+      redirect_to '/admin_access_required' unless (@current_user.admin? || @current_user.id == @user.id)
     end
 end

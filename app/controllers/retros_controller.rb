@@ -33,7 +33,7 @@ class RetrosController < ApplicationController
     @retro.creator_id = current_user.id
     @retro.project_id = params[:project_id]
     @retro.meeting_date ||= Date.today().to_s
-    @retro.not_started!
+    @retro.status = "not_started"
 
     respond_to do |format|
       if @retro.save

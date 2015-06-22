@@ -12,11 +12,11 @@ RSpec.describe Project, :type => :model do
     })).not_to be_valid
   end
 
-  it 'is invalid without a description' do
+  it 'is valid without a description' do
     expect(Project.create({
       :owner_id=>1,
       :name=>"project name"
-    })).not_to be_valid
+    })).to be_valid
   end
 
   it 'is invalid without a name' do

@@ -6,10 +6,14 @@
         [<%= link_to user(issue.creator_id).name, user_path(issue.creator_id) %>]
       <% end %>
       <%= issue.description %>
+
       <a href="<%= issue_path(issue) %>" style="float: right;" data-method="DELETE" data-confirm="Are you sure?" rel="nofollow">
         <span class="glyphicon glyphicon-trash"></span>
       </a>
+
       <a href="<%= edit_issue_path(issue) %>" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></a>
+
+      <a href="#" style="float: right;"><span class="glyphicon glyphicon-pushpin"></span></a>
     <% else %>
         &nbsp;
     <% end %>

@@ -1,4 +1,7 @@
-<form class="form-horizontal" action="<%= project_retros_path(@project) %>" method="POST">
+<% if @project == nil %>
+    <% @project = Project.find(params[:project_id]) %>
+<% end %>
+<form class="form-horizontal" action="<%= project_retros_path(@project.id) %>" method="POST">
   <fieldset>
 
     <!-- Form Name -->

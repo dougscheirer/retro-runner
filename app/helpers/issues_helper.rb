@@ -19,7 +19,7 @@ module IssuesHelper
   def status_title
     ['Start Retro',
      'Review Issues',
-     'Complete Review',
+     'Begin Voting',
      'Close Voting',
      'Finish Retro',
      'Restart'][status_to_int]
