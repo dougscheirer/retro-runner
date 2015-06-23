@@ -18,3 +18,6 @@
 # Ignore rubymine
 /.idea
 /.rspec
+
+
+/.DS_Store
