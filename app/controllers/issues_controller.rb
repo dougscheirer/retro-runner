@@ -39,7 +39,6 @@ class IssuesController < ApplicationController
     @issue.retro_id = params[:retro_id]
     @issue.creator_id = current_user.id
     @retro = Retro.find(params[:retro_id])
-
     respond_to do |format|
       if @issue.save
         flash[:success] = "Issue #{@issue.id} was successfully created."

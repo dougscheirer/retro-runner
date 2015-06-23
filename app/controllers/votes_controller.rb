@@ -1,18 +1,21 @@
 class VotesController < ApplicationController
+
+
   def new
     @vote = Vote.new
-    @vote.member_id = current_user.id
+    @vote.member_id = @current_user.id
     @vote.issue_id = params[:issue_id]
   end
 
   def create
     @vote = Vote.new(vote_params)
-    @retro = Retro.find(Issue.find(params[:issue_id]))
+    @vote.member_id = @current_user.id
+    @retro = Retro.find(Issue.find(params[:issue_id]).retro_id)
     respond_to do |format|
       if @vote.save
         flash[:success] = "Vote #{@vote.id} was successfully created."
         format.html { redirect_to @retro }
-        format.json { render :show, status: :created, location: @vote }
+        format.json { render :show, status: :created, location: @issue }
       else
         flash[:error] = "invalid vote"
       end
@@ -34,6 +37,6 @@ class VotesController < ApplicationController
   private
 
   def vote_params
-    params.require(:vote).permit(:issue_id, :creator_id)
+    params.permit(:issue_id)
   end
 end
