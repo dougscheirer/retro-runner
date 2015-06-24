@@ -6,6 +6,17 @@
   </button>
   <%= @project.name %> - <%= @retro.meeting_date %></h4>
 </form>
+
+<% if @retro.status == "voting" %>
+    <p>Number of votes: <%= current_user.votes.count() %></p>
+    <form method="delete" action="<% Vote.where(user_id: current_user.id).destroy_all %>">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+      <button id="submit" name="submit" class="btn btn-default">
+        clear votes
+      </button>
+    </form>
+<% end %>
+
 <table class="table">
   <thead>
       <th class="col-md-4 retro-header retro-good">
@@ -41,6 +52,7 @@
   </tbody>
 </table>
 <br>
-
-<%= link_to 'New Issue', new_retro_issue_path(@retro) %> |
+<% if @retro.status == "adding_issues" %>
+    <%= link_to 'New Issue', new_retro_issue_path(@retro) %> |
+<% end %>
 <%= link_to 'All Retros', project_retros_path(@project) %>

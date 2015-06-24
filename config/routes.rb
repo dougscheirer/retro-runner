@@ -21,9 +21,9 @@ Rails.application.routes.draw do
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
 
-  post '/issues/:issue_id/votes' => 'votes#create', as: :make_new_vote
   get    'admin_access_required' => 'page#admin_access_required'
 
   # custom route for moving the retro from one step to the next
   post   'retros/:id/status/:status' => 'retros#transition_status', as: :transition_retro_status
+  post 'issues/:issue_id/votes' => 'votes#create', as: :make_new_vote
 end

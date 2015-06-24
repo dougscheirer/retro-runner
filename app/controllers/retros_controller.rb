@@ -1,4 +1,5 @@
 class RetrosController < ApplicationController
+  before_action :logged_in
   before_action :set_retro, only: [ :show, :edit, :update, :destroy, :transition_status ]
   before_action :set_project, only: [ :index ]
   skip_before_action :authenticate!, only: [ :index, :show ]
@@ -102,5 +103,9 @@ class RetrosController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def retro_params
       params.require(:retro).permit(:meeting_date, :project_id, :status)
+    end
+
+    def logged_in
+     redirect_to login_path if current_user.nil?
     end
 end
