@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150624164436) do
+ActiveRecord::Schema.define(version: 20150624190334) do
 
   create_table "actions", force: true do |t|
     t.string   "description"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20150624164436) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "retro_id"
   end
 
   add_index "votes", ["issue_id"], name: "index_votes_on_issue_id"

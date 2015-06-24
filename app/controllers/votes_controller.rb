@@ -5,13 +5,15 @@ before_action :logged_in
     @vote = Vote.new
     @vote.user_id = @current_user.id
     @vote.issue_id = params[:issue_id]
+    @vote.retro_id = Retro.find(Issue.find(params[:issue_id]).retro_id)
   end
 
   def create
     @vote = Vote.new(vote_params)
     @vote.user_id = current_user.id
     @issue = Issue.find(params[:issue_id])
-    @retro = Retro.find(@issue.retro_id)
+    @vote.retro_id = Retro.find(@issue.retro_id).id
+    @retro = Retro.find(@vote.retro_id)
     respond_to do |format|
       if maxed_out < 3 && @vote.save
         flash[:success] = "Vote #{@vote.id} was successfully created."
@@ -38,7 +40,8 @@ before_action :logged_in
   end
 
   def clear_all
-    Vote.where(user_id: current_user.id).destroy_all
+    Vote.where(user_id: current_user.id, retro_id: params[:retro_id]).destroy_all
+    redirect_to Retro.find(params[:retro_id])
   end
 
   private

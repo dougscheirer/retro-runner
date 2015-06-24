@@ -26,4 +26,6 @@ Rails.application.routes.draw do
   # custom route for moving the retro from one step to the next
   post   'retros/:id/status/:status' => 'retros#transition_status', as: :transition_retro_status
   post 'issues/:issue_id/votes' => 'votes#create', as: :make_new_vote
+
+  get 'users/:retro_id/votes', :to => 'votes#clear_all', as: :clear_user_votes
 end
