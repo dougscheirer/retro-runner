@@ -12,12 +12,14 @@
       </a>
 
       <a href="<%= edit_issue_path(issue) %>" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></a>
-
+      <% if @retro.status == "voted_review" || @retro.status =="complete" %>
+        <div align="right">votes: <%= issue.votes_count %></div>
+      <% end %>
       <% if @retro.status == "voting" %>
           <form method="post" action="<%= make_new_vote_path(issue_id: issue.id) %>">
             <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
             <button id="submit" name="submit" class="btn btn-default">
-              <%= issue.votes.count %>
+              <%= issue.votes_count %>
             </button>
           </form>
       <% end %>

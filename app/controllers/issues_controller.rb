@@ -6,9 +6,9 @@ class IssuesController < ApplicationController
   # GET /issues
   # GET /issues.json
   def index
-    @good_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Good'")
-    @meh_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Meh'")
-    @bad_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Bad'")
+    @good_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Good'").order('votes_count DESC')
+    @meh_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Meh'").order('votes_count DESC')
+    @bad_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Bad'").order('votes_count DESC')
 
     @max_issues = [@good_issues.size, @meh_issues.size, @bad_issues.size].max
 

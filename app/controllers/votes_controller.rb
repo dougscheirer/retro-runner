@@ -51,12 +51,8 @@ before_action :logged_in
   end
 
   def maxed_out
-    @issues = Issue.where("retro_id = #{@retro.id}")
-    @vote_count = 0
-    for index in 0...@issues.size
-      @vote_count += @issues[index].votes.count(user_id: current_user.id)
-    end
-    return @vote_count
+    @user_votes = Vote.where(user_id: current_user.id, retro_id: @retro.id)
+    return @user_votes.count
   end
 
   def logged_in

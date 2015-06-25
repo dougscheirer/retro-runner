@@ -40,8 +40,8 @@
         The ugly
       </th>
   </thead>
-
   <tbody>
+
     <% for index in 0..@max_issues-1 %>
       <tr>
         <%= render partial: "issues/issuetemplate", locals: { issue: @good_issues[index], issue_class: 'retro-good' } %>
