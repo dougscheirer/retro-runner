@@ -1,6 +1,6 @@
 class RetrosController < ApplicationController
   before_action :logged_in
-  before_action :set_retro, only: [ :show, :edit, :update, :destroy, :transition_status ]
+  before_action :set_retro, only: [ :show, :edit, :update, :destroy, :transition_status, :increment_discussed ]
   before_action :set_project, only: [ :index ]
   skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :admin_access?, only: [ :destroy ]
@@ -35,7 +35,8 @@ class RetrosController < ApplicationController
     @retro.project_id = params[:project_id]
     @retro.meeting_date ||= Date.today().to_s
     @retro.status = "not_started"
-
+    @retro.discussed_index = 0
+    @retro.discussed_type = 0
     respond_to do |format|
       if @retro.save
         flash[:success] = "Retro #{@retro.id} was successfully created."
@@ -76,6 +77,26 @@ class RetrosController < ApplicationController
         format.json { render json: @retro.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def increment_discussed
+    @num_passed = 0
+    loop do
+      if @retro.discussed_type.nil? || @num_passed >= 3
+        @retro.discussed_type = 0
+        @retro.discussed_index = 0
+      elsif @retro.discussed_type == 2
+        @retro.discussed_type = 0
+        @retro.discussed_index += 1
+        @num_passed = 0
+      else
+         @retro.discussed_type += 1
+      end
+      break unless Issue.where("retro_id = #{@retro.id} AND issue_type = '#{@retro.int_to_type}'").size <= @retro.discussed_index
+      @num_passed += 1
+    end
+    @retro.save!
+    redirect_to retro_issues_path(@retro)
   end
 
   # DELETE /retros/1

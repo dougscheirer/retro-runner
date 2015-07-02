@@ -36,12 +36,19 @@
         <% if @retro.status == "adding_issues" %>
             <a href="<%= new_retro_issue_path(@retro) %>?type=Bad">
             <span class="glyphicon glyphicon-plus"></span></a>
-            <% end %>
+        <% end %>
         The ugly
       </th>
   </thead>
   <tbody>
-
+    <% if @retro.status == "in_review" %>
+        <% @issues = [@good_issues, @meh_issues, @bad_issues] %>
+    <% end %>
+    <% if @retro.status == "voted_review" || @retro.status == "complete" %>
+        <% @good_issues = @good_issues.order('votes_count DESC') %>
+        <% @meh_issues = @meh_issues.order('votes_count DESC') %>
+        <% @bad_issues = @bad_issues.order('votes_count DESC') %>
+    <% end %>
     <% for index in 0..@max_issues-1 %>
       <tr>
         <%= render partial: "issues/issuetemplate", locals: { issue: @good_issues[index], issue_class: 'retro-good' } %>
@@ -51,6 +58,15 @@
     <% end %>
   </tbody>
 </table>
+
+<% if @retro.status == "in_review" %>
+    <form method="post" action="<%= increment_discussed_path(:id=>@retro.id) %>">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+      <button id="submit" name="submit" class="btn btn-default">
+        proceed to next issue
+      </button>
+    </form>
+<% end %>
 <br>
 <% if @retro.status == "adding_issues" %>
     <%= link_to 'New Issue', new_retro_issue_path(@retro) %> |

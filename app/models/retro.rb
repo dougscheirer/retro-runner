@@ -9,4 +9,9 @@ class Retro < ActiveRecord::Base
   validates :project_id, presence: true
   validates_inclusion_of :status, in: Retro.statuses.keys
 
+  def int_to_type
+    types =['Good', 'Meh', 'Bad']
+    types[discussed_type]
+  end
+
 end

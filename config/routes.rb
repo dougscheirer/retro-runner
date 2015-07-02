@@ -22,10 +22,12 @@ Rails.application.routes.draw do
   delete 'logout'  => 'sessions#destroy'
 
   get    'admin_access_required' => 'page#admin_access_required'
+  get    'owner_access_required' => 'page#owner_access_required'
 
   # custom route for moving the retro from one step to the next
   post   'retros/:id/status/:status' => 'retros#transition_status', as: :transition_retro_status
   post 'issues/:issue_id/votes' => 'votes#create', as: :make_new_vote
 
   get 'users/:retro_id/votes', :to => 'votes#clear_all', as: :clear_user_votes
+  post 'retros/:retro_id/discussed', :to => 'retros#increment_discussed', as: :increment_discussed
 end

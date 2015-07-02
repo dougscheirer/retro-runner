@@ -5,7 +5,13 @@
       <% else %>
         <%= link_to user(issue.creator_id).name, user_path(issue.creator_id) %>
       <% end %>
+      <% if @retro.status == "in_review" && @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
+        <b>
+      <% end %>
       <%= issue.description %>
+      <% if @retro.status == "in_review" && @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
+          </b>
+      <% end %>
 
       <a href="<%= issue_path(issue) %>" style="float: right;" data-method="DELETE" data-confirm="Are you sure?" rel="nofollow">
         <span class="glyphicon glyphicon-trash"></span>
@@ -15,6 +21,7 @@
       <% if @retro.status == "voted_review" || @retro.status =="complete" %>
         <div align="right">votes: <%= issue.votes_count %></div>
       <% end %>
+
       <% if @retro.status == "voting" %>
           <form method="post" action="<%= make_new_vote_path(issue_id: issue.id) %>">
             <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />

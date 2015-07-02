@@ -1,14 +1,14 @@
 class IssuesController < ApplicationController
   before_action :set_issue, only: [:show, :edit, :update, :destroy]
   skip_before_action :authenticate!, only: [ :index, :show ]
-  before_action :owner, only: [ :destroy ]
+  before_action :owner, only: [ :destroy, :edit ]
 
   # GET /issues
   # GET /issues.json
   def index
-    @good_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Good'").order('votes_count DESC')
-    @meh_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Meh'").order('votes_count DESC')
-    @bad_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Bad'").order('votes_count DESC')
+    @good_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Good'")
+    @meh_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Meh'")
+    @bad_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Bad'")
 
     @max_issues = [@good_issues.size, @meh_issues.size, @bad_issues.size].max
 
@@ -92,6 +92,6 @@ class IssuesController < ApplicationController
     end
 
     def owner
-      redirect_to owner_required if @issue.creator_id != @current_user.id
+      redirect_to owner_access_required if @issue.creator_id != @current_user.id
     end
 end
