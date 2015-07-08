@@ -28,7 +28,8 @@ feature 'Retro workflow' do
       add_issues
       click_button 'Review Issues'
 
-      expect(find_button('submit')).to have_content('Complete Review')
+      expect(find_button('submit')).to have_content('Begin Voting')
+      expect(find_button('next_issue')).to have_content('proceed to next issue')
     end
 
     scenario 'with review completed' do
@@ -36,9 +37,10 @@ feature 'Retro workflow' do
       click_button 'Start Retro'
       add_issues
       click_button 'Review Issues'
-      click_button 'Complete Review'
+      click_button 'Begin Voting'
 
       expect(find_button('submit')).to have_content('Close Voting')
+      expect(find_button('clear_votes')).to have_content('clear votes')
     end
 
     scenario 'with voting completed' do
@@ -46,7 +48,7 @@ feature 'Retro workflow' do
       click_button 'Start Retro'
       add_issues
       click_button 'Review Issues'
-      click_button 'Complete Review'
+      click_button 'Begin Voting'
       click_button 'Close Voting'
 
       expect(find_button('submit')).to have_content('Finish Retro')
@@ -57,7 +59,7 @@ feature 'Retro workflow' do
       click_button 'Start Retro'
       add_issues
       click_button 'Review Issues'
-      click_button 'Complete Review'
+      click_button 'Begin Voting'
       click_button 'Close Voting'
       click_button 'Finish Retro'
 
@@ -69,7 +71,7 @@ feature 'Retro workflow' do
       click_button 'Start Retro'
       add_issues
       click_button 'Review Issues'
-      click_button 'Complete Review'
+      click_button 'Begin Voting'
       click_button 'Close Voting'
       click_button 'Finish Retro'
       click_button 'Restart'

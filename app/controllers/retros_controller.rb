@@ -82,6 +82,7 @@ class RetrosController < ApplicationController
   def increment_discussed
     @num_passed = 0
     loop do
+      break unless Issue.where("retro_id = #{@retro.id}").exists?
       if @retro.discussed_type.nil? || @num_passed >= 3
         @retro.discussed_type = 0
         @retro.discussed_index = 0
