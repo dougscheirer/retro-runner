@@ -29,7 +29,7 @@ feature 'Retro workflow' do
       click_button 'Review Issues'
 
       expect(find_button('submit')).to have_content('Begin Voting')
-      expect(find_button('next_issue')).to have_content('proceed to next issue')
+      expect(find_button('next_issue')).to have_content('00:30 seconds remaining, click to proceed to next topic')
     end
 
     scenario 'with review completed' do

@@ -29,4 +29,33 @@ RSpec.describe "issues/index.html.erb", :type => :view do
     expect(rendered).to have_link('New Issue', href: new_retro_issue_path(retro))
     expect(rendered).to have_link('All Retros', href: project_retros_path(project))
   end
+
+  it 'should only show buttons at right stages' do
+    good = FactoryGirl.create(:issue);
+    good.issue_type = 'Good'
+    meh = FactoryGirl.create(:issue)
+    meh.issue_type = 'Meh'
+    bad = FactoryGirl.create(:issue)
+    bad.issue_type = 'Bad'
+
+    retro = FactoryGirl.create(:retro)
+    project = FactoryGirl.create(:project)
+
+    assign(:good_issues, [ good ])
+    assign(:meh_issues, [ meh ])
+    assign(:bad_issues, [ bad ])
+    assign(:max_issues, 1)
+
+    assign(:retro, retro)
+    assign(:project, project)
+
+    render
+
+    expect(rendered).to match(/#{good.description}/)
+    expect(rendered).to match(/#{meh.description}/)
+    expect(rendered).to match(/#{bad.description}/)
+    expect(rendered).to have_link('All Retros', href: project_retros_path(project))
+    expect(rendered).not_to have_link('New Issue', href: new_retro_issue_path(retro))
+  end
+
 end
