@@ -4,6 +4,18 @@ RSpec.describe VotesController, :type => :controller do
 
   let(:valid_session) { { 'user_id' => 1 } }
 
+  let(:valid_attributes) {
+    {
+        :issue_id => 1,
+        :retro_id => 1,
+        :user_id => 1
+    }
+  }
+
+  let(:invalid_attributes) {
+    { :pizza => "pepperoni" }
+  }
+
   # This should return the minimal set of attributes required to create a valid
   # Issues. As you add validations to Issues, be sure to
   # adjust the attributes here as well.
@@ -24,6 +36,48 @@ RSpec.describe VotesController, :type => :controller do
     it "returns http success" do
       get :new, { :issue_id => 1 }, valid_session
       expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe "POST create" do
+    describe "with valid params" do
+      it "creates a new vote" do
+        expect {
+          post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
+        }.to change(Vote, :count).by(1)
+      end
+
+      it "assigns a newly created vote as @vote" do
+        post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
+        expect(assigns(:vote)).to be_a(Vote)
+        expect(assigns(:vote)).to be_persisted
+      end
+
+      it "redirects to the vote's issue" do
+        post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
+        expect(response).to redirect_to(Retro.find(1))
+      end
+
+      it "fails if there are too many votes" do
+        post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
+        post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
+        post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
+        post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
+        expect(flash[:error]).to be_present
+      end
+    end
+
+    describe "with invalid params" do
+      it "assigns a newly created but unsaved vote as @vote" do
+        post :create, {:vote => invalid_attributes, :issue_id => 1}, valid_session
+        expect(assigns(:vote)).to be_a(Vote)
+        expect(assigns(:vote)).to be_persisted
+      end
+
+      it "redirects to the vote's issue" do
+        post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
+        expect(response).to redirect_to(Retro.find(1))
+      end
     end
   end
 
