@@ -17,8 +17,16 @@
     </form>
 <% end %>
 
-
-
+<% if @retro.status == "voted_review" %>
+    <% @retro.discussed_type = 0 %>
+    <% @retro.discussed_index = 0 %>
+    <form method="get" action="<%= new_retro_outstanding_path(:id=>@retro.id) %>">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+      <button id="submit" name="submit" class="btn btn-default">
+        add outstanding task
+      </button>
+    </form>
+<% end %>
 
 <table class="table">
   <thead>
@@ -44,7 +52,7 @@
       </th>
   </thead>
   <tbody>
-    <% if @retro.status == "in_review" %>
+    <% if @retro.status == "in_review" || @retro.status == "voted_review" %>
         <% @issues = [@good_issues, @meh_issues, @bad_issues] %>
     <% end %>
     <% if @retro.status == "voted_review" || @retro.status == "complete" %>
@@ -73,7 +81,17 @@
 <% end %>
 
 
+<% if @retro.status == "voted_review" %>
+    <form method="post" action="<%= increment_discussed_path(:id=>@retro.id) %>">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+      <button id="next_issue" name="next_issue" class="btn btn-default">
+        <div>click to proceed to next topic</div>
+      </button>
+    </form>
+<% end %>
+
 <br>
+
 <% if @retro.status == "adding_issues" %>
     <%= link_to 'New Issue', new_retro_issue_path(@retro) %> |
 <% end %>

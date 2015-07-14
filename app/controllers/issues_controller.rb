@@ -92,6 +92,6 @@ class IssuesController < ApplicationController
     end
 
     def owner
-      redirect_to owner_access_required if @issue.creator_id != @current_user.id
+      redirect_to owner_access_required_path if @issue.creator_id != @current_user.id
     end
 end

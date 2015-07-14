@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ActionsController, :type => :controller do
+RSpec.describe OutstandingsController, :type => :controller do
 
   describe "GET new" do
     it "returns http success" do

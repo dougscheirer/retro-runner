@@ -1,0 +1,8 @@
+<%= render partial: "outstandings/form", locals: {
+    title: "Edit outstanding",
+    button_title: "Modify",
+    action: outstanding_path(@outstanding),
+    action_method: "PATCH" } %>
+
+<%= link_to 'Show', @outstanding %> |
+<%= link_to 'Cancel', retro_issues_path(@retro) %>

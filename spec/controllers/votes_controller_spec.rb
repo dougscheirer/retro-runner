@@ -102,7 +102,6 @@ RSpec.describe VotesController, :type => :controller do
     end
     it "deletes only votes belonging to the right user" do
       post :create, {:vote => valid_attributes, :issue_id => 1}, valid_session
-      #post :create, {:vote => valid_attributes_2, :issue_id => 1}, valid_session_2
       @user2.votes.create(valid_attributes)
       expect(Vote.count).to be(2)
       get :clear_all, valid_attributes

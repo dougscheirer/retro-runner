@@ -5,11 +5,13 @@
       <% else %>
         <%= link_to user(issue.creator_id).name, user_path(issue.creator_id) %>
       <% end %>
-      <% if @retro.status == "in_review" && @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
+      <% if (@retro.status == "in_review" || @retro.status == "voted_review") &&
+              @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
         <b>
       <% end %>
       <%= issue.description %>
-      <% if @retro.status == "in_review" && @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
+      <% if (@retro.status == "in_review" || @retro.status == "voted_review") &&
+              @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
           </b>
       <% end %>
 

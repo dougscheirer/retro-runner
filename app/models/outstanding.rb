@@ -1,4 +1,4 @@
-class Outstandings < ActiveRecord::Base
+class Outstanding < ActiveRecord::Base
   belongs_to :retro
 
   validates :description, presence: true, length:{minimum:2}
