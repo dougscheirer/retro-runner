@@ -80,7 +80,7 @@ class IssuesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Use callbacks to share common setup or constraints between outstandings.
     def set_issue
       @issue = Issue.find(params[:id])
       @retro = Retro.find(@issue.retro_id)

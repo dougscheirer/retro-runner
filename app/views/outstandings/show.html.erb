@@ -1,0 +1,22 @@
+<p>
+  <strong>Retrospective:</strong>
+  <%= @outstanding.retro_id %>
+</p>
+
+<p>
+  <strong>Issue:</strong>
+  <%= @outstanding.issue_id %>
+</p>
+
+<p>
+  <strong>Assigned_to:</strong>
+  <%= @outstanding.assigned_to %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @outstanding.description %>
+</p>
+
+<%= link_to 'Edit', edit_outstanding_path(@outstanding) %> |
+<%= link_to 'Back to the retro', retro_issues_path(@retro) %>

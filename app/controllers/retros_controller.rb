@@ -112,7 +112,7 @@ class RetrosController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Use callbacks to share common setup or constraints between outstandings.
     def set_retro
       @retro = Retro.find(params[:id])
       set_project

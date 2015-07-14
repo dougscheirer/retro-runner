@@ -11,16 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150629170502) do
-
-  create_table "actions", force: true do |t|
-    t.string   "description"
-    t.integer  "retro_id"
-    t.integer  "issue_id"
-    t.string   "assigned_to"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(version: 20150714185822) do
 
   create_table "issues", force: true do |t|
     t.integer  "retro_id"
@@ -30,6 +21,15 @@ ActiveRecord::Schema.define(version: 20150629170502) do
     t.datetime "updated_at"
     t.integer  "creator_id"
     t.integer  "votes_count", default: 0
+  end
+
+  create_table "outstandings", force: true do |t|
+    t.string   "description"
+    t.integer  "retro_id"
+    t.integer  "issue_id"
+    t.string   "assigned_to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "projects", force: true do |t|

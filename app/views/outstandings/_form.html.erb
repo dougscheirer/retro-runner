@@ -1,0 +1,49 @@
+<h1><%= title %></h1>
+
+<form class="form-horizontal" action="<%= action %>" method="POST">
+  <fieldset>
+
+    <% if action_method == "PATCH" %>
+      <input name="_method" type="hidden" value="patch" />
+    <% end %>
+
+    <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+    <input name="outstanding[retro_id]" value="<%= @retro.id %>" type="hidden" />
+
+    <!-- Select Multiple -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="assigned_to">assigned to</label>
+      <div class="col-md-4">
+        <select id="assigned_to" name="outstanding[assigned_to]" class="form-control">
+          <% User.all.each do |user| %>
+              <option
+              <% if @outstanding.assigned_to == user.email %>
+              selected="selected"
+              <% end %>
+              value="<%= user.email %>"><%= user.email %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="textinput">Description</label>
+      <div class="col-md-4">
+        <input id="description" name="outstanding[description]" type="text" placeholder="Description"
+               class="form-control input-md" required="" value="<%= @outstanding.description %>">
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="singlebutton"></label>
+      <div class="col-md-4">
+        <button id="submit" name="submit" class="btn btn-primary">
+          <%= button_title %>
+        </button>
+      </div>
+    </div>
+
+  </fieldset>
+</form>
