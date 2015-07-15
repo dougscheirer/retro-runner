@@ -1,0 +1,12 @@
+if ($("#task-form-<%= @issue.id %>").html() == "") {
+    $("#task-form-<%= @issue.id %>").html("<%= j (render partial: "outstandings/form", locals: {
+    title: "New outstanding",
+    button_title: "Add outstanding",
+    action: issue_outstandings_path(@retro),
+    action_method: "POST" }) %>");
+    $("#task-form-<%= @issue.id %>").slideDown(350);
+}
+else {
+    $("#task-form-<%= @issue.id %>").slideUp(350);
+    $("#task-form-<%= @issue.id %>").html("");
+}

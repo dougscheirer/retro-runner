@@ -4,8 +4,8 @@ Rails.application.routes.draw do
 
   resources :projects, shallow: true do
     resources :retros do
-      resources :outstandings
       resources :issues do
+        resources :outstandings
         resources :votes
       end
     end

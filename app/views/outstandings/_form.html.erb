@@ -1,4 +1,4 @@
-<h1><%= title %></h1>
+<h4><%= title %></h4>
 
 <form class="form-horizontal" action="<%= action %>" method="POST">
   <fieldset>
@@ -8,6 +8,7 @@
     <% end %>
 
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+    <input name="outstanding[issue_id]" value="<%= @issue.id %>" type="hidden" />
     <input name="outstanding[retro_id]" value="<%= @retro.id %>" type="hidden" />
 
     <!-- Select Multiple -->

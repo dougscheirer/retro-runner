@@ -1,7 +1,7 @@
 <%= render partial: "outstandings/form", locals: {
-    title: "New outstanding",
-    button_title: "Add outstanding",
-    action: retro_outstandings_path(@retro),
+    title: "New task",
+    button_title: "Add task",
+    action: issue_outstandings_path(@retro),
     action_method: "POST" } %>
 
 <%= link_to 'Back to the Retro', retro_issues_path(@retro) %>

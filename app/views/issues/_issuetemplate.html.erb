@@ -24,6 +24,13 @@
         <div align="right">votes: <%= issue.votes_count %></div>
       <% end %>
 
+
+      <% if @retro.status == "voted_review" %>
+          <%= link_to 'New Task', new_issue_outstanding_path(issue_id: issue.id), remote: true %>
+          <div id="task-form-<%=issue.id %>" style="display:none;"></div>
+      <% end %>
+
+
       <% if @retro.status == "voting" %>
           <form method="post" action="<%= make_new_vote_path(issue_id: issue.id) %>">
             <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
@@ -32,6 +39,9 @@
             </button>
           </form>
       <% end %>
+
+
+
     <% else %>
         &nbsp;
     <% end %>
