@@ -21,13 +21,13 @@ class RetrosController < ApplicationController
   def new
     @retro = Retro.new
     @retro.project_id = params[:project_id]
-    @retro.good_icon = rand(10)
+    @retro.good_icon = rand(20)
     loop do
-      @retro.meh_icon = rand(10)
+      @retro.meh_icon = rand(20)
       break if @retro.meh_icon != @retro.good_icon
     end
     loop do
-      @retro.bad_icon = rand(10)
+      @retro.bad_icon = rand(20)
       break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
     end
   end
@@ -46,13 +46,13 @@ class RetrosController < ApplicationController
     @retro.status = "not_started"
     @retro.discussed_index = 0
     @retro.discussed_type = 0
-    @retro.good_icon = rand(10)
+    @retro.good_icon = rand(20)
     loop do
-      @retro.meh_icon = rand(10)
+      @retro.meh_icon = rand(20)
       break if @retro.meh_icon != @retro.good_icon
     end
     loop do
-      @retro.bad_icon = rand(10)
+      @retro.bad_icon = rand(20)
       break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
     end
     respond_to do |format|
