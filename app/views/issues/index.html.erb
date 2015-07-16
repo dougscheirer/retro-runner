@@ -17,10 +17,6 @@
     </form>
 <% end %>
 
-<% if @retro.status == "voted_review" %>
-
-<% end %>
-
 <table class="table">
   <thead>
       <th class="col-md-4 retro-header retro-good">
@@ -45,13 +41,14 @@
       </th>
   </thead>
   <tbody>
+    <% if @retro.status == "voted_review" || @retro.status == "complete" %>
+      <% @good_issues = @good_issues.order('votes_count DESC') %>
+      <% @meh_issues = @meh_issues.order('votes_count DESC') %>
+      <% @bad_issues = @bad_issues.order('votes_count DESC') %>
+    <% end %>
+
     <% if @retro.status == "in_review" || @retro.status == "voted_review" %>
         <% @issues = [@good_issues, @meh_issues, @bad_issues] %>
-    <% end %>
-    <% if @retro.status == "voted_review" || @retro.status == "complete" %>
-        <% @good_issues = @good_issues.order('votes_count DESC') %>
-        <% @meh_issues = @meh_issues.order('votes_count DESC') %>
-        <% @bad_issues = @bad_issues.order('votes_count DESC') %>
     <% end %>
     <% for index in 0..@max_issues-1 %>
       <tr>
@@ -64,7 +61,7 @@
 </table>
 
 <% if @retro.status == "in_review" %>
-    <form method="post" action="<%= increment_discussed_path(:id=>@retro.id) %>">
+    <form method="post" action="<%= increment_discussed_review_path(:id=>@retro.id) %>">
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
       <body onload="startTimer(30, document.querySelector('#time'))"/>
       <button id="next_issue" name="next_issue" class="btn btn-default">
@@ -72,10 +69,8 @@
       </button>
     </form>
 <% end %>
-
-
 <% if @retro.status == "voted_review" %>
-    <form method="post" action="<%= increment_discussed_path(:id=>@retro.id) %>">
+    <form method="post" action="<%= increment_discussed_followup_path(:id=>@retro.id) %>">
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
       <button id="next_issue" name="next_issue" class="btn btn-default">
         <div>click to proceed to next topic</div>
@@ -86,7 +81,10 @@
 <br>
 
 <% if @retro.status == "voted_review" || @retro.status == "complete" %>
-    <%= render partial: "outstandings/tasks", locals: { tasks: Outstanding.where("retro_id = #{@retro.id}"), title: "Tasks for Next Week", user_page: false }%>
+    <%= render partial: "outstandings/tasks", locals: {
+                                                    tasks: Outstanding.where("retro_id = #{@retro.id}"),
+                                                    title: "Tasks for Next Week",
+                                                    user_page: false }%>
 <% end %>
 
 <% if @retro.status == "adding_issues" %>

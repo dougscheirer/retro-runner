@@ -29,5 +29,6 @@ Rails.application.routes.draw do
   post 'issues/:issue_id/votes' => 'votes#create', as: :make_new_vote
 
   get 'users/:retro_id/votes', :to => 'votes#clear_all', as: :clear_user_votes
-  post 'retros/:retro_id/discussed', :to => 'retros#increment_discussed', as: :increment_discussed
+  post 'retros/:retro_id/discussed', :to => 'retros#increment_discussed_review', as: :increment_discussed_review
+  post 'retros/:retro_id/discussed_followup', :to => 'retros#increment_discussed_followup', as: :increment_discussed_followup
 end

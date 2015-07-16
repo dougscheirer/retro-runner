@@ -1,10 +1,12 @@
 <td class="col-xs-4 col-md-4 <% if issue %><%= issue_class %><% end %>">
     <% if !issue.nil? %>
+
       <% if issue.creator_id.nil? %>
         Unknown
       <% else %>
         <%= link_to user(issue.creator_id).name, user_path(issue.creator_id) %>
       <% end %>
+
       <% if (@retro.status == "in_review" || @retro.status == "voted_review") &&
               @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
         <b>
@@ -18,19 +20,14 @@
       <a href="<%= issue_path(issue) %>" style="float: right;" data-method="DELETE" data-confirm="Are you sure?" rel="nofollow">
         <span class="glyphicon glyphicon-trash"></span>
       </a>
-
       <a href="<%= edit_issue_path(issue) %>" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></a>
       <% if @retro.status == "voted_review" || @retro.status =="complete" %>
         <div align="right">votes: <%= issue.votes_count %></div>
       <% end %>
-
-
       <% if @retro.status == "voted_review" %>
           <%= link_to 'New Task', new_issue_outstanding_path(issue_id: issue.id), remote: true %>
           <div id="task-form-<%=issue.id %>" style="display:none;"></div>
       <% end %>
-
-
       <% if @retro.status == "voting" %>
           <form method="post" action="<%= make_new_vote_path(issue_id: issue.id) %>">
             <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
@@ -39,8 +36,6 @@
             </button>
           </form>
       <% end %>
-
-
 
     <% else %>
         &nbsp;

@@ -1,5 +1,6 @@
 class OutstandingsController < ApplicationController
   before_action :logged_in
+  skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :set_outstanding, only: [:show, :edit, :update, :destroy]
   before_action :owner, only: [:edit, :destroy]
 
@@ -9,6 +10,7 @@ class OutstandingsController < ApplicationController
     @issue = Issue.find(@outstanding.issue_id)
     @outstanding.retro_id = @issue.retro_id
     @retro = Retro.find(@outstanding.retro_id)
+    @outstanding.creator_id = @current_user.id
   end
 
   def index
@@ -26,6 +28,7 @@ class OutstandingsController < ApplicationController
     @issue = Issue.find(@outstanding.issue_id)
     @outstanding.retro_id = @issue.retro_id
     @retro = Retro.find(@outstanding.retro_id)
+    @outstanding.creator_id = @current_user.id
     respond_to do |format|
       if @outstanding.save
         flash[:success] = "Outstanding #{@outstanding.id} was successfully created"
@@ -80,7 +83,6 @@ class OutstandingsController < ApplicationController
   def logged_in
     redirect_to login_path if current_user.nil?
   end
-
 
   def owner
     redirect_to owner_access_required_path if (@outstanding.creator_id != @current_user.id && !@current_user.admin?)

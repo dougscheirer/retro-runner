@@ -24,11 +24,11 @@
    - (done) start review (owner) (with navigation, overlay, show timer)
    - (done) open for pointing
    - (done) close pointing (owner)
-   - pointed review (owner)
-   - generate task from review
-   - close retro
+   - (done) pointed review (owner)
+   - (done) generate task from review
+   - (done) close retro
    - feature specs to test
-1. Show retro's outstanding tasks
-1. Close retro's outstanding tasks
+1. (done) Show retro's outstanding tasks
+1. (done) Close retro's outstanding tasks
 1. Nag task targets
 1. Pick retro icons
