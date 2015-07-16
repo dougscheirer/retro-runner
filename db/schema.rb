@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150716171639) do
+ActiveRecord::Schema.define(version: 20150716205224) do
 
   create_table "issues", force: true do |t|
     t.integer  "retro_id"
@@ -50,6 +50,9 @@ ActiveRecord::Schema.define(version: 20150716171639) do
     t.integer  "status",          default: 0
     t.integer  "discussed_index"
     t.integer  "discussed_type"
+    t.integer  "good_icon"
+    t.integer  "meh_icon"
+    t.integer  "bad_icon"
   end
 
   create_table "users", force: true do |t|

@@ -6,7 +6,6 @@
   </button>
   <%= @project.name %> - <%= @retro.meeting_date %></h4>
 </form>
-
 <% if @retro.status == "voting" %>
     <p>Number of votes: <%= current_user.votes.where(retro_id: @retro.id).count %></p>
     <form method="get" action="<%= clear_user_votes_path(@retro.id) %>">
@@ -16,7 +15,6 @@
       </button>
     </form>
 <% end %>
-
 <table class="table">
   <thead>
       <th class="col-md-4 retro-header retro-good">
@@ -24,6 +22,7 @@
             <a href="<%= new_retro_issue_path(@retro) %>?type=Good"><span class="glyphicon glyphicon-plus"></span></a>
             <% end %>
         The good
+        <%= image_tag("#{@retro.good_icon}.png", :size=>"100x100", :align=>"right") %>
       </th>
       <th class="col-md-4 retro-header retro-meh">
         <% if @retro.status == "adding_issues" %>
@@ -31,6 +30,7 @@
             <span class="glyphicon glyphicon-plus"></span></a>
         <% end %>
         The meh
+        <%= image_tag("#{@retro.meh_icon}.png", :size=>"100x100", :align=>"right") %>
       </th>
       <th class="col-md-4 retro-header retro-bad">
         <% if @retro.status == "adding_issues" %>
@@ -38,6 +38,7 @@
             <span class="glyphicon glyphicon-plus"></span></a>
         <% end %>
         The ugly
+        <%= image_tag("#{@retro.bad_icon}.png", :size=>"100x100", :align=>"right") %>
       </th>
   </thead>
   <tbody>

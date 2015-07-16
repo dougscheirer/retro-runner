@@ -31,4 +31,4 @@
 1. (done) Show retro's outstanding tasks
 1. (done) Close retro's outstanding tasks
 1. Nag task targets
-1. Pick retro icons
+1. (done) Pick retro icons
