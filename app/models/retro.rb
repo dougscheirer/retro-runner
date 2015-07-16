@@ -14,4 +14,5 @@ class Retro < ActiveRecord::Base
     types[discussed_type]
   end
 
+
 end

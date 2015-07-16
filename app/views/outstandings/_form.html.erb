@@ -23,6 +23,11 @@
               <% end %>
               value="<%= user.email %>"><%= user.email %></option>
           <% end %>
+          <option
+          <% if @outstanding.assigned_to == "all" %>
+          selected="selected"
+          <% end %>
+          value="all">all</option>
         </select>
       </div>
     </div>

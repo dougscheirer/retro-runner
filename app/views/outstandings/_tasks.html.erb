@@ -1,10 +1,14 @@
-<center><h1>Tasks for Next Week</h1></center>
+<center><h1><%= title %></h1></center>
 
 <table class="table">
   <thead>
   <tr>
     <th>description</th>
-    <th>assigned to</th>
+    <% if user_page %>
+        <th>retro</th>
+    <% else %>
+        <th>assigned to</th>
+    <% end %>
     <th>issue</th>
   </tr>
   </thead>
@@ -12,10 +16,15 @@
   <tbody>
   <% tasks.each do |task| %>
       <tr>
-        <td><%= task.description %></td>
-        <td><%= task.assigned_to %></td>
-        <td><%= Issue.find(task.issue_id).description %></td>
-        <td><%= link_to 'Show', task %></td>
+        <td><a href="<%= outstanding_path(task) %>"><%= task.description %></a></td>
+        <% if user_page %>
+            <td><a href="<%= retro_path(Retro.find(Issue.find(task.issue_id).retro_id)) %>"><%= Retro.find(Issue.find(task.issue_id).retro_id).meeting_date %></a></td>
+        <% elsif task.assigned_to == "all" %>
+            <td><a href="<%= users_path %>"><%= task.assigned_to %></a></td>
+        <% else %>
+            <td><a href="<%= user_path(User.find_by(email: task.assigned_to)) %>"><%= task.assigned_to %></a></td>
+        <% end %>
+        <td><a href="<%=issue_path(Issue.find(task.issue_id)) %>"><%= Issue.find(task.issue_id).description %></a></td>
         <td><%= link_to 'Edit', edit_outstanding_path(task) %></td>
         <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

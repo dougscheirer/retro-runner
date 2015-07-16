@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150714185822) do
+ActiveRecord::Schema.define(version: 20150716171639) do
 
   create_table "issues", force: true do |t|
     t.integer  "retro_id"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20150714185822) do
     t.string   "assigned_to"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "creator_id"
   end
 
   create_table "projects", force: true do |t|

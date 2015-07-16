@@ -80,21 +80,41 @@ class RetrosController < ApplicationController
   end
 
   def increment_discussed
-    @num_passed = 0
-    loop do
-      break unless Issue.where("retro_id = #{@retro.id}").exists?
-      if @retro.discussed_type.nil? || @num_passed >= 3
-        @retro.discussed_type = 0
-        @retro.discussed_index = 0
-      elsif @retro.discussed_type == 2
-        @retro.discussed_type = 0
-        @retro.discussed_index += 1
-        @num_passed = 0
-      else
-         @retro.discussed_type += 1
+    if @retro.status == "in_review"
+      @num_passed = 0
+      loop do
+        break unless Issue.where("retro_id = #{@retro.id}").exists?
+        if @retro.discussed_type.nil? || @num_passed >= 3
+          @retro.discussed_type = 0
+          @retro.discussed_index = 0
+       elsif @retro.discussed_type == 2
+          @retro.discussed_type = 0
+         @retro.discussed_index += 1
+          @num_passed = 0
+        else
+           @retro.discussed_type += 1
+       end
+        break unless Issue.where("retro_id = #{@retro.id} AND issue_type = '#{@retro.int_to_type}'").size <= @retro.discussed_index
+       @num_passed += 1
       end
-      break unless Issue.where("retro_id = #{@retro.id} AND issue_type = '#{@retro.int_to_type}'").size <= @retro.discussed_index
-      @num_passed += 1
+    else
+      @issues = Issue.where("retro_id = #{params[:retro_id]}").order('votes_count DESC')
+      @good_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Good'").order('votes_count DESC')
+      @meh_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Meh'").order('votes_count DESC')
+      @bad_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Bad'").order('votes_count DESC')
+      if @issues.exists?
+        @issue_types = { "Good" => @good_issues, "Meh" => @meh_issues, "Bad" => @bad_issues }
+        @location = @issues.index @issue_types[@retro.int_to_type][@retro.discussed_index]
+        @location+=1
+        if @issues[@location].nil?
+          @retro.discussed_type = 0
+          @retro.discussed_index = 0
+        else
+          @retro.discussed_type = @issues[@location].type_to_int
+          @discussed_type_array = @issue_types[@issues[@location].issue_type]
+          @retro.discussed_index = @discussed_type_array.index @issues[@location]
+        end
+      end
     end
     @retro.save!
     redirect_to retro_issues_path(@retro)

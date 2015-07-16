@@ -1,9 +1,12 @@
 <% provide(:title, @user.name) %>
-<%= gravatar_for @user %>
+<center><%= gravatar_for @user %>
 <h4>
   <%= @user.name %><br>
   <%= @user.email %>
-</h4>
+</h4></center>
+
+<%= render partial: "outstandings/tasks", locals: { tasks: Outstanding.where(assigned_to: [@user.email, 'all']),
+                                                    title: "Your Tasks", user_page: true }%>
 
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

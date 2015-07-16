@@ -18,8 +18,7 @@
 <% end %>
 
 <% if @retro.status == "voted_review" %>
-    <% @retro.discussed_type = 0 %>
-    <% @retro.discussed_index = 0 %>
+
 <% end %>
 
 <table class="table">
@@ -87,7 +86,7 @@
 <br>
 
 <% if @retro.status == "voted_review" || @retro.status == "complete" %>
-    <%= render partial: "outstandings/tasks", locals: { tasks: Outstanding.where("retro_id = #{@retro.id}") }%>
+    <%= render partial: "outstandings/tasks", locals: { tasks: Outstanding.where("retro_id = #{@retro.id}"), title: "Tasks for Next Week", user_page: false }%>
 <% end %>
 
 <% if @retro.status == "adding_issues" %>

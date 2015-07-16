@@ -1,6 +1,7 @@
 class OutstandingsController < ApplicationController
   before_action :logged_in
   before_action :set_outstanding, only: [:show, :edit, :update, :destroy]
+  before_action :owner, only: [:edit, :destroy]
 
   def new
     @outstanding = Outstanding.new
@@ -78,6 +79,11 @@ class OutstandingsController < ApplicationController
 
   def logged_in
     redirect_to login_path if current_user.nil?
+  end
+
+
+  def owner
+    redirect_to owner_access_required_path if (@outstanding.creator_id != @current_user.id && !@current_user.admin?)
   end
 
 end

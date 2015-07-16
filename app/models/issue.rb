@@ -6,4 +6,10 @@ class Issue < ActiveRecord::Base
   validates :retro_id, presence: true
   validates :description, presence: true, length:{ minimum:2 }
   validates :issue_type, presence: true
+
+  def type_to_int
+    types = {"Good" => 0, "Meh" => 1, "Bad" => 2}
+    types[issue_type]
+  end
+
 end
