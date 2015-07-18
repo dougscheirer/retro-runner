@@ -13,7 +13,7 @@
     <!-- Select Multiple -->
     <div class="form-group">
       <label class="col-md-4 control-label" for="issue_type">Type</label>
-      <div class="col-md-4">
+      <div class="col-md-8">
         <select id="issue_type" name="issue[issue_type]" class="form-control">
           <% for type in ["Good","Meh","Bad"] %>
               <option
@@ -29,7 +29,7 @@
     <!-- Text input-->
     <div class="form-group">
       <label class="col-md-4 control-label" for="textinput">Description</label>
-      <div class="col-md-4">
+      <div class="col-md-8">
         <input id="description" name="issue[description]" type="text" placeholder="Description" class="form-control input-md" required="" value="<%= @issue.description %>">
       </div>
     </div>

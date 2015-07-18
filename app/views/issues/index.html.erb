@@ -18,24 +18,28 @@
 <table class="table">
   <thead>
       <th class="col-md-4 retro-header retro-good">
-        <% if @retro.status == "adding_issues" %>
-            <a href="<%= new_retro_issue_path(@retro) %>?type=Good"><span class="glyphicon glyphicon-plus"></span></a>
+        <% if @retro.status == "adding_issues" || @retro.status == "in_review" %>
+            <a data-remote="true" href="<%= new_retro_issue_path(@retro) %>?type=Good">
+              <span  class="glyphicon glyphicon-plus"></span>
+            </a>
             <% end %>
         The good
         <%= image_tag("#{@retro.good_icon}.png", :size=>"100x100", :align=>"right") %>
       </th>
       <th class="col-md-4 retro-header retro-meh">
-        <% if @retro.status == "adding_issues" %>
-            <a href="<%= new_retro_issue_path(@retro) %>?type=Meh">
-            <span class="glyphicon glyphicon-plus"></span></a>
+        <% if @retro.status == "adding_issues" || @retro.status == "in_review" %>
+            <a data-remote="true" href="<%= new_retro_issue_path(@retro) %>?type=Meh">
+              <span class="glyphicon glyphicon-plus"></span>
+            </a>
         <% end %>
         The meh
         <%= image_tag("#{@retro.meh_icon}.png", :size=>"100x100", :align=>"right") %>
       </th>
       <th class="col-md-4 retro-header retro-bad">
-        <% if @retro.status == "adding_issues" %>
-            <a href="<%= new_retro_issue_path(@retro) %>?type=Bad">
-            <span class="glyphicon glyphicon-plus"></span></a>
+        <% if @retro.status == "adding_issues" || @retro.status == "in_review" %>
+            <a data-remote="true" href="<%= new_retro_issue_path(@retro) %>?type=Bad">
+              <span class="glyphicon glyphicon-plus"></span>
+            </a>
         <% end %>
         The ugly
         <%= image_tag("#{@retro.bad_icon}.png", :size=>"100x100", :align=>"right") %>
@@ -47,10 +51,23 @@
       <% @meh_issues = @meh_issues.order('votes_count DESC') %>
       <% @bad_issues = @bad_issues.order('votes_count DESC') %>
     <% end %>
-
     <% if @retro.status == "in_review" || @retro.status == "voted_review" %>
         <% @issues = [@good_issues, @meh_issues, @bad_issues] %>
     <% end %>
+
+    <% if @retro.status == "adding_issues" || @retro.status == "in_review" %>
+      <tr>
+        <td class="col-xs-4 col-md-4 retro-good">
+          <div id="add-issue-Good" style="display:none;"></div>
+        </td>
+        <td class="col-xs-4 col-md-4 retro-meh">
+          <div id="add-issue-Meh" style="display:none;"></div>
+        </td>
+        <td class="col-xs-4 col-md-4 retro-bad">
+          <div id="add-issue-Bad" style="display:none;"></div>
+        </td>
+      </tr>
+  <% end %>
     <% for index in 0..@max_issues-1 %>
       <tr>
         <%= render partial: "issues/issuetemplate", locals: { issue: @good_issues[index], issue_class: 'retro-good' } %>
@@ -58,6 +75,7 @@
         <%= render partial: "issues/issuetemplate", locals: { issue: @bad_issues[index], issue_class: 'retro-bad' } %>
       </tr>
     <% end %>
+
   </tbody>
 </table>
 

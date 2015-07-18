@@ -14,7 +14,7 @@
     <!-- Select Multiple -->
     <div class="form-group">
       <label class="col-md-4 control-label" for="assigned_to">assigned to</label>
-      <div class="col-md-4">
+      <div class="col-md-8">
         <select id="assigned_to" name="outstanding[assigned_to]" class="form-control">
           <% User.all.each do |user| %>
               <option
@@ -35,7 +35,7 @@
     <!-- Text input-->
     <div class="form-group">
       <label class="col-md-4 control-label" for="textinput">Description</label>
-      <div class="col-md-4">
+      <div class="col-md-8">
         <input id="description" name="outstanding[description]" type="text" placeholder="Description"
                class="form-control input-md" required="" value="<%= @outstanding.description %>">
       </div>

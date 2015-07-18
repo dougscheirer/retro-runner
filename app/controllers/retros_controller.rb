@@ -21,13 +21,13 @@ class RetrosController < ApplicationController
   def new
     @retro = Retro.new
     @retro.project_id = params[:project_id]
-    @retro.good_icon = rand(20)
+    @retro.good_icon = rand(31)
     loop do
-      @retro.meh_icon = rand(20)
+      @retro.meh_icon = rand(31)
       break if @retro.meh_icon != @retro.good_icon
     end
     loop do
-      @retro.bad_icon = rand(20)
+      @retro.bad_icon = rand(31)
       break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
     end
   end
@@ -44,15 +44,13 @@ class RetrosController < ApplicationController
     @retro.project_id = params[:project_id]
     @retro.meeting_date ||= Date.today().to_s
     @retro.status = "not_started"
-    @retro.discussed_index = 0
-    @retro.discussed_type = 0
-    @retro.good_icon = rand(20)
+    @retro.good_icon = rand(31)
     loop do
-      @retro.meh_icon = rand(20)
+      @retro.meh_icon = rand(31)
       break if @retro.meh_icon != @retro.good_icon
     end
     loop do
-      @retro.bad_icon = rand(20)
+      @retro.bad_icon = rand(31)
       break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
     end
     respond_to do |format|
@@ -81,7 +79,10 @@ class RetrosController < ApplicationController
       @issues = Issue.where("retro_id = #{@retro.id}").order('votes_count DESC')
       @retro.discussed_type = Issue.where("retro_id = #{@retro.id}").order('votes_count DESC')[0].type_to_int
     else
-      @retro.discussed_type = 0
+      @issues = Issue.where("retro_id = #{@retro.id}").sort_by{|issue| issue.type_to_int}
+      if !@issues.empty?
+        @retro.discussed_type = @issues[0].type_to_int
+      end
     end
     @retro.discussed_index = 0
     @retro.save!
@@ -109,7 +110,7 @@ class RetrosController < ApplicationController
     loop do
       break unless Issue.where("retro_id = #{@retro.id}").exists?
       if @retro.discussed_type.nil? || @num_passed >= 3
-        @retro.discussed_type = 0
+        @retro.discussed_type = Issue.where("retro_id = #{@retro.id}").sort_by{|issue| issue.type_to_int}[0].type_to_int
         @retro.discussed_index = 0
       elsif @retro.discussed_type == 2
         @retro.discussed_type = 0

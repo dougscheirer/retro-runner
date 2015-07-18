@@ -1,0 +1,12 @@
+if ($("#add-issue-<%= @issue.issue_type %>").html() == "") {
+    $("#add-issue-<%= @issue.issue_type %>").html("<%= j (render partial: "issues/form", locals: {
+    title: "New issue",
+    button_title: "Add item",
+    action: retro_issues_path(@retro),
+    action_method: "POST" }) %>");
+    $("#add-issue-<%= @issue.issue_type %>").slideDown(400);
+}
+else {
+    $("#add-issue-<%= @issue.issue_type %>").slideUp(400);
+    $("#add-issue-<%= @issue.issue_type %>").html("");
+}
