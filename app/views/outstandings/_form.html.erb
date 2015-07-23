@@ -15,19 +15,19 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="assigned_to">assigned to</label>
       <div class="col-md-8">
-        <select multiple id="assigned_to" name="outstanding[assigned_to][]" class="form-control">
+        <select multiple id="assigned_to" name="assigned_to[]" class="form-control">
           <% User.all.each do |user| %>
               <option
-              <% if @outstanding.assigned_to == user.email %>
+              <% if @outstanding.users.include? (user) %>
               selected="selected"
               <% end %>
-              value="<%= user.email %>"><%= user.name %></option>
+              value="<%= user.id %>"><%= user.name %></option>
           <% end %>
           <option
-          <% if @outstanding.assigned_to == "all" %>
+          <% if @outstanding.users.equal? (User.all) %>
           selected="selected"
           <% end %>
-          value="all">all</option>
+          value="-1">all</option>
         </select>
       </div>
     </div>

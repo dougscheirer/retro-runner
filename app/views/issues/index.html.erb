@@ -98,6 +98,17 @@
 <% end %>
 
 <br>
+<% if @retro.status == "review_last_retro" %>
+    <% @all_retros = Retro.where("project_id = #{@retro.project_id}").order('meeting_date DESC') %>
+    <% @current_index = @all_retros.index @retro %>
+    <% @current_index -= 1 %>
+    <% if !@all_retros[@current_index].nil? %>
+        <%= render partial: "outstandings/tasks", locals: {
+                                                        tasks: Outstanding.where("retro_id = #{@all_retros[@current_index].id}"),
+                                                        title: "Tasks from Last Week",
+                                                        user_page: false }%>
+    <% end %>
+<% end %>
 
 <% if @retro.status == "voted_review" || @retro.status == "complete" %>
     <%= render partial: "outstandings/tasks", locals: {

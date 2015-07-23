@@ -29,8 +29,14 @@ class OutstandingsController < ApplicationController
     @outstanding.retro_id = @issue.retro_id
     @retro = Retro.find(@outstanding.retro_id)
     @outstanding.creator_id = current_user.id
+    if params[:assigned_to].include? ("-1")
+      @assigned_users = User.all
+    else
+      @assigned_users = User.find(params[:assigned_to])
+    end
     respond_to do |format|
       if @outstanding.save
+        @outstanding.users << @assigned_users
         flash[:success] = "Outstanding #{@outstanding.id} was successfully created"
         format.html { redirect_to @retro }
         format.json { render :show, status: :created, location: @outstanding }

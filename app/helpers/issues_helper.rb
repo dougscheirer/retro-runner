@@ -18,6 +18,7 @@ module IssuesHelper
 
   def status_title
     ['Start Retro',
+     'Add Issues',
      'Review Issues',
      'Begin Voting',
      'Close Voting',
