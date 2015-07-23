@@ -7,7 +7,8 @@ RSpec.describe OutstandingsController, :type => :controller do
         :assigned_to => 'dscheirer@perforce.com',
         :retro_id => 1,
         :description => 'Nice job',
-        :issue_id => 1
+        :issue_id => 1,
+        :creator_id => 1
     }
   }
 
@@ -86,55 +87,72 @@ RSpec.describe OutstandingsController, :type => :controller do
         expect(response).to redirect_to(Retro.find(1))
       end
     end
-  end
 
-  describe "PUT update" do
-    describe "with valid params" do
-      let(:new_attributes) {
-        {
-            :assigned_to => "Phil@perforce.com",
-            :issue_id => 1,
-            :description => "Terrible job",
-            :retro_id => 1
+    describe "PUT update" do
+      describe "with valid params" do
+        let(:new_attributes) {
+          {
+              :assigned_to => "Phil@perforce.com",
+              :issue_id => 1,
+              :description => "Terrible job",
+              :retro_id => 1
+          }
         }
-      }
 
-      it "updates the requested task" do
-        task = Outstanding.create! valid_attributes
-        put :update, {:id => task.to_param, :outstanding => new_attributes, :issue_id => 1}, valid_session
-        task.reload
-        new_attributes.each { |key, value|
-          expect(task[key]).to eq(value)
-        }
+        it "updates the requested task" do
+          task = Outstanding.create! valid_attributes
+          put :update, {:id => task.to_param, :outstanding => new_attributes, :issue_id => 1}, valid_session
+          task.reload
+          new_attributes.each { |key, value|
+            expect(task[key]).to eq(value)
+          }
+        end
+
+        it "assigns the requested task as @outstanding" do
+          outstanding = Outstanding.create! valid_attributes
+          put :update, {:id => outstanding.to_param, :outstanding => valid_attributes, :issue_id => 1}, valid_session
+          expect(assigns(:outstanding)).to eq(outstanding)
+        end
+
+        it "redirects to the outstanding" do
+          outstanding = Outstanding.create! valid_attributes
+          put :update, {:id => outstanding.to_param, :outstanding => valid_attributes, :issue_id => 1}, valid_session
+          expect(response).to redirect_to(Retro.find(1))
+        end
       end
 
-      it "assigns the requested task as @outstanding" do
-        outstanding = Outstanding.create! valid_attributes
-        put :update, {:id => outstanding.to_param, :outstanding => valid_attributes, :issue_id => 1}, valid_session
-        expect(assigns(:outstanding)).to eq(outstanding)
-      end
+      describe "with invalid params" do
+        it "assigns the outstanding as @outstanding" do
+          outstanding = Outstanding.create! valid_attributes
+          put :update, {:id => outstanding.to_param, :outstanding => invalid_attributes, :issue_id => 1}, valid_session
+          expect(assigns(:outstanding)).to eq(outstanding)
+        end
 
-      it "redirects to the outstanding" do
-        outstanding = Outstanding.create! valid_attributes
-        put :update, {:id => outstanding.to_param, :outstanding => valid_attributes, :issue_id => 1}, valid_session
-        expect(response).to redirect_to(Retro.find(1))
+        it "re-renders the 'edit' template" do
+          outstanding = Outstanding.create! valid_attributes
+          put :update, {:id => outstanding.to_param, :outstanding => invalid_attributes, :issue_id => 1}, valid_session
+          expect(response).to redirect_to(Retro.find(1))
+        end
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the outstanding as @outstanding" do
+    describe "DELETE destroy" do
+      it "destroys the requested task" do
         outstanding = Outstanding.create! valid_attributes
-        put :update, {:id => outstanding.to_param, :outstanding => invalid_attributes, :issue_id => 1}, valid_session
-        expect(assigns(:outstanding)).to eq(outstanding)
+        expect {
+          delete :destroy, {:id => outstanding.to_param, :retro_id => 1}, valid_session
+        }.to change(Outstanding, :count).by(-1)
       end
 
-      it "re-renders the 'edit' template" do
+      it "redirects to the issues list" do
+
         outstanding = Outstanding.create! valid_attributes
-        put :update, {:id => outstanding.to_param, :outstanding => invalid_attributes, :issue_id => 1}, valid_session
+        delete :destroy, {:id => outstanding.to_param, :retro_id => 1}, valid_session
         expect(response).to redirect_to(Retro.find(1))
       end
     end
   end
+
 
 
 end

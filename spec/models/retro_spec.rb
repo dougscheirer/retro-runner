@@ -29,6 +29,7 @@ RSpec.describe Retro, :type => :model do
     })).not_to be_valid
   end
 
+  #commented out because create now doesn't accept user-input statuses
   #it 'is invalid without a status' do
    # expect(Retro.create({
    #   :creator_id=>1,

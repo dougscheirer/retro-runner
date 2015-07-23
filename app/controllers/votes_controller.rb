@@ -3,7 +3,7 @@ before_action :logged_in
 
   def new
     @vote = Vote.new
-    @vote.user_id = @current_user.id
+    @vote.user_id = current_user.id
     @vote.issue_id = params[:issue_id]
     @vote.retro_id = Retro.find(Issue.find(params[:issue_id]).retro_id)
   end

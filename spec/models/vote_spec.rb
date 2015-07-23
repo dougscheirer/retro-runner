@@ -19,6 +19,7 @@ RSpec.describe Vote, :type => :model do
            )).not_to be_valid
   end
 
+  #commented out because without retro_id, it just finds one in the given issue
   #it 'is invalid without a retro id' do
     #expect(Issue.create({
     #                        :issue_id=>1,

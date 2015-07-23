@@ -10,7 +10,7 @@ class OutstandingsController < ApplicationController
     @issue = Issue.find(@outstanding.issue_id)
     @outstanding.retro_id = @issue.retro_id
     @retro = Retro.find(@outstanding.retro_id)
-    @outstanding.creator_id = @current_user.id
+    @outstanding.creator_id = current_user.id
   end
 
   def index
@@ -28,7 +28,7 @@ class OutstandingsController < ApplicationController
     @issue = Issue.find(@outstanding.issue_id)
     @outstanding.retro_id = @issue.retro_id
     @retro = Retro.find(@outstanding.retro_id)
-    @outstanding.creator_id = @current_user.id
+    @outstanding.creator_id = current_user.id
     respond_to do |format|
       if @outstanding.save
         flash[:success] = "Outstanding #{@outstanding.id} was successfully created"
