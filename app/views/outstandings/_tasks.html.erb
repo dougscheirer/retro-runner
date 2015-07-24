@@ -10,13 +10,20 @@
         <th>assigned to</th>
     <% end %>
     <th>issue</th>
+    <% if title == "Tasks from Last Week" %>
+        <th>mark_as_done</th>
+    <% end %>
   </tr>
   </thead>
 
   <tbody>
   <% tasks.each do |task| %>
       <tr>
+        <% if task.complete %>
+            <strike>
+        <% end %>
         <td><a href="<%= outstanding_path(task) %>"><%= task.description %></a></td>
+
         <% if user_page %>
             <td><a href="<%= retro_path(Retro.find(Issue.find(task.issue_id).retro_id)) %>"><%= Retro.find(Issue.find(task.issue_id).retro_id).meeting_date %></a></td>
         <% elsif task.users == User.all %>
@@ -28,9 +35,17 @@
               <% end %>
             </td>
         <% end %>
+
         <td><a href="<%=issue_path(Issue.find(task.issue_id)) %>"><%= Issue.find(task.issue_id).description %></a></td>
+
+        <% if title == "Tasks from Last Week" %>
+            <td><a data-confirm="are you sure?" data-method="post" href="<%= mark_complete_path(@retro.id, task) %>">set as complete</a></td>
+        <% end %>
         <td><%= link_to 'Edit', edit_outstanding_path(task) %></td>
         <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if task.complete %>
+            </strike>
+        <% end %>
       </tr>
   <% end %>
   </tbody>

@@ -13,18 +13,28 @@ feature 'Retro workflow' do
       expect(find_button('submit')).to have_content('Start Retro')
     end
 
-    scenario 'with started retro' do
+    scenario 'with retro started' do
       create_project_and_retro
       click_button 'Start Retro'
+
+      expect(find_button('submit')).to have_content('Add Issues')
+    end
+
+    scenario 'with past reviewed' do
+      create_project_and_retro
+      click_button 'Start Retro'
+      click_button 'Add Issues'
       add_issues
 
       # add some checks that the issues are here?
+      #expect(find_link())
       expect(find_button('submit')).to have_content('Review Issues')
     end
 
     scenario 'with issues added' do
       create_project_and_retro
       click_button 'Start Retro'
+      click_button 'Add Issues'
       add_issues
       click_button 'Review Issues'
 
@@ -35,6 +45,7 @@ feature 'Retro workflow' do
     scenario 'with review completed' do
       create_project_and_retro
       click_button 'Start Retro'
+      click_button 'Add Issues'
       add_issues
       click_button 'Review Issues'
       click_button 'Begin Voting'
@@ -46,6 +57,7 @@ feature 'Retro workflow' do
     scenario 'with voting completed' do
       create_project_and_retro
       click_button 'Start Retro'
+      click_button 'Add Issues'
       add_issues
       click_button 'Review Issues'
       click_button 'Begin Voting'
@@ -57,6 +69,7 @@ feature 'Retro workflow' do
     scenario 'with retro completed' do
       create_project_and_retro
       click_button 'Start Retro'
+      click_button 'Add Issues'
       add_issues
       click_button 'Review Issues'
       click_button 'Begin Voting'
@@ -69,6 +82,7 @@ feature 'Retro workflow' do
     scenario 'with retro restarted' do
       create_project_and_retro
       click_button 'Start Retro'
+      click_button 'Add Issues'
       add_issues
       click_button 'Review Issues'
       click_button 'Begin Voting'

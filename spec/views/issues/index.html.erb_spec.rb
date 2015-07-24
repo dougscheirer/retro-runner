@@ -20,7 +20,7 @@ RSpec.describe "issues/index.html.erb", :type => :view do
     assign(:retro, retro)
     assign(:project, project)
 
-    retro.status = 1
+    retro.status = 2
     render
 
     expect(rendered).to match(/#{good.description}/)

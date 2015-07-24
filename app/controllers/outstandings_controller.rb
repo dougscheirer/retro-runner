@@ -1,8 +1,8 @@
 class OutstandingsController < ApplicationController
   before_action :logged_in
   skip_before_action :authenticate!, only: [ :index, :show ]
-  before_action :set_outstanding, only: [:show, :edit, :update, :destroy]
-  before_action :owner, only: [:edit, :destroy]
+  before_action :set_outstanding, only: [:show, :mark_complete, :edit, :update, :destroy]
+  before_action :owner, only: [:mark_complete, :edit, :destroy]
 
   def new
     @outstanding = Outstanding.new
@@ -11,6 +11,7 @@ class OutstandingsController < ApplicationController
     @outstanding.retro_id = @issue.retro_id
     @retro = Retro.find(@outstanding.retro_id)
     @outstanding.creator_id = current_user.id
+    @outstanding.complete = false
   end
 
   def index
@@ -29,13 +30,16 @@ class OutstandingsController < ApplicationController
     @outstanding.retro_id = @issue.retro_id
     @retro = Retro.find(@outstanding.retro_id)
     @outstanding.creator_id = current_user.id
-    if params[:assigned_to].include? ("-1")
+    @outstanding.complete = false
+    if params[:assigned_to].nil?
+      @assigned_users = nil
+    elsif params[:assigned_to].include? ("-1")
       @assigned_users = User.all
     else
       @assigned_users = User.find(params[:assigned_to])
     end
     respond_to do |format|
-      if @outstanding.save
+      if ((@assigned_users != nil) && (@outstanding.save))
         @outstanding.users << @assigned_users
         flash[:success] = "Outstanding #{@outstanding.id} was successfully created"
         format.html { redirect_to @retro }
@@ -65,6 +69,17 @@ class OutstandingsController < ApplicationController
     end
   end
 
+  def mark_complete
+    @outstanding.complete = true
+    @outstanding.save!
+    @retro = Retro.find(params[:retro_id])
+    respond_to do |format|
+      flash[:success] = "Outstanding #{@outstanding.id} marked as complete"
+      format.html { redirect_to @retro }
+      format.json { head :no_content }
+    end
+  end
+
   def destroy
     @outstanding.destroy
     respond_to do |format|
@@ -91,7 +106,11 @@ class OutstandingsController < ApplicationController
   end
 
   def owner
-    redirect_to owner_access_required_path if (@outstanding.creator_id != @current_user.id && !@current_user.admin?)
+    @outstanding = Outstanding.find(params[:id])
+    redirect_to owner_access_required_path if (
+        @outstanding.creator_id != @current_user.id &&
+        !@current_user.admin? &&
+        !@outstanding.users.exists?(@current_user.id))
   end
 
 end
