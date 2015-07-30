@@ -4,6 +4,5 @@ class Outstanding < ActiveRecord::Base
   validates :description, presence: true, length:{minimum:2}
   validates :retro_id, presence: true
   validates :issue_id, presence: true
-  #validates_presence_of :users
 
 end

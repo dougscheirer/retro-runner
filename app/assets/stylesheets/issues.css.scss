@@ -2,50 +2,48 @@
 // They will automatically be included in application.css.scss.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.tr {
-  margin-top: 10px;
-  margin-bottom: 0;
-  border: none;
+.li {
+  float: left;
+  display: block;
+  width: 100px;
+  height: 40px;
 }
 
 .th {
   border: none;
 }
 
-.td {
+.data {
   border: none;
 }
 
-.table {
+.list {
   border: none;
 }
 
 .retro-header {
   font-weight: bold;
   border: none;
+  height: 110px;
 }
 
-.retro-good {
+.retro-Good {
   background-color: #a0ff89;
 }
 
-.retro-meh {
+.retro-Meh {
   background-color: #d7db03;
 }
 
-.retro-bad {
+.retro-Bad {
   background-color: #dc7c7c;
-}
-
-.issue-create {
-  padding-top: 50px
 }
 
 [class*="retro-"] {
   padding-top: 15px;
   padding-bottom: 15px;
   border-radius: 25px;
-  padding: 20px;
+  padding: 10px;
 }
 
 hr {

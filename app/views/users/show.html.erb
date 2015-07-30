@@ -5,7 +5,7 @@
   <%= @user.email %>
 </h4></center>
 
-<%= render partial: "outstandings/tasks", locals: { tasks: @user.outstandings.all,
+<%= render partial: "outstandings/tasks", locals: { tasks: @user.outstandings.all.order("complete DESC"),
                                                     title: "Your Tasks", user_page: true }%>
 
 

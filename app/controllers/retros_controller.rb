@@ -85,6 +85,13 @@ class RetrosController < ApplicationController
       end
     end
     @retro.discussed_index = 0
+    if @retro.status == "voted_review"
+      @last_retro_index = (Retro.where("project_id = #{@retro.project_id}").order('meeting_date DESC').index @retro)-1
+      @last_retro = Retro.where("project_id = #{@retro.project_id}").order('meeting_date DESC')[@last_retro_index]
+      if !@last_retro.nil?
+        @further_tasks = Outstanding.where("retro_id = #{@last_retro.id} AND !complete")
+      end
+    end
     @retro.save!
     redirect_to retro_issues_path(@retro)
   end
@@ -151,6 +158,7 @@ class RetrosController < ApplicationController
   # DELETE /retros/1
   # DELETE /retros/1.json
   def destroy
+    puts caller
     @retro.destroy
     respond_to do |format|
       flash[:success] = "Retro #{@retro.id} was successfully destroyed."

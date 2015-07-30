@@ -1,0 +1,12 @@
+if ($("#edit-<%= @issue.id %>").html() == "") {
+    $("#edit-<%= @issue.id %>").html("<%= j render( partial: "issues/form", locals: {
+    title: "Edit issue",
+    button_title: "Modify",
+    action: issue_path(@issue),
+    action_method: "PATCH" } )%>");
+    $("#edit-<%= @issue.id %>").slideDown(400);
+}
+else {
+    $("#edit-<%= @issue.id %>").slideUp(400);
+    $("#edit-<%= @issue.id %>").html("");
+}

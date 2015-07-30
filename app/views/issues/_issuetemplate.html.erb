@@ -1,4 +1,4 @@
-<td class="col-xs-4 col-md-4 <% if issue %><%= issue_class %><% end %>">
+<li id="<%= issue_marker %>" class="data <% if issue %><%= issue_class %><% end %>">
     <% if !issue.nil? %>
 
       <% if issue.creator_id.nil? %>
@@ -9,18 +9,16 @@
 
       <% if (@retro.status == "in_review" || @retro.status == "voted_review") &&
               @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
-        <b>
-      <% end %>
-      <%= issue.description %>
-      <% if (@retro.status == "in_review" || @retro.status == "voted_review") &&
-              @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
-          </b>
+        <b><%= issue.description %></b>
+      <% else %>
+          <%= issue.description %>
       <% end %>
 
-      <a href="<%= issue_path(issue) %>" style="float: right;" data-method="DELETE" data-confirm="Are you sure?" rel="nofollow">
+
+      <a onclick="deleteIssue(<%= issue.id %>, '<%= issue_marker %>')" style="float: right;" >
         <span class="glyphicon glyphicon-trash"></span>
       </a>
-      <a href="<%= edit_issue_path(issue) %>" style="float: right;"><span class="glyphicon glyphicon-pencil"></span></a>
+      <a href="<%= edit_issue_path(issue) %>" style="float: right;" data-remote="true"><span class="glyphicon glyphicon-pencil"></span></a>
       <% if @retro.status == "voted_review" || @retro.status =="complete" %>
         <div align="right">votes: <%= issue.votes_count %></div>
       <% end %>
@@ -36,8 +34,9 @@
             </button>
           </form>
       <% end %>
+      <div id="edit-<%=issue.id %>" style="display:none;"></div>
 
     <% else %>
         &nbsp;
     <% end %>
-</td>
+</li>

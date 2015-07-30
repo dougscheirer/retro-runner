@@ -250,6 +250,49 @@ body {
   border-radius: 50%;
 }
 
+table {
+  border-collapse: collapse;
+}
+
+td {
+  position: relative;
+  padding: 5px 10px;
+}
+
+tr.strikeout td:before {
+  content: " ";
+  position: absolute;
+  top: 17px;
+  left: 0;
+  border-bottom: 1px solid #111;
+  width: 100%;
+}
+
+/* lists stuff */
+
+.column {
+  float: left;
+  width: 33%
+}
+
+.list {
+  border-collapse: collapse;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+li.strikeout li:before {
+  content: " ";
+  position: absolute;
+  top: 17px;
+  left: 0;
+  border-bottom: 1px solid #111;
+  width: 100%;
+}
+
 /* debug container */
 .debug_dump {
   float: right;

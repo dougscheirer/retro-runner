@@ -1,6 +1,6 @@
 <h1><%= title %></h1>
-
-<form class="form-horizontal" action="<%= action %>" method="POST">
+<% @locator = rand() %>
+<form class="form-horizontal" id="<%= @locator %>" action="<%= action %>" method="<%= action_method %>" data-remote="true">
   <fieldset>
 
     <% if action_method == "PATCH" %>
@@ -38,7 +38,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="singlebutton"></label>
       <div class="col-md-4">
-        <button id="submit" name="submit" class="btn btn-primary">
+        <button class="btn btn-primary" name="submit">
           <%= button_title %>
         </button>
       </div>

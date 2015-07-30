@@ -2,6 +2,8 @@ class IssuesController < ApplicationController
   before_action :set_issue, only: [:show, :edit, :update, :destroy]
   skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :owner, only: [ :destroy, :edit ]
+  skip_before_action :verify_authenticity_token, only: [:destroy]
+  respond_to :js
 
   # GET /issues
   # GET /issues.json
@@ -43,7 +45,9 @@ class IssuesController < ApplicationController
       if @issue.save
         flash[:success] = "Issue #{@issue.id} was successfully created."
         format.html { redirect_to @retro }
-        format.json { render :show, status: :created, location: @issue }
+        @index = Issue.where("retro_id = #{params[:retro_id]}").index @issue
+        format.json { render json: @issue, status: :created }
+        format.js { render :action => "create" }
       else
         flash[:error] = @issue.errors
         format.html { render :new }
@@ -74,7 +78,6 @@ class IssuesController < ApplicationController
     @issue.destroy
     respond_to do |format|
       flash[:success] = "Issue #{@issue.id} was successfully destroyed."
-      format.html { redirect_to @retro }
       format.json { head :no_content }
     end
   end
@@ -95,3 +98,8 @@ class IssuesController < ApplicationController
       redirect_to owner_access_required_path if ((@issue.creator_id != @current_user.id) && !@current_user.admin?)
     end
 end
+
+#render partial: "issues/issuetemplate.html.erb", locals: { issue: @issue,
+ #                                                          issue_class: 'retro-good',
+  #                                                         issue_marker: "issue-#{@index}-#{@issue.type_to_int}"},
+#
