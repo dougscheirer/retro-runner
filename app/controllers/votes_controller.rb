@@ -17,8 +17,9 @@ before_action :logged_in
     respond_to do |format|
       if maxed_out < 3 && @vote.save
         flash[:success] = "Vote #{@vote.id} was successfully created."
+        @index = Issue.where("retro_id = #{@vote.retro_id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         format.html { redirect_to @retro }
-        format.json { render :show, status: :created, location: @issue }
+        format.json { render json: @issue.id }
       else
         flash[:error] = "invalid vote"
         format.html { redirect_to @retro }
@@ -40,8 +41,14 @@ before_action :logged_in
   end
 
   def clear_all
-    Vote.where(user_id: current_user.id, retro_id: params[:retro_id]).destroy_all
-    redirect_to Retro.find(params[:retro_id])
+    @votes = Vote.where(user_id: current_user.id, retro_id: params[:retro_id])
+    @issue_ids = @votes.map { |vote| vote.issue_id }
+    @votes.destroy_all
+    respond_to do |format|
+      format.html {redirect_to Retro.find(params[:retro_id])}
+      format.js
+    end
+
   end
 
   private

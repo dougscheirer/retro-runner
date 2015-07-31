@@ -1,0 +1,6 @@
+$('#votecount-primary').text("0");
+var intvotes;
+<% @issue_ids.each do |issue| %>
+    intvotes = parseInt($('#votecount-<%=issue%>').text())-1;
+    $('#votecount-<%=issue%>').text(intvotes);
+<% end %>

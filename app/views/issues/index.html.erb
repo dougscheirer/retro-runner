@@ -7,8 +7,8 @@
   <%= @project.name %> - <%= @retro.meeting_date %></h4>
 </form>
 <% if @retro.status == "voting" %>
-    <p>Number of votes: <%= current_user.votes.where(retro_id: @retro.id).count %></p>
-    <form method="get" action="<%= clear_user_votes_path(@retro.id) %>">
+    <p>Number of votes: <span id="votecount-primary"><%= current_user.votes.where(retro_id: @retro.id).count %></span></p>
+    <form method="get" action="<%= clear_user_votes_path(@retro.id) %>" data-remote="true">
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
       <button id="clear_votes" name="clear_votes" class="btn btn-default">
         clear votes
@@ -20,9 +20,6 @@
     <% @good_issues = @good_issues.order('votes_count DESC') %>
     <% @meh_issues = @meh_issues.order('votes_count DESC') %>
     <% @bad_issues = @bad_issues.order('votes_count DESC') %>
-<% end %>
-<% if @retro.status == "in_review" || @retro.status == "voted_review" %>
-    <% @issues = [@good_issues, @meh_issues, @bad_issues] %>
 <% end %>
 
 <div class="column">
@@ -38,10 +35,11 @@
     <% for index in 0..@good_issues.size-1 %>
       <%= render partial: "issues/issuetemplate", locals: { issue: @good_issues[index],
                                                             issue_class: 'retro-Good',
-                                                            issue_marker: "issue-#{index}-0" } %>
+                                                            index: index,
+                                                            type: 0 } %>
     <% end %>
     <% if @retro.status == "adding_issues" || @retro.status == "in_review" %>
-        <li class="data retro-Good" id="Good_placeholder">
+        <li class="data retro-Good" id="Good_adder">
           <div id="add-issue-Good" style="display:none;"></div>
         </li>
     <% end %>
@@ -62,10 +60,11 @@
     <% for index in 0..@meh_issues.size-1 %>
         <%= render partial: "issues/issuetemplate", locals: { issue: @meh_issues[index],
                                                               issue_class: 'retro-Meh',
-                                                              issue_marker: "issue-#{index}-1" } %>
+                                                              index: index,
+                                                              type: 1 } %>
     <% end %>
     <% if @retro.status == "adding_issues" || @retro.status == "in_review" %>
-        <li class="data retro-Meh">
+        <li class="data retro-Meh" id="Meh_adder">
           <div id="add-issue-Meh" style="display:none;"></div>
         </li>
     <% end %>
@@ -86,10 +85,11 @@
     <% for index in 0..@bad_issues.size-1 %>
         <%= render partial: "issues/issuetemplate", locals: { issue: @bad_issues[index],
                                                               issue_class: 'retro-Bad',
-                                                              issue_marker: "issue-#{index}-2" } %>
+                                                              index: index,
+                                                              type: 2 } %>
     <% end %>
     <% if @retro.status == "adding_issues" || @retro.status == "in_review" %>
-        <li class="data retro-Bad">
+        <li class="data retro-Bad" id="Bad_adder">
           <div id="add-issue-Bad" style="display:none;"></div>
         </li>
     <% end %>
@@ -98,18 +98,18 @@
 
 
 <% if @retro.status == "in_review" %>
-    <form method="post" action="<%= increment_discussed_review_path(:id=>@retro.id) %>">
+    <form id="timer">
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
       <body onload="startTimer(30, document.querySelector('#time'))"/>
-      <button id="next_issue" name="next_issue" class="btn btn-default">
+      <button id="next_issue" name="next_issue" class="btn btn-default" onclick="nextReview(<%=@retro.id%>, document.querySelector('#time'))">
         <div><span id="time">00:30 seconds remaining, </span>click to proceed to next topic</div>
       </button>
     </form>
 <% end %>
 <% if @retro.status == "voted_review" %>
-    <form method="post" action="<%= increment_discussed_followup_path(:id=>@retro.id) %>">
+    <form>
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
-      <button id="next_issue" name="next_issue" class="btn btn-default">
+      <button id="next_issue" name="next_issue" class="btn btn-default" onclick="nextVotedReview(<%=@retro.id%>)">
         <div>click to proceed to next topic</div>
       </button>
     </form>

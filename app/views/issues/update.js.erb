@@ -1,0 +1,7 @@
+$("#edit-<%= @issue.id %>").slideUp(400, function() {
+    $("#issue-<%= @index %>-<%= @issue.type_to_int %>").replaceWith("<%= j render(partial: "issues/issuetemplate", locals: {
+ issue: @issue,
+ issue_class: "retro-#{@issue.issue_type}",
+ index: @index,
+ type: @issue.type_to_int }) %>");
+});

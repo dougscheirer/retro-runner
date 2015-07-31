@@ -1,4 +1,4 @@
-<li id="<%= issue_marker %>" class="data <% if issue %><%= issue_class %><% end %>">
+<li id="issue-<%=index%>-<%=type%>" class="data <% if issue %><%= issue_class %><% end %>">
     <% if !issue.nil? %>
 
       <% if issue.creator_id.nil? %>
@@ -6,16 +6,15 @@
       <% else %>
         <%= link_to user(issue.creator_id).name, user_path(issue.creator_id) %>
       <% end %>
-
       <% if (@retro.status == "in_review" || @retro.status == "voted_review") &&
-              @issues[@retro.discussed_type][@retro.discussed_index].id == issue.id %>
-        <b><%= issue.description %></b>
+              (@retro.discussed_index == index) && (@retro.discussed_type == type)%>
+        <b id='discussed'><span id="discuss-<%=index%>-<%=type%>"><%= issue.description %></span></b>
       <% else %>
-          <%= issue.description %>
+          <span id="discuss-<%=index%>-<%=type%>"><%= issue.description %></span>
       <% end %>
 
 
-      <a onclick="deleteIssue(<%= issue.id %>, '<%= issue_marker %>')" style="float: right;" >
+      <a onclick="deleteIssue(<%= issue.id %>, 'issue-<%=index%>-<%=type%>')" style="float: right;" >
         <span class="glyphicon glyphicon-trash"></span>
       </a>
       <a href="<%= edit_issue_path(issue) %>" style="float: right;" data-remote="true"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -27,10 +26,10 @@
           <div id="task-form-<%=issue.id %>" style="display:none;"></div>
       <% end %>
       <% if @retro.status == "voting" %>
-          <form method="post" action="<%= make_new_vote_path(issue_id: issue.id) %>">
+          <form>
             <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
-            <button id="submit" name="submit" class="btn btn-default">
-              <%= issue.votes_count %>
+            <button id="submit" name="submit" class="btn btn-default" onclick="addVote(<%=issue.id%>)">
+              <span id="votecount-<%=issue.id%>"><%= issue.votes_count %></span>
             </button>
           </form>
       <% end %>

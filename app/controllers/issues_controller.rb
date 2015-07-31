@@ -11,9 +11,6 @@ class IssuesController < ApplicationController
     @good_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Good'")
     @meh_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Meh'")
     @bad_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Bad'")
-
-    @max_issues = [@good_issues.size, @meh_issues.size, @bad_issues.size].max
-
     @retro = Retro.find(params[:retro_id])
     @project = Project.find(@retro.project_id)
   end
@@ -45,9 +42,9 @@ class IssuesController < ApplicationController
       if @issue.save
         flash[:success] = "Issue #{@issue.id} was successfully created."
         format.html { redirect_to @retro }
-        @index = Issue.where("retro_id = #{params[:retro_id]}").index @issue
+        @index = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         format.json { render json: @issue, status: :created }
-        format.js { render :action => "create" }
+        format.js
       else
         flash[:error] = @issue.errors
         format.html { render :new }
@@ -62,8 +59,10 @@ class IssuesController < ApplicationController
     respond_to do |format|
       if @issue.update(issue_params)
         flash[:success] = "Issue #{@issue.id} was successfully updated."
+        @index = Issue.where("retro_id = #{@issue.retro_id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         format.html { redirect_to @retro }
         format.json { render :show, status: :ok, location: @issue }
+        format.js
       else
         flash[:error] = @issue.errors
         format.html { render :edit }
@@ -98,8 +97,3 @@ class IssuesController < ApplicationController
       redirect_to owner_access_required_path if ((@issue.creator_id != @current_user.id) && !@current_user.admin?)
     end
 end
-
-#render partial: "issues/issuetemplate.html.erb", locals: { issue: @issue,
- #                                                          issue_class: 'retro-good',
-  #                                                         issue_marker: "issue-#{@index}-#{@issue.type_to_int}"},
-#

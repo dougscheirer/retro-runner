@@ -1,8 +1,8 @@
-<% @index = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = '#{@issue.issue_type}'").index @issue %>;
 $("#add-issue-<%= @issue.issue_type %>").slideUp(400);
 $("#add-issue-<%= @issue.issue_type %>").html("");
 $("#<%=@issue.issue_type %>_issues").append("<%= j render(partial: "issues/issuetemplate", locals: {
  issue: @issue,
  issue_class: "retro-#{@issue.issue_type}",
- issue_marker: "issue-#{@index}-#{@issue.type_to_int}" }) %>");
-$("#<%=@issue.issue_type %>_issues").append($("#<%= @issue.issue_type %>_placeholder"));
+ index: @index,
+ type: @issue.type_to_int }) %>");
+$("#<%=@issue.issue_type %>_issues").append($("#<%= @issue.issue_type %>_adder"));

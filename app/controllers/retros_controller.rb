@@ -130,14 +130,18 @@ class RetrosController < ApplicationController
       @num_passed += 1
     end
     @retro.save!
-    redirect_to retro_issues_path(@retro)
+    respond_to do |format|
+      format.html { redirect_to retro_issues_path(@retro) }
+      format.json { render json: {index: @retro.discussed_index, type: @retro.discussed_type}, status: :ok}
+    end
+
   end
 
   def increment_discussed_followup
-    @issues = Issue.where("retro_id = #{params[:retro_id]}").order('votes_count DESC')
-    @good_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Good'").order('votes_count DESC')
-    @meh_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Meh'").order('votes_count DESC')
-    @bad_issues = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = 'Bad'").order('votes_count DESC')
+    @issues = Issue.where("retro_id = #{params[:id]}").order('votes_count DESC')
+    @good_issues = Issue.where("retro_id = #{params[:id]} AND issue_type = 'Good'").order('votes_count DESC')
+    @meh_issues = Issue.where("retro_id = #{params[:id]} AND issue_type = 'Meh'").order('votes_count DESC')
+    @bad_issues = Issue.where("retro_id = #{params[:id]} AND issue_type = 'Bad'").order('votes_count DESC')
     if @issues.exists?
       @issue_types = { "Good" => @good_issues, "Meh" => @meh_issues, "Bad" => @bad_issues }
       @location = @issues.index @issue_types[@retro.int_to_type][@retro.discussed_index]
@@ -152,7 +156,10 @@ class RetrosController < ApplicationController
       end
     end
     @retro.save!
-    redirect_to retro_issues_path(@retro)
+    respond_to do |format|
+      format.html { redirect_to retro_issues_path(@retro) }
+      format.json { render json: {index: @retro.discussed_index, type: @retro.discussed_type}, status: :ok}
+    end
   end
 
   # DELETE /retros/1
