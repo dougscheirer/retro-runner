@@ -21,14 +21,21 @@ class RetrosController < ApplicationController
   def new
     @retro = Retro.new
     @retro.project_id = params[:project_id]
-    @retro.good_icon = rand(31)
-    loop do
-      @retro.meh_icon = rand(31)
-      break if @retro.meh_icon != @retro.good_icon
-    end
-    loop do
-      @retro.bad_icon = rand(31)
-      break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
+    @prank = rand(20)
+    if @prank == 12
+      @retro.good_icon = 9
+      @retro.meh_icon = 9
+      @retro.bad_icon = 9
+    else
+      @retro.good_icon = rand(31)
+      loop do
+        @retro.meh_icon = rand(31)
+        break if @retro.meh_icon != @retro.good_icon
+      end
+      loop do
+        @retro.bad_icon = rand(31)
+        break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
+      end
     end
   end
 
