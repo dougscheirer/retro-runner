@@ -1,0 +1,5 @@
+$("#task-form-<%= @issue.id %>").slideUp(350);
+$("#task-form-<%= @issue.id %>").html("");
+$("#tasks").append("<%= j render(partial:  "outstandings/singletask", locals: {task:  @outstanding,
+                                                title: "Tasks for Next Week",
+                                                user_page: false}) %>");

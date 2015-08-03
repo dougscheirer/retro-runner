@@ -11,11 +11,9 @@
   <tbody>
   <% @tasks.each do |task| %>
       <tr>
-        <td><%= task.description %></td>
-        <td><%= task.assigned_to %></td>
-        <td><%= link_to 'Show', task %></td>
-        <td><%= link_to 'Edit', edit_outstanding_path(task) %></td>
-        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%= render partial: "outstandings/singletask", locals: {task:  task,
+                                                                title: "Listing tasks",
+                                                                user_page: false} %>
       </tr>
   <% end %>
   </tbody>

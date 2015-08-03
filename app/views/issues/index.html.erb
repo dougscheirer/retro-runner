@@ -96,6 +96,7 @@
   </ul>
 </div>
 
+<p class="margin-top: 20px;"></p>
 
 <% if @retro.status == "in_review" %>
     <form id="timer">
@@ -117,7 +118,7 @@
 
 <br>
 <% if @retro.status == "review_last_retro" %>
-    <% @all_retros = Retro.where("project_id = #{@retro.project_id}").order('meeting_date DESC') %>
+    <% @all_retros = Retro.where("project_id = #{@retro.project_id}").order('meeting_date ASC') %>
     <% @current_index = @all_retros.index @retro %>
     <% @current_index -= 1 %>
     <% if !@all_retros[@current_index].nil? %>

@@ -8,9 +8,9 @@
       <% end %>
       <% if (@retro.status == "in_review" || @retro.status == "voted_review") &&
               (@retro.discussed_index == index) && (@retro.discussed_type == type)%>
-        <b id='discussed'><span id="discuss-<%=index%>-<%=type%>"><%= issue.description %></span></b>
+        <b id='discussed'><span id="description"><%= issue.description %></span></b>
       <% else %>
-          <span id="discuss-<%=index%>-<%=type%>"><%= issue.description %></span>
+          <span id="description"><%= issue.description %></span>
       <% end %>
 
 

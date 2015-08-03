@@ -3,6 +3,7 @@ class OutstandingsController < ApplicationController
   skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :set_outstanding, only: [:show, :mark_complete, :edit, :update, :destroy]
   before_action :owner, only: [:mark_complete, :edit, :destroy]
+  respond_to :js
 
   def new
     @outstanding = Outstanding.new
@@ -39,11 +40,13 @@ class OutstandingsController < ApplicationController
       @assigned_users = User.find(params[:assigned_to])
     end
     respond_to do |format|
-      if ((@assigned_users != nil) && (@outstanding.save))
+      if @assigned_users != nil && @outstanding.save
         @outstanding.users << @assigned_users
+        @index = Issue.where("retro_id = #{@retro.id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         flash[:success] = "Outstanding #{@outstanding.id} was successfully created"
         format.html { redirect_to @retro }
         format.json { render :show, status: :created, location: @outstanding }
+        format.js
       else
         flash[:error] = "invalid outstanding"
         format.html { redirect_to @retro }
@@ -76,7 +79,7 @@ class OutstandingsController < ApplicationController
     respond_to do |format|
       flash[:success] = "Outstanding #{@outstanding.id} marked as complete"
       format.html { redirect_to @retro }
-      format.json { head :no_content }
+      format.json { render json: @outstanding.id }
     end
   end
 
@@ -85,7 +88,7 @@ class OutstandingsController < ApplicationController
     respond_to do |format|
       flash[:success] = "Outstanding #{@outstanding.id} was successfully destroyed."
       format.html { redirect_to @retro }
-      format.json { head :no_content }
+      format.json { render json: params[:id] }
     end
   end
 

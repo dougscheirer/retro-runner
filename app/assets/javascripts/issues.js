@@ -31,9 +31,10 @@ function nextReview(id, display) {
         encode   : false,
         dataType : 'json',
         success  : function(data) {
+            var index = data["index"]+2;
             var previous = $("#discussed").contents();
             previous.unwrap();
-            var current = $("#discuss-"+data["index"]+"-"+data["type"]);
+            var current = $("#"+data["type"]+"_issues li:nth-child("+index+")").find("#description");
             current.wrap("<b id='discussed'></b>");
             var last_id = display.getAttribute("name");
             clearInterval(last_id);
@@ -51,9 +52,10 @@ function nextVotedReview(id) {
         encode      : 'false',
         dataType    : 'json',
         success     : function(data) {
+            var index = data["index"]+2;
             var previous = $("#discussed").contents();
             previous.unwrap();
-            var current = $("#discuss-"+data["index"]+"-"+data["type"]);
+            var current =$("#"+data["type"]+"_issues li:nth-child("+index+")").find("#description");
             current.wrap("<b id='discussed'></b>");
         }
     });
@@ -70,6 +72,38 @@ function deleteIssue(id, marker) {
     if (confirm("Are you sure?") == true) {
         request.open("DELETE", "/issues/"+id, true);
         request.send();
+    }
+}
+
+function deleteOutstanding(id) {
+    if (confirm("Are you sure?") == true) {
+        $.ajax({
+            type        : 'DELETE',
+            url         : '/outstandings/'+id,
+            encode      : 'false',
+            dataType    : 'json',
+            success     : function(data) {
+                var element = $("#task-"+data);
+                element.remove();
+            }
+        });
+        event.preventDefault();
+    }
+}
+
+function markAsDone(id, task_id) {
+    if (confirm("Are you sure?") == true) {
+        $.ajax({
+            type        : 'POST',
+            url         : '/retros/'+id+'/outstandings/'+task_id+'/complete',
+            encode      : 'false',
+            dataType    : 'json',
+            success     : function(data) {
+                var element = $("#task-"+data);
+                element.addClass("strikeout");
+            }
+        });
+        event.preventDefault();
     }
 }
 

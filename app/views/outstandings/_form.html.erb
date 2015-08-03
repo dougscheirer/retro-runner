@@ -1,6 +1,6 @@
 <h4><%= title %></h4>
 
-<form class="form-horizontal" action="<%= action %>" method="POST">
+<form class="form-horizontal" action="<%= action %>" method="POST" data-remote="true">
   <fieldset>
 
     <% if action_method == "PATCH" %>
@@ -36,7 +36,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="textinput">Description</label>
       <div class="col-md-8">
-        <input id="description" autofocus="true" name="outstanding[description]" type="text" placeholder="Description"
+        <input id="description" name="outstanding[description]" type="text" autofocus="true" placeholder="Description"
                class="form-control input-md" required="" value="<%= @outstanding.description %>">
       </div>
     </div>
@@ -45,7 +45,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="singlebutton"></label>
       <div class="col-md-4">
-        <button id="submit" name="submit" class="btn btn-primary">
+        <button name="submit" class="btn btn-primary">
           <%= button_title %>
         </button>
       </div>

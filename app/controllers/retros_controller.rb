@@ -21,12 +21,12 @@ class RetrosController < ApplicationController
   def new
     @retro = Retro.new
     @retro.project_id = params[:project_id]
-    @prank = rand(20)
-    if @prank == 12
-      @retro.good_icon = 9
-      @retro.meh_icon = 9
-      @retro.bad_icon = 9
-    else
+    #@time = DateTime.current()
+    #if time.month == 4 && time.day == 1
+    #  @retro.good_icon = 9
+    #  @retro.meh_icon = 9
+    #  @retro.bad_icon = 9
+    #else
       @retro.good_icon = rand(31)
       loop do
         @retro.meh_icon = rand(31)
@@ -36,7 +36,7 @@ class RetrosController < ApplicationController
         @retro.bad_icon = rand(31)
         break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
       end
-    end
+    #end
   end
 
   # GET /retros/1/edit
@@ -49,17 +49,24 @@ class RetrosController < ApplicationController
     @retro = Retro.new(retro_params)
     @retro.creator_id = current_user.id
     @retro.project_id = params[:project_id]
-    @retro.meeting_date ||= Date.today().to_s
+    @retro.meeting_date ||= Date.today.to_s
     @retro.status = "not_started"
-    @retro.good_icon = rand(31)
-    loop do
-      @retro.meh_icon = rand(31)
-      break if @retro.meh_icon != @retro.good_icon
-    end
-    loop do
-      @retro.bad_icon = rand(31)
-      break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
-    end
+    #@time = Time.new
+    #if time.month == 4 && time.day == 1
+    #  @retro.good_icon = 9
+    #  @retro.meh_icon = 9
+    #  @retro.bad_icon = 9
+    #else
+      @retro.good_icon = rand(31)
+      loop do
+        @retro.meh_icon = rand(31)
+        break if @retro.meh_icon != @retro.good_icon
+      end
+      loop do
+        @retro.bad_icon = rand(31)
+        break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
+      end
+    #end
     respond_to do |format|
       if @retro.save
         flash[:success] = "Retro #{@retro.id} was successfully created."
@@ -139,7 +146,7 @@ class RetrosController < ApplicationController
     @retro.save!
     respond_to do |format|
       format.html { redirect_to retro_issues_path(@retro) }
-      format.json { render json: {index: @retro.discussed_index, type: @retro.discussed_type}, status: :ok}
+      format.json { render json: {index: @retro.discussed_index, type: @retro.int_to_type}, status: :ok}
     end
 
   end
@@ -152,6 +159,9 @@ class RetrosController < ApplicationController
     if @issues.exists?
       @issue_types = { "Good" => @good_issues, "Meh" => @meh_issues, "Bad" => @bad_issues }
       @location = @issues.index @issue_types[@retro.int_to_type][@retro.discussed_index]
+      if @location.nil?
+        @location = @issue_types[@retro.int_to_type].size-1
+      end
       @location+=1
       if @issues[@location].nil?
         @retro.discussed_type = @issues[0].type_to_int
@@ -165,7 +175,7 @@ class RetrosController < ApplicationController
     @retro.save!
     respond_to do |format|
       format.html { redirect_to retro_issues_path(@retro) }
-      format.json { render json: {index: @retro.discussed_index, type: @retro.discussed_type}, status: :ok}
+      format.json { render json: {index: @retro.discussed_index, type: @retro.int_to_type}, status: :ok}
     end
   end
 

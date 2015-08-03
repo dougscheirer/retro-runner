@@ -1,0 +1,26 @@
+<% if task.complete? %>
+    <tr class="strikeout" id = "task-<%= task.id %>">
+<% else %>
+    <tr id="task-<%= task.id %>">
+<% end %>
+<td><a href="<%= outstanding_path(task) %>"><%= task.description %></a></td>
+<% if user_page %>
+    <td><a href="<%= retro_path(Retro.find(Issue.find(task.issue_id).retro_id)) %>"><%= Retro.find(Issue.find(task.issue_id).retro_id).meeting_date %></a></td>
+<% elsif task.users == User.all %>
+    <td><a href="<%= users_path %>">all</a></td>
+<% else %>
+    <td>
+      <% task.users.each do |assigned| %>
+          <a href="<%= user_path(assigned) %>"><%= assigned.name %></a><br>
+      <% end %>
+    </td>
+<% end %>
+<td><a href="<%=issue_path(Issue.find(task.issue_id)) %>"><%= Issue.find(task.issue_id).description %></a></td>
+<% if title == "Tasks from Last Week" %>
+    <td><a onclick="markAsDone(<%= task.retro_id%>, <%=task.id%>)">
+      set as complete
+    </a></td>
+<% end %>
+<td><%= link_to 'Edit', edit_outstanding_path(task) %></td>
+<td><a onclick="deleteOutstanding(<%=task.id%>)">Delete</a></td>
+</tr>

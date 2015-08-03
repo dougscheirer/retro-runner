@@ -16,34 +16,11 @@
   </tr>
   </thead>
 
-  <tbody>
+  <tbody id="tasks">
   <% tasks.each do |task| %>
-      <% if task.complete? %>
-          <tr class="strikeout">
-      <% else %>
-          <tr>
-      <% end %>
-      <td><a href="<%= outstanding_path(task) %>"><%= task.description %></a></td>
-      <% if user_page %>
-          <td><a href="<%= retro_path(Retro.find(Issue.find(task.issue_id).retro_id)) %>"><%= Retro.find(Issue.find(task.issue_id).retro_id).meeting_date %></a></td>
-      <% elsif task.users == User.all %>
-          <td><a href="<%= users_path %>">all</a></td>
-      <% else %>
-          <td>
-            <% task.users.each do |assigned| %>
-                <a href="<%= user_path(assigned) %>"><%= assigned.name %></a><br>
-            <% end %>
-          </td>
-      <% end %>
-      <td><a href="<%=issue_path(Issue.find(task.issue_id)) %>"><%= Issue.find(task.issue_id).description %></a></td>
-      <% if title == "Tasks from Last Week" %>
-          <td><a data-confirm="are you sure?" data-method="post" href="<%= mark_complete_path(@retro.id, task) %>">
-            set as complete
-          </a></td>
-      <% end %>
-      <td><%= link_to 'Edit', edit_outstanding_path(task) %></td>
-      <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <%= render partial: "outstandings/singletask", locals: {task:  task,
+                                                title: title,
+                                                user_page: user_page} %>
   <% end %>
   </tbody>
 </table>
