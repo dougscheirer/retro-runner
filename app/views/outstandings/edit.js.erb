@@ -1,0 +1,12 @@
+if ($("#edit-task").html() == "") {
+    $("#edit-task").html("<%= j (render partial: "outstandings/form", locals: {
+    title: "Edit task",
+    button_title: "Modify",
+    action: outstanding_path(@outstanding),
+    action_method: "PATCH" }) %>");
+    $("#edit-task").slideDown(400);
+}
+else {
+    $("#edit-task").slideUp(400);
+    $("#edit-task").html("");
+}

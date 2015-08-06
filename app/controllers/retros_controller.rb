@@ -21,12 +21,12 @@ class RetrosController < ApplicationController
   def new
     @retro = Retro.new
     @retro.project_id = params[:project_id]
-    #@time = DateTime.current()
-    #if time.month == 4 && time.day == 1
-    #  @retro.good_icon = 9
-    #  @retro.meh_icon = 9
-    #  @retro.bad_icon = 9
-    #else
+    @time = Time.current
+    if @time.month == 4 && @time.day == 1
+      @retro.good_icon = 100
+      @retro.meh_icon = 100
+      @retro.bad_icon = 100
+    else
       @retro.good_icon = rand(31)
       loop do
         @retro.meh_icon = rand(31)
@@ -36,7 +36,7 @@ class RetrosController < ApplicationController
         @retro.bad_icon = rand(31)
         break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
       end
-    #end
+    end
   end
 
   # GET /retros/1/edit
@@ -51,12 +51,12 @@ class RetrosController < ApplicationController
     @retro.project_id = params[:project_id]
     @retro.meeting_date ||= Date.today.to_s
     @retro.status = "not_started"
-    #@time = Time.new
-    #if time.month == 4 && time.day == 1
-    #  @retro.good_icon = 9
-    #  @retro.meh_icon = 9
-    #  @retro.bad_icon = 9
-    #else
+    @time = Time.new
+    if @time.month == 4 && @time.day == 1
+      @retro.good_icon = 100
+      @retro.meh_icon = 100
+      @retro.bad_icon = 100
+    else
       @retro.good_icon = rand(31)
       loop do
         @retro.meh_icon = rand(31)
@@ -66,7 +66,7 @@ class RetrosController < ApplicationController
         @retro.bad_icon = rand(31)
         break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
       end
-    #end
+    end
     respond_to do |format|
       if @retro.save
         flash[:success] = "Retro #{@retro.id} was successfully created."
@@ -182,7 +182,6 @@ class RetrosController < ApplicationController
   # DELETE /retros/1
   # DELETE /retros/1.json
   def destroy
-    puts caller
     @retro.destroy
     respond_to do |format|
       flash[:success] = "Retro #{@retro.id} was successfully destroyed."

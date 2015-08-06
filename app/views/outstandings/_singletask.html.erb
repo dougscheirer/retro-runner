@@ -21,6 +21,6 @@
       set as complete
     </a></td>
 <% end %>
-<td><%= link_to 'Edit', edit_outstanding_path(task) %></td>
+<td><%= link_to 'Edit', edit_outstanding_path(task), remote: true %></td>
 <td><a onclick="deleteOutstanding(<%=task.id%>)">Delete</a></td>
 </tr>

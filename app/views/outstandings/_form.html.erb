@@ -1,6 +1,6 @@
 <h4><%= title %></h4>
 
-<form class="form-horizontal" action="<%= action %>" method="POST" data-remote="true">
+<form class="form-horizontal" action="<%= action %>" method="<%=action_method%>" data-remote="true">
   <fieldset>
 
     <% if action_method == "PATCH" %>

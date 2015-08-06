@@ -1,10 +1,10 @@
 <h1><%= title %></h1>
-<% @locator = rand() %>
-<form class="form-horizontal" id="<%= @locator %>" action="<%= action %>" method="<%= action_method %>" data-remote="true">
+<form class="form-horizontal" id="new_issue_<%= @issue.issue_type %>">
   <fieldset>
 
+    <input name="_method" type="hidden" value="<%=action_method%>"/>
     <% if action_method == "PATCH" %>
-      <input name="_method" type="hidden" value="patch" />
+        <input name="issue_id" type="hidden" value="<%=@issue.id%>" />
     <% end %>
 
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
@@ -38,7 +38,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="singlebutton"></label>
       <div class="col-md-4">
-        <button class="btn btn-primary" name="submit">
+        <button class="btn btn-primary" onclick="makeIssue($('#new_issue_<%= @issue.issue_type %>'))">
           <%= button_title %>
         </button>
       </div>

@@ -2,7 +2,7 @@ class OutstandingsController < ApplicationController
   before_action :logged_in
   skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :set_outstanding, only: [:show, :mark_complete, :edit, :update, :destroy]
-  before_action :owner, only: [:mark_complete, :edit, :destroy]
+  before_action :owner, only: [:mark_complete, :edit, :update, :destroy]
   respond_to :js
 
   def new
@@ -59,11 +59,23 @@ class OutstandingsController < ApplicationController
   end
 
   def update
+    if params[:assigned_to].nil?
+      @assigned_users = nil
+    elsif params[:assigned_to].include? ("-1")
+      @assigned_users = User.all
+    else
+      @assigned_users = User.find(params[:assigned_to])
+    end
     respond_to do |format|
       if @outstanding.update(outstanding_params)
+        if @assigned_users != nil
+          @outstanding.users.clear
+          @outstanding.users << @assigned_users
+        end
         flash[:success] = "Outstanding #{@outstanding.id} was successfully updated."
         format.html { redirect_to @retro }
         format.json { render :show, status: :ok, location: @outstanding }
+        format.js
       else
         flash[:error] = "invalid update"
         format.html { render :edit }

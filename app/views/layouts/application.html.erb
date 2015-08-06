@@ -6,6 +6,23 @@
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>
+  <!-- <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
+  <script>
+      // Enable pusher logging - don't include this in production
+      Pusher.log = function(message) {
+          if (window.console && window.console.log) {
+              window.console.log(message);
+          }
+      };
+
+      var pusher = new Pusher('bec060895b93f6745a24', {
+          encrypted: true
+      });
+      var channel = pusher.subscribe('retro_channel');
+      channel.bind('my_event', function(data) {
+          alert(data.message);
+      });
+  </script> -->
 </head>
 <body>
 <%= render 'layouts/header' %>

@@ -1,9 +1,18 @@
+#require 'pusher'
+
+#Pusher.app_id = '133467'
+#Pusher.key = 'bec060895b93f6745a24'
+#Pusher.secret = 'd3e13b0e84b33a44613a'
+
 class IssuesController < ApplicationController
   before_action :set_issue, only: [:show, :edit, :update, :destroy]
   skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :owner, only: [ :destroy, :edit ]
-  skip_before_action :verify_authenticity_token, only: [:destroy]
   respond_to :js
+
+  def hello_world
+    Pusher.trigger('retro_channel', 'my-event', {:message => 'hello world'})
+  end
 
   # GET /issues
   # GET /issues.json
@@ -43,8 +52,12 @@ class IssuesController < ApplicationController
         flash[:success] = "Issue #{@issue.id} was successfully created."
         format.html { redirect_to @retro }
         @index = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
-        format.json { render json: @issue, status: :created }
-        format.js
+        format.json { render json: {issue: @issue,
+                                    retro: @retro,
+                                    index: @index,
+                                    creator_name: current_user.name,
+                                    issue_type: @issue.type_to_int,
+                                    method: "POST" } }
       else
         flash[:error] = @issue.errors
         format.html { render :new }
@@ -61,8 +74,12 @@ class IssuesController < ApplicationController
         flash[:success] = "Issue #{@issue.id} was successfully updated."
         @index = Issue.where("retro_id = #{@issue.retro_id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         format.html { redirect_to @retro }
-        format.json { render :show, status: :ok, location: @issue }
-        format.js
+        format.json { render json: {issue: @issue,
+                                    retro: @retro,
+                                    index: @index,
+                                    creator_name: current_user.name,
+                                    issue_type: @issue.type_to_int,
+                                    method: "PATCH" } }
       else
         flash[:error] = @issue.errors
         format.html { render :edit }
@@ -74,10 +91,13 @@ class IssuesController < ApplicationController
   # DELETE /issues/1
   # DELETE /issues/1.json
   def destroy
+    @index = Issue.where("retro_id = #{@issue.retro_id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
+    @type = @issue.type_to_int
     @issue.destroy
     respond_to do |format|
       flash[:success] = "Issue #{@issue.id} was successfully destroyed."
-      format.json { head :no_content }
+      format.html { redirect_to @retro }
+      format.json { render json: {index: @index, type: @type } }
     end
   end
 

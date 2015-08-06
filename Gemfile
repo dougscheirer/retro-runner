@@ -24,6 +24,7 @@ gem 'sass-rails', '4.0.3'
 gem 'bootstrap_form'
 
 gem 'bcrypt'
+gem 'pusher'
 
 group :doc do
   gem 'sdoc', '~> 0.4.0'

@@ -1,0 +1,5 @@
+$("#edit-task").slideUp(400);
+$("#edit-task").html("");
+$("#task-<%= @outstanding.id %>").replaceWith("<%= j render(partial:  "outstandings/singletask", locals: {task:  @outstanding,
+                                                title: "Tasks for Next Week",
+                                                user_page: false}) %>");
