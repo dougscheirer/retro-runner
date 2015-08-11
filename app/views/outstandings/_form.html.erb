@@ -1,10 +1,11 @@
 <h4><%= title %></h4>
 
-<form class="form-horizontal" action="<%= action %>" method="<%=action_method%>" data-remote="true">
+<form class="form-horizontal" id="new-outstanding-<%= @issue.id %>">
   <fieldset>
 
+    <input name="_method" type="hidden" value="<%=action_method%>" />
     <% if action_method == "PATCH" %>
-      <input name="_method" type="hidden" value="patch" />
+      <input name="task_id" type="hidden" value="<%= @outstanding.id %>" />
     <% end %>
 
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
@@ -33,7 +34,7 @@
     </div>
 
     <!-- Text input-->
-    <div class="form-group">
+    <div class="form-group">'
       <label class="col-md-4 control-label" for="textinput">Description</label>
       <div class="col-md-8">
         <input id="description" name="outstanding[description]" type="text" autofocus="true" placeholder="Description"
@@ -45,7 +46,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="singlebutton"></label>
       <div class="col-md-4">
-        <button name="submit" class="btn btn-primary">
+        <button class="btn btn-primary" onclick="makeTask($('#new-outstanding-<%= @issue.id %>'))">
           <%= button_title %>
         </button>
       </div>

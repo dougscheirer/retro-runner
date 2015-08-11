@@ -92,19 +92,23 @@ RSpec.describe OutstandingsController, :type => :controller do
     end
 
     describe "PUT update" do
+
+      let(:new_assignment) {
+        [-1]
+      }
+
       describe "with valid params" do
         let(:new_attributes) {
           {
               :issue_id => 1,
               :description => "Terrible job",
-              :retro_id => 1
           }
         }
 
         it "updates the requested task" do
           post :create, { :outstanding => valid_attributes, :assigned_to => valid_assignment, :issue_id => 1 }, valid_session
           task = Outstanding.order("created_at").last
-          put :update, {:id => task.id, :outstanding => new_attributes, :issue_id => 1}, valid_session
+          put :update, {:id => task.id, :outstanding => new_attributes, :assigned_to => new_assignment, :issue_id => 1}, valid_session
           task.reload
           new_attributes.each { |key, value|
             expect(task[key]).to eq(value)
@@ -114,14 +118,14 @@ RSpec.describe OutstandingsController, :type => :controller do
         it "assigns the requested task as @outstanding" do
           post :create, { :outstanding => valid_attributes, :assigned_to => valid_assignment, :issue_id => 1 }, valid_session
           outstanding = Outstanding.order("created_at").last
-          put :update, {:id => outstanding.id, :outstanding => valid_attributes, :issue_id => 1}, valid_session
+          put :update, {:id => outstanding.id, :outstanding => valid_attributes, :assigned_to => new_assignment, :issue_id => 1}, valid_session
           expect(assigns(:outstanding)).to eq(outstanding)
         end
 
         it "redirects to the outstanding" do
           post :create, { :outstanding => valid_attributes, :assigned_to => valid_assignment, :issue_id => 1 }, valid_session
           outstanding = Outstanding.order("created_at").last
-          put :update, {:id => outstanding.id, :outstanding => valid_attributes, :issue_id => 1}, valid_session
+          put :update, {:id => outstanding.id, :outstanding => valid_attributes, :assigned_to => new_assignment, :issue_id => 1}, valid_session
           expect(response).to redirect_to(Retro.find(1))
         end
       end
@@ -130,14 +134,14 @@ RSpec.describe OutstandingsController, :type => :controller do
         it "assigns the outstanding as @outstanding" do
           post :create, { :outstanding => valid_attributes, :assigned_to => valid_assignment, :issue_id => 1 }, valid_session
           outstanding = Outstanding.order("created_at").last
-          put :update, {:id => outstanding.id, :outstanding => invalid_attributes, :issue_id => 1}, valid_session
+          put :update, {:id => outstanding.id, :outstanding => invalid_attributes, :assigned_to => new_assignment, :issue_id => 1}, valid_session
           expect(assigns(:outstanding)).to eq(outstanding)
         end
 
         it "re-renders the 'edit' template" do
           post :create, { :outstanding => valid_attributes, :assigned_to => valid_assignment, :issue_id => 1 }, valid_session
           outstanding = Outstanding.order("created_at").last
-          put :update, {:id => outstanding.id, :outstanding => invalid_attributes, :issue_id => 1}, valid_session
+          put :update, {:id => outstanding.id, :outstanding => invalid_attributes, :assigned_to => new_assignment, :issue_id => 1}, valid_session
           expect(response).to redirect_to(Retro.find(1))
         end
       end

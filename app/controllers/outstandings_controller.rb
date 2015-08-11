@@ -1,3 +1,10 @@
+require 'pusher'
+
+Pusher.app_id = '133467'
+Pusher.key = 'bec060895b93f6745a24'
+Pusher.secret = 'd3e13b0e84b33a44613a'
+
+
 class OutstandingsController < ApplicationController
   before_action :logged_in
   skip_before_action :authenticate!, only: [ :index, :show ]
@@ -45,8 +52,23 @@ class OutstandingsController < ApplicationController
         @index = Issue.where("retro_id = #{@retro.id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         flash[:success] = "Outstanding #{@outstanding.id} was successfully created"
         format.html { redirect_to @retro }
-        format.json { render :show, status: :created, location: @outstanding }
-        format.js
+        if params[:assigned_to].include? ("-1")
+          format.json { render json: {task: @outstanding,
+                                      issue: @issue,
+                                      users: 1 }}
+          Pusher.trigger('retro_channel', 'create-task-event', {task: @outstanding,
+                                                             issue: @issue,
+                                                             users: 1 })
+        else
+          format.json { render json: {task: @outstanding,
+                                      issue: @issue,
+                                      users: @outstanding.users,
+                                      user_size: @outstanding.users.size }}
+          Pusher.trigger('retro_channel', 'create-task-event', {task: @outstanding,
+                                                             issue: @issue,
+                                                             users: @outstanding.users,
+                                                             user_size: @outstanding.users.size })
+        end
       else
         flash[:error] = "invalid outstanding"
         format.html { redirect_to @retro }
@@ -74,8 +96,23 @@ class OutstandingsController < ApplicationController
         end
         flash[:success] = "Outstanding #{@outstanding.id} was successfully updated."
         format.html { redirect_to @retro }
-        format.json { render :show, status: :ok, location: @outstanding }
-        format.js
+        if params[:assigned_to].include? ("-1")
+          format.json { render json: {task: @outstanding,
+                                      issue: @issue,
+                                      users: 1 }}
+          Pusher.trigger('retro_channel', 'update-task-event', {task: @outstanding,
+                                                                issue: @issue,
+                                                                users: 1 })
+        else
+          format.json { render json: {task: @outstanding,
+                                      issue: @issue,
+                                      users: @outstanding.users,
+                                      user_size: @outstanding.users.size }}
+          Pusher.trigger('retro_channel', 'update-task-event', {task: @outstanding,
+                                                                issue: @issue,
+                                                                users: @outstanding.users,
+                                                                user_size: @outstanding.users.size })
+        end
       else
         flash[:error] = "invalid update"
         format.html { render :edit }
@@ -92,15 +129,17 @@ class OutstandingsController < ApplicationController
       flash[:success] = "Outstanding #{@outstanding.id} marked as complete"
       format.html { redirect_to @retro }
       format.json { render json: @outstanding.id }
+      Pusher.trigger('retro_channel', 'complete-task-event', @outstanding.id)
     end
   end
 
   def destroy
     @outstanding.destroy
     respond_to do |format|
-      flash[:success] = "Outstanding #{@outstanding.id} was successfully destroyed."
+      flash[:success] = "Outstanding #{params[:id]} was successfully destroyed."
       format.html { redirect_to @retro }
       format.json { render json: params[:id] }
+      Pusher.trigger('retro_channel', 'delete-task-event', params[:id])
     end
   end
 

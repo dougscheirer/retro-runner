@@ -1,6 +1,6 @@
 class Issue < ActiveRecord::Base
   belongs_to :retro
-  has_many :votes
+  has_many :votes, dependent: :destroy
   has_many :outstandings, dependent: :destroy
 
   validates :creator_id, presence: true

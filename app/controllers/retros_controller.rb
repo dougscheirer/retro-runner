@@ -1,3 +1,10 @@
+require 'pusher'
+
+Pusher.app_id = '133467'
+Pusher.key = 'bec060895b93f6745a24'
+Pusher.secret = 'd3e13b0e84b33a44613a'
+
+
 class RetrosController < ApplicationController
   before_action :logged_in
   before_action :set_retro, only: [ :show, :edit, :update, :destroy, :transition_status, :increment_discussed_review, :increment_discussed_followup ]
@@ -27,13 +34,13 @@ class RetrosController < ApplicationController
       @retro.meh_icon = 100
       @retro.bad_icon = 100
     else
-      @retro.good_icon = rand(31)
+      @retro.good_icon = rand(41)
       loop do
-        @retro.meh_icon = rand(31)
+        @retro.meh_icon = rand(41)
         break if @retro.meh_icon != @retro.good_icon
       end
       loop do
-        @retro.bad_icon = rand(31)
+        @retro.bad_icon = rand(41)
         break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
       end
     end
@@ -57,13 +64,13 @@ class RetrosController < ApplicationController
       @retro.meh_icon = 100
       @retro.bad_icon = 100
     else
-      @retro.good_icon = rand(31)
+      @retro.good_icon = rand(41)
       loop do
-        @retro.meh_icon = rand(31)
+        @retro.meh_icon = rand(41)
         break if @retro.meh_icon != @retro.good_icon
       end
       loop do
-        @retro.bad_icon = rand(31)
+        @retro.bad_icon = rand(41)
         break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
       end
     end
@@ -108,6 +115,7 @@ class RetrosController < ApplicationController
     end
     @retro.save!
     redirect_to retro_issues_path(@retro)
+    Pusher.trigger('retro_channel', 'transition-retro-status-event', @retro.id)
   end
 
   # PATCH/PUT /retros/1
@@ -147,6 +155,7 @@ class RetrosController < ApplicationController
     respond_to do |format|
       format.html { redirect_to retro_issues_path(@retro) }
       format.json { render json: {index: @retro.discussed_index, type: @retro.int_to_type}, status: :ok}
+      Pusher.trigger('retro_channel', 'next-review-event', {index: @retro.discussed_index, type: @retro.int_to_type})
     end
 
   end
@@ -176,6 +185,7 @@ class RetrosController < ApplicationController
     respond_to do |format|
       format.html { redirect_to retro_issues_path(@retro) }
       format.json { render json: {index: @retro.discussed_index, type: @retro.int_to_type}, status: :ok}
+      Pusher.trigger('retro_channel', 'next-voted-review-event', {index: @retro.discussed_index, type: @retro.int_to_type})
     end
   end
 

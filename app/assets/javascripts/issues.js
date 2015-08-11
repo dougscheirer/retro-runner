@@ -24,44 +24,6 @@ function startTimer(duration, display) {
     display.setAttribute("name", interval_id);
 }
 
-function nextReview(id, display) {
-    $.ajax({
-        type     : 'POST',
-        url      : '/retros/'+id+'/discussed',
-        encode   : false,
-        dataType : 'json',
-        success  : function(data) {
-            var index = data["index"]+2;
-            var previous = $("#discussed").contents();
-            previous.unwrap();
-            var current = $("#"+data["type"]+"_issues li:nth-child("+index+")").find("#description");
-            current.wrap("<b id='discussed'></b>");
-            var last_id = display.getAttribute("name");
-            clearInterval(last_id);
-            display.textContent = "00:30 seconds remaining, ";
-            startTimer(30, display);
-        }
-    });
-    event.preventDefault();
-}
-
-function nextVotedReview(id) {
-    $.ajax({
-        type        : 'POST',
-        url         : '/retros/'+id+'/discussed_followup',
-        encode      : 'false',
-        dataType    : 'json',
-        success     : function(data) {
-            var index = data["index"]+2;
-            var previous = $("#discussed").contents();
-            previous.unwrap();
-            var current =$("#"+data["type"]+"_issues li:nth-child("+index+")").find("#description");
-            current.wrap("<b id='discussed'></b>");
-        }
-    });
-    event.preventDefault();
-}
-
 
 function deleteIssue(id) {
     if (confirm("Are you sure?") == true) {
@@ -71,74 +33,12 @@ function deleteIssue(id) {
             encode      : 'true',
             dataType    : 'json',
             success     : function(data) {
-                var element = $("#issue-"+data["index"]+"-"+data["type"]);
-                element.remove();
+                //var element = $("#issue-"+data["index"]+"-"+data["type"]);
+                //element.remove();
             }
         });
         event.preventDefault();
     }
-}
-
-function deleteOutstanding(id) {
-    if (confirm("Are you sure?") == true) {
-        $.ajax({
-            type        : 'DELETE',
-            url         : '/outstandings/'+id,
-            encode      : 'false',
-            dataType    : 'json',
-            success     : function(data) {
-                var element = $("#task-"+data);
-                element.remove();
-            }
-        });
-        event.preventDefault();
-    }
-}
-
-function markAsDone(id, task_id) {
-    if (confirm("Are you sure?") == true) {
-        $.ajax({
-            type        : 'POST',
-            url         : '/retros/'+id+'/outstandings/'+task_id+'/complete',
-            encode      : 'false',
-            dataType    : 'json',
-            success     : function(data) {
-                var element = $("#task-"+data);
-                element.addClass("strikeout");
-            }
-        });
-        event.preventDefault();
-    }
-}
-
-
-function addIssue(form) {
-    var formData = {
-        'authenticity_token' : form.find('[name="authenticity_token"]').val(),
-        'issue' : {
-            'retro_id': form.find('[name="issue[retro_id]"]').val(),
-            'issue_type': form.find('[name="issue[issue_type]"]').val(),
-            'description': form.find('[name="issue[description]"]').val()
-        }
-    };
-    var retro_id = form.querySelector('[name="issue[retro_id]"]').value;
-    var issue_type = form.querySelector('[name="issue[issue_type]"]').value;
-    $.ajax({
-        type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-        url         : '/retros/'+retro_id+'/issues', // the url where we want to POST
-        data        : formData, // our data object
-        dataType    : 'json', // what type of data do we expect back from the server
-        encode      : false,
-        success     : function(data) {
-            $.ajax({
-                type     : 'GET',
-                url      : '/issues/'+data["id"],
-                dataType : 'js',
-                encode   : false
-            });
-        }
-    });
-    event.preventDefault();
 }
 
 function addVote(id) {
@@ -148,19 +48,32 @@ function addVote(id) {
         dataType    : 'json',
         encode      : false,
         success     : function(data) {
-            var count = $('#votecount-'+data);
+            /*var count = $('#votecount-'+data);
             var firstcount = count.text();
             var votecount = parseInt(firstcount);
             votecount++;
             votecount = votecount.toString();
-            count.text(votecount);
+            count.text(votecount);*/
             var votecount_primary = $('#votecount-primary');
-            votecount = parseInt(votecount_primary.text())+1;
+            var votecount = parseInt(votecount_primary.text())+1;
             votecount = votecount.toString();
             votecount_primary.text(votecount);
         }
     });
     event.preventDefault();
+}
+
+function clearVotes(id) {
+    $.ajax({
+        type        : 'GET',
+        url         : '/users/'+id+'/votes',
+        dataType    : 'json',
+        encode      : false,
+        success     : function() {
+            $('#votecount-primary').text("0");
+        }
+    });
+    event.preventDefault()
 }
 
 
@@ -187,10 +100,10 @@ function makeIssue(form) {
                 form.html("");
 
 
-                var template = renderIssue(data);
-                var issuelist = $("#" + data.issue.issue_type + "_issues");
-                issuelist.append($(template));
-                issuelist.append($("#" + data.issue.issue_type + "_adder"));
+                //var template = renderIssue(data);
+                //var issuelist = $("#" + data.issue.issue_type + "_issues");
+                //issuelist.append($(template));
+                //issuelist.append($("#" + data.issue.issue_type + "_adder"));
             }
         });
         event.preventDefault();
@@ -206,8 +119,8 @@ function makeIssue(form) {
             success: function (data) {
                 var form = $("edit-" + data.issue.id);
                 form.slideUp(400);
-                var template = renderIssue(data);
-                $("#issue-" + data.index + "-" + data.issue_type).replaceWith(template);
+                //var template = renderIssue(data);
+                //$("#issue-" + data.index + "-" + data.issue_type).replaceWith(template);
             }
         });
         event.preventDefault();
@@ -245,3 +158,4 @@ function renderIssue(issueData) {
         "</li>";
     return template;
 }
+

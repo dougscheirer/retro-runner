@@ -1,8 +1,8 @@
-#require 'pusher'
+require 'pusher'
 
-#Pusher.app_id = '133467'
-#Pusher.key = 'bec060895b93f6745a24'
-#Pusher.secret = 'd3e13b0e84b33a44613a'
+Pusher.app_id = '133467'
+Pusher.key = 'bec060895b93f6745a24'
+Pusher.secret = 'd3e13b0e84b33a44613a'
 
 class IssuesController < ApplicationController
   before_action :set_issue, only: [:show, :edit, :update, :destroy]
@@ -58,6 +58,12 @@ class IssuesController < ApplicationController
                                     creator_name: current_user.name,
                                     issue_type: @issue.type_to_int,
                                     method: "POST" } }
+        Pusher.trigger('retro_channel', 'create-issue-event', {issue: @issue,
+                                                         retro: @retro,
+                                                         index: @index,
+                                                         creator_name: current_user.name,
+                                                         issue_type: @issue.type_to_int,
+                                                         method: "POST" } )
       else
         flash[:error] = @issue.errors
         format.html { render :new }
@@ -80,6 +86,12 @@ class IssuesController < ApplicationController
                                     creator_name: current_user.name,
                                     issue_type: @issue.type_to_int,
                                     method: "PATCH" } }
+        Pusher.trigger('retro_channel', 'update-issue-event', {issue: @issue,
+                                                               retro: @retro,
+                                                               index: @index,
+                                                               creator_name: current_user.name,
+                                                               issue_type: @issue.type_to_int,
+                                                               method: "PATCH" } )
       else
         flash[:error] = @issue.errors
         format.html { render :edit }
@@ -98,6 +110,7 @@ class IssuesController < ApplicationController
       flash[:success] = "Issue #{@issue.id} was successfully destroyed."
       format.html { redirect_to @retro }
       format.json { render json: {index: @index, type: @type } }
+      Pusher.trigger('retro_channel', 'delete-issue-event', {index: @index, type: @type })
     end
   end
 

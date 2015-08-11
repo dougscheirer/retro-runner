@@ -6,7 +6,7 @@
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>
-  <!-- <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
+  <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
   <script>
       // Enable pusher logging - don't include this in production
       Pusher.log = function(message) {
@@ -22,7 +22,74 @@
       channel.bind('my_event', function(data) {
           alert(data.message);
       });
-  </script> -->
+      channel.bind('transition-retro-status-event', function(data) {
+          window.location.reload();
+      });
+      channel.bind('create-issue-event', function(data) {
+          var template = renderIssue(data);
+          var issuelist = $("#" + data.issue.issue_type + "_issues");
+          issuelist.append($(template));
+          issuelist.append($("#" + data.issue.issue_type + "_adder"));
+      });
+      channel.bind('update-issue-event', function(data) {
+          var template = renderIssue(data);
+          $("#issue-" + data.index + "-" + data.issue_type).replaceWith(template);
+      });
+      channel.bind('delete-issue-event', function(data) {
+          var element = $("#issue-"+data.index+"-"+data.type);
+          element.remove();
+      });
+      channel.bind('next-review-event', function(data) {
+          var display = document.querySelector('#time');
+          var index = data.index+2;
+          var previous = $("#discussed").contents();
+          previous.unwrap();
+          var current = $("#"+data["type"]+"_issues li:nth-child("+index+")").find("#description");
+          current.wrap("<b id='discussed'></b>");
+          var last_id = display.getAttribute("name");
+          clearInterval(last_id);
+          display.textContent = "00:30 seconds remaining, ";
+          startTimer(30, display);
+      });
+      channel.bind('new-vote-event', function(data) {
+          var count = $('#votecount-'+data);
+          var votecount = parseInt(count.text());
+          votecount++;
+          votecount = votecount.toString();
+          count.text(votecount);
+      });
+      channel.bind('clear-votes-event', function(data) {
+          var intvotes;
+          for (var i=0; i<data.length; i++) {
+              var votecount = $('#votecount-'+data[i]);
+              intvotes = parseInt(votecount.text())-1;
+              votecount.text(intvotes);
+          }
+      });
+      channel.bind('next-voted-review-event', function(data) {
+          var index = data.index+2;
+          var previous = $("#discussed").contents();
+          previous.unwrap();
+          var current =$("#"+data.type+"_issues li:nth-child("+index+")").find("#description");
+          current.wrap("<b id='discussed'></b>");
+      });
+      channel.bind('create-task-event', function(data) {
+          var singleTask = renderTask(data);
+          $("#tasks").append(singleTask);
+      });
+      channel.bind('update-task-event', function(data) {
+          var singleTask = renderTask(data);
+          $("#task-"+data.task.id).replaceWith(singleTask);
+      });
+      channel.bind('delete-task-event', function(data) {
+          var element = $("#task-"+data);
+          element.remove();
+      });
+      channel.bind('complete-task-event', function(data) {
+          var element = $("#task-"+data);
+          element.addClass("strikeout");
+      });
+  </script>
 </head>
 <body>
 <%= render 'layouts/header' %>

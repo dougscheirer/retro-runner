@@ -1,3 +1,9 @@
+require 'pusher'
+
+Pusher.app_id = '133467'
+Pusher.key = 'bec060895b93f6745a24'
+Pusher.secret = 'd3e13b0e84b33a44613a'
+
 class VotesController < ApplicationController
 before_action :logged_in
 
@@ -20,6 +26,7 @@ before_action :logged_in
         @index = Issue.where("retro_id = #{@vote.retro_id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         format.html { redirect_to @retro }
         format.json { render json: @issue.id }
+        Pusher.trigger('retro_channel', 'new-vote-event', @issue.id)
       else
         flash[:error] = "invalid vote"
         format.html { redirect_to @retro }
@@ -46,7 +53,8 @@ before_action :logged_in
     @votes.destroy_all
     respond_to do |format|
       format.html {redirect_to Retro.find(params[:retro_id])}
-      format.js
+      format.json { head :no_content }
+      Pusher.trigger('retro_channel', 'clear-votes-event', @issue_ids )
     end
 
   end

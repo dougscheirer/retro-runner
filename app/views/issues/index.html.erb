@@ -8,9 +8,9 @@
 </form>
 <% if @retro.status == "voting" %>
     <p>Number of votes: <span id="votecount-primary"><%= current_user.votes.where(retro_id: @retro.id).count %></span></p>
-    <form method="get" action="<%= clear_user_votes_path(@retro.id) %>" data-remote="true">
+    <form>
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
-      <button id="clear_votes" name="clear_votes" class="btn btn-default">
+      <button id="clear_votes" onclick="clearVotes(<%=@retro.id%>)" class="btn btn-default">
         clear votes
       </button>
     </form>
