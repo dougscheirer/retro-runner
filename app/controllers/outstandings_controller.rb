@@ -122,14 +122,18 @@ class OutstandingsController < ApplicationController
   end
 
   def mark_complete
-    @outstanding.complete = true
+    if @outstanding.complete?
+      @outstanding.complete = false
+    else
+      @outstanding.complete = true
+    end
     @outstanding.save!
     @retro = Retro.find(params[:retro_id])
     respond_to do |format|
       flash[:success] = "Outstanding #{@outstanding.id} marked as complete"
       format.html { redirect_to @retro }
       format.json { render json: @outstanding.id }
-      Pusher.trigger('retro_channel', 'complete-task-event', @outstanding.id)
+      Pusher.trigger('retro_channel', 'complete-task-event', {id: @outstanding.id, complete: @outstanding.complete})
     end
   end
 

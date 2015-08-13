@@ -17,6 +17,7 @@ joe=User.create(:name=>"Joe",:email=>"joe@perforce.com",:password=>"notsecure",:
 wendy=User.create(:name=>"Wendy",:email=>"wendy@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
 dave=User.create(:name=>"Dave",:email=>"dave@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
 alex=User.create(:name=>"Alex",:email=>"alex@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
+alex_the_intern=User.create(:name=>"Alex_the_Intern",:email=>"ashankland@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure", :admin=>'t')
 alau=User.create(:name=>"Alau_branch",:email=>"alau@perforce.com",:password=>"notsecure",:password_confirmation=>"notsecure")
 
 base_retro = Retro.create(:meeting_date=>Date.today(), :project_id=>base_project.id, :status=>'not_started', :creator_id => doug.id)

@@ -11,6 +11,7 @@ class RetrosController < ApplicationController
   before_action :set_project, only: [ :index ]
   skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :admin_access?, only: [ :destroy ]
+  before_action :owner_access, only: [ :edit, :update, :destroy, :transition_status]
 
   # GET /retros
   # GET /retros.json
@@ -221,4 +222,8 @@ class RetrosController < ApplicationController
     def logged_in
      redirect_to login_path if current_user.nil?
     end
+
+  def owner_access
+    redirect_to owner_access_required_path if ((@retro.creator_id != @current_user.id) && !@current_user.admin?)
+  end
 end

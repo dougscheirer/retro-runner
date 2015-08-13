@@ -17,10 +17,11 @@
 <% end %>
 <td><a href="<%=issue_path(Issue.find(task.issue_id)) %>"><%= Issue.find(task.issue_id).description %></a></td>
 <% if title == "Tasks from Last Week" %>
-    <td><a onclick="markAsDone(<%= task.retro_id%>, <%=task.id%>)">
-      set as complete
+    <td><a id="completelink-<%=task.id%>" onclick="markAsDone(<%= task.retro_id%>, <%=task.id%>)">
+      set as <% if task.complete? %>in<%end%>complete
     </a></td>
+<% else %>
+    <td><%= link_to 'Edit', edit_outstanding_path(task), remote: true %></td>
 <% end %>
-<td><%= link_to 'Edit', edit_outstanding_path(task), remote: true %></td>
 <td><a onclick="deleteOutstanding(<%=task.id%>)">Delete</a></td>
 </tr>
