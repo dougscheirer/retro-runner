@@ -307,3 +307,13 @@ li.strikeout li:before {
 #search-results {
   padding-top: 10px;
 }
+
+.relative-class {
+  position: relative;
+}
+
+.realign-below-list {
+  width: 100%;
+  position: absolute;
+  bottom: -10px;
+}

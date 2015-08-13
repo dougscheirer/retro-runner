@@ -96,6 +96,9 @@
   </ul>
 </div>
 
+
+<div class="realign-below-list">
+
 <% if @retro.status == "in_review" %>
     <form id="timer">
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
@@ -150,3 +153,14 @@
     <%= link_to 'New Issue', new_retro_issue_path(@retro) %> |
 <% end %>
 <%= link_to 'All Retros', project_retros_path(@project) %>
+
+</div>
+
+<script type="text/javascript">
+  function setHeight() {
+      var belowList = $(".realign-below-list");
+      var height = belowList.css("height");
+      belowList.css("bottom", "-"+height);
+  }
+  window.onload = setHeight()
+</script>

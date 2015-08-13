@@ -14,5 +14,9 @@ class Retro < ActiveRecord::Base
     types[discussed_type]
   end
 
+  def to_json
+    {}
+  end
+
 
 end

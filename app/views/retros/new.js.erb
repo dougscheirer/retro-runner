@@ -1,0 +1,7 @@
+if ($("#retro-form").html() == "") {
+    $("#retro-form").html("<%= j (render partial: "retros/new") %>").slideDown(400);
+}
+else {
+    $("#retro-form").html("");
+    $("#retro-form").slideUp(400);
+}

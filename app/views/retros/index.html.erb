@@ -13,11 +13,11 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody id="retro-list">
     <% @retros.each do |retro| %>
-      <tr>
+      <tr id="retro-<%=retro.id%>">
         <td><%= retro.id %></td>
-        <td><a href="<%= retro_path(retro) %>"><%= retro.meeting_date %></a></td>
+        <td><a href="<%= retro_path(retro) %>"><%= retro.meeting_date.strftime "%F" %></a></td>
         <td>
           <% if retro.creator_id.nil? %>
             Unknown
@@ -26,13 +26,13 @@
           <% end %>
         </td>
         <td><%= retro.status %></td>
-        <td><%= link_to 'Destroy', retro, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><a onclick="deleteRetro(<%=retro.id%>)">Destroy</a></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Retro', new_project_retro_path(@project) %> |
+<div id="retro-form" style="display: none;"></div>
+<%= link_to 'New Retro', new_project_retro_path(@project), remote: true %> |
 <%= link_to 'Projects list', projects_path %>

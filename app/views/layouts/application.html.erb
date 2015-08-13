@@ -22,8 +22,17 @@
       channel.bind('my_event', function(data) {
           alert(data.message);
       });
-      channel.bind('transition-retro-status-event', function(data) {
+      channel.bind('new-retro-event', function(data) {
+          var newRetro = renderRetro(data);
+          var retrolist = $("#retro-list");
+          retrolist.prepend(newRetro);
+      });
+      channel.bind('transition-retro-status-event', function() {
           window.location.reload();
+      });
+      channel.bind('delete-retro-event', function(data) {
+          var element = $("#retro-"+data);
+          element.remove();
       });
       channel.bind('create-issue-event', function(data) {
           var template = renderIssue(data);
@@ -76,6 +85,9 @@
       channel.bind('create-task-event', function(data) {
           var singleTask = renderTask(data);
           $("#tasks").append(singleTask);
+          var belowList = $(".realign-below-list");
+          var height = belowList.css("height");
+          belowList.css("bottom", "-"+height);
       });
       channel.bind('update-task-event', function(data) {
           var singleTask = renderTask(data);
@@ -93,14 +105,14 @@
 </head>
 <body>
 <%= render 'layouts/header' %>
-<div class="container">
+<div class="container relative-class">
   <%= flash_messages %>
   <%= yield %>
   <%= render 'layouts/footer' %>
 </div>
-<div class="container debug">
+<!--<div class="container debug">
   <%= debug(params) if Rails.env.development? %>
-</div>
+</div>-->
 </body>
 </html>
 

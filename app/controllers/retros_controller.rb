@@ -56,7 +56,7 @@ class RetrosController < ApplicationController
     @retro = Retro.new(retro_params)
     @retro.creator_id = current_user.id
     @retro.project_id = params[:project_id]
-    @retro.meeting_date ||= Date.today.to_s
+    @retro.meeting_date = Date.today
     @retro.status = "not_started"
     @time = Time.new
     if @time.month == 4 && @time.day == 1
@@ -79,6 +79,7 @@ class RetrosController < ApplicationController
         flash[:success] = "Retro #{@retro.id} was successfully created."
         format.html { redirect_to @retro }
         format.json { render :show, status: :created, location: @retro }
+        Pusher.trigger('retro_channel', 'new-retro-event', {retro: @retro, user: current_user, date: @retro.meeting_date.strftime("%F") })
       else
         flash[:error] = @retro.errors
         format.html { render :new }
@@ -197,6 +198,7 @@ class RetrosController < ApplicationController
       flash[:success] = "Retro #{@retro.id} was successfully destroyed."
       format.html { redirect_to project_retros_path(@retro.project_id) }
       format.json { head :no_content }
+      Pusher.trigger('retro_channel', 'delete-retro-event', @retro.id)
     end
   end
 

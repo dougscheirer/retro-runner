@@ -1,0 +1,31 @@
+<% if @project == nil %>
+    <% @project = Project.find(params[:project_id]) %>
+<% end %>
+<form class="form-horizontal" id="new_retro">
+  <fieldset>
+
+    <!-- Form Name -->
+    <legend>New retrospective for <%= @project.name %></legend>
+
+    <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
+    <input name="project_id" type="hidden" value="<%=params[:project_id]%>"/>
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="today">Today's date</label>
+      <div class="col-md-4">
+        <input id="today" name="retro[meeting_date]" type="text" value="<%= Date.today.to_date %>" class="form-control input-md" required="" readonly>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="submit"></label>
+      <div class="col-md-4">
+        <button onclick="makeRetro($('#new_retro'))" class="btn btn-primary">Create retrospective</button>
+      </div>
+    </div>
+
+  </fieldset>
+</form>
+
+<%= link_to 'Cancel', new_project_retro_path(@project), remote: true %>
