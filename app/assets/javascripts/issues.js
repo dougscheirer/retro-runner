@@ -8,11 +8,10 @@ $(function() {
 function startTimer(duration, display) {
 
     var timer = duration, minutes, seconds;
-    alert("started");
     var interval_id = setInterval(function () {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
-        alert("going down");
+
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
@@ -34,8 +33,7 @@ function deleteIssue(id) {
             encode      : 'true',
             dataType    : 'json',
             success     : function(data) {
-                //var element = $("#issue-"+data["index"]+"-"+data["type"]);
-                //element.remove();
+                toastr["success"]("Issue " + data + " was successfully destroyed");
             }
         });
         event.preventDefault();
@@ -49,16 +47,14 @@ function addVote(id) {
         dataType    : 'json',
         encode      : false,
         success     : function(data) {
-            /*var count = $('#votecount-'+data);
-            var firstcount = count.text();
-            var votecount = parseInt(firstcount);
-            votecount++;
-            votecount = votecount.toString();
-            count.text(votecount);*/
             var votecount_primary = $('#votecount-primary');
             var votecount = parseInt(votecount_primary.text())+1;
             votecount = votecount.toString();
             votecount_primary.text(votecount);
+            toastr["success"]("You have successfully voted for issue " + data.id + ": '" + data.description + "'");
+        },
+        error       : function() {
+            toastr["error"]("You have reached your vote limit for this meeting. If you wish to change your votes, hit the clear votes button");;
         }
     });
     event.preventDefault();
@@ -72,6 +68,7 @@ function clearVotes(id) {
         encode      : false,
         success     : function() {
             $('#votecount-primary').text("0");
+            toastr["success"]("Your votes for this meeting have been deleted");
         }
     });
     event.preventDefault()
@@ -99,12 +96,10 @@ function makeIssue(form) {
                 var form = $("#add-issue-" + data.issue.issue_type);
                 form.slideUp(400);
                 form.html("");
-
-
-                //var template = renderIssue(data);
-                //var issuelist = $("#" + data.issue.issue_type + "_issues");
-                //issuelist.append($(template));
-                //issuelist.append($("#" + data.issue.issue_type + "_adder"));
+                toastr["success"]("Issue " + data.issue.id + " was successfully created");
+            },
+            error: function() {
+                toastr["error"]("invalid issue");
             }
         });
         event.preventDefault();
@@ -120,8 +115,10 @@ function makeIssue(form) {
             success: function (data) {
                 var form = $("edit-" + data.issue.id);
                 form.slideUp(400);
-                //var template = renderIssue(data);
-                //$("#issue-" + data.index + "-" + data.issue_type).replaceWith(template);
+                toastr["success"]("Issue " + data.issue.id + " was successfully updated");
+            },
+            error: function() {
+                toastr["error"]("invalid issue");
             }
         });
         event.preventDefault();

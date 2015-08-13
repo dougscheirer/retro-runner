@@ -18,6 +18,10 @@ function makeRetro(form) {
         success     : function(data) {
             $("#retro-form").html("");
             $("#retro-form").slideUp(400);
+            toastr["success"]("Retro " + data.retro.id + " was successfully created");
+        },
+        error       : function() {
+            toastr["error"]("invalid retro");
         }
     });
     event.preventDefault();
@@ -46,18 +50,7 @@ function nextReview(id, display) {
         type     : 'POST',
         url      : '/retros/'+id+'/discussed',
         encode   : false,
-        dataType : 'json',
-        success  : function(data) {
-            var index = data.index+2;
-            var previous = $("#discussed").contents();
-            previous.unwrap();
-            var current = $("#"+data.type+"_issues li:nth-child("+index+")").find("#description");
-            current.wrap("<b id='discussed'></b>");
-            var last_id = display.getAttribute("name");
-            clearInterval(last_id);
-            display.textContent = "00:30 seconds remaining, ";
-            startTimer(30, display);
-        }
+        dataType : 'json'
     });
     event.preventDefault();
 }
@@ -67,14 +60,7 @@ function nextVotedReview(id) {
         type        : 'POST',
         url         : '/retros/'+id+'/discussed_followup',
         encode      : false,
-        dataType    : 'json',
-        success     : function(data) {
-            /*var index = data["index"]+2;
-            var previous = $("#discussed").contents();
-            previous.unwrap();
-            var current =$("#"+data["type"]+"_issues li:nth-child("+index+")").find("#description");
-            current.wrap("<b id='discussed'></b>");*/
-        }
+        dataType    : 'json'
     });
     event.preventDefault();
 }
@@ -85,7 +71,10 @@ function deleteRetro(id) {
             type: 'DELETE',
             url: '/retros/' + id,
             encode: false,
-            dataType: 'json'
+            dataType: 'json',
+            succes: function(data) {
+                toastr["success"]("Retro " + data + " was successfully destroyed");
+            }
         });
         event.preventDefault();
     }

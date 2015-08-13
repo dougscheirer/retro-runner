@@ -49,7 +49,7 @@ class IssuesController < ApplicationController
     @retro = Retro.find(params[:retro_id])
     respond_to do |format|
       if @issue.save
-        flash[:success] = "Issue #{@issue.id} was successfully created."
+
         format.html { redirect_to @retro }
         @index = Issue.where("retro_id = #{params[:retro_id]} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         format.json { render json: {issue: @issue,
@@ -77,7 +77,6 @@ class IssuesController < ApplicationController
   def update
     respond_to do |format|
       if @issue.update(issue_params)
-        flash[:success] = "Issue #{@issue.id} was successfully updated."
         @index = Issue.where("retro_id = #{@issue.retro_id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         format.html { redirect_to @retro }
         format.json { render json: {issue: @issue,
@@ -107,7 +106,6 @@ class IssuesController < ApplicationController
     @type = @issue.type_to_int
     @issue.destroy
     respond_to do |format|
-      flash[:success] = "Issue #{@issue.id} was successfully destroyed."
       format.html { redirect_to @retro }
       format.json { render json: {index: @index, type: @type } }
       Pusher.trigger('retro_channel', 'delete-issue-event', {index: @index, type: @type })

@@ -102,9 +102,8 @@
 <% if @retro.status == "in_review" %>
     <form id="timer">
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
-      <body onload="startTimer(30, document.querySelector('#time'))"/>
       <button id="next_issue" name="next_issue" class="btn btn-default" onclick="nextReview(<%=@retro.id%>, document.querySelector('#time'))">
-        <div><span id="time">00:30 seconds remaining, </span>click to proceed to next topic</div>
+        <span><span id="time">00:30 seconds remaining, </span>click to proceed to next topic</span>
       </button>
     </form>
 <% end %>
@@ -162,5 +161,10 @@
       var height = belowList.css("height");
       belowList.css("bottom", "-"+height);
   }
-  window.onload = setHeight()
+  window.onload = setHeight();
 </script>
+<% if @retro.status == "in_review" %>
+    <script type="text/javascript">
+      window.onload = startTimer(30, document.querySelector('#time'));
+    </script>
+<% end %>

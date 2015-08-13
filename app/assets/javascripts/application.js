@@ -16,6 +16,7 @@
 //= require_tree .
 //= require jquery
 //= require bootstrap-sprockets
+//= require toastr
 
 $(document).ready(function(){
     setTimeout(function(){

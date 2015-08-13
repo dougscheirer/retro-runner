@@ -35,13 +35,13 @@ class RetrosController < ApplicationController
       @retro.meh_icon = 100
       @retro.bad_icon = 100
     else
-      @retro.good_icon = rand(41)
+      @retro.good_icon = rand(52)
       loop do
-        @retro.meh_icon = rand(41)
+        @retro.meh_icon = rand(52)
         break if @retro.meh_icon != @retro.good_icon
       end
       loop do
-        @retro.bad_icon = rand(41)
+        @retro.bad_icon = rand(52)
         break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
       end
     end
@@ -65,24 +65,22 @@ class RetrosController < ApplicationController
       @retro.meh_icon = 100
       @retro.bad_icon = 100
     else
-      @retro.good_icon = rand(41)
+      @retro.good_icon = rand(52)
       loop do
-        @retro.meh_icon = rand(41)
+        @retro.meh_icon = rand(52)
         break if @retro.meh_icon != @retro.good_icon
       end
       loop do
-        @retro.bad_icon = rand(41)
+        @retro.bad_icon = rand(52)
         break if @retro.bad_icon != @retro.good_icon && @retro.bad_icon != @retro.meh_icon
       end
     end
     respond_to do |format|
       if @retro.save
-        flash[:success] = "Retro #{@retro.id} was successfully created."
         format.html { redirect_to @retro }
         format.json { render :show, status: :created, location: @retro }
         Pusher.trigger('retro_channel', 'new-retro-event', {retro: @retro, user: current_user, date: @retro.meeting_date.strftime("%F") })
       else
-        flash[:error] = @retro.errors
         format.html { render :new }
         format.json { render json: @retro.errors, status: :unprocessable_entity }
       end
@@ -125,7 +123,6 @@ class RetrosController < ApplicationController
   def update
     respond_to do |format|
       if @retro.update(retro_params)
-        flash[:success] = "Retro #{@retro.id} was successfully updated."
         format.html { redirect_to @retro }
         format.json { render :show, status: :ok, location: @retro }
       else
@@ -196,9 +193,8 @@ class RetrosController < ApplicationController
   def destroy
     @retro.destroy
     respond_to do |format|
-      flash[:success] = "Retro #{@retro.id} was successfully destroyed."
       format.html { redirect_to project_retros_path(@retro.project_id) }
-      format.json { head :no_content }
+      format.json { render json: @retro.id }
       Pusher.trigger('retro_channel', 'delete-retro-event', @retro.id)
     end
   end

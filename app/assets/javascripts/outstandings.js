@@ -9,7 +9,10 @@ function deleteOutstanding(id) {
             type        : 'DELETE',
             url         : '/outstandings/'+id,
             encode      : 'true',
-            dataType    : 'json'
+            dataType    : 'json',
+            success     : function(data) {
+                toastr["success"]("Task " + data + " was successfully destroyed");
+            }
         });
         event.preventDefault();
     }
@@ -22,7 +25,14 @@ function markAsDone(id, task_id) {
             type        : 'POST',
             url         : '/retros/'+id+'/outstandings/'+task_id+'/complete',
             encode      : 'false',
-            dataType    : 'json'
+            dataType    : 'json',
+            success     : function(data) {
+                var complete = "complete";
+                if (data.complete == false) {
+                    complete = "incomplete";
+                }
+                toastr["success"]("Task " + data.id + " has been set as " + complete);
+            }
         });
         event.preventDefault();
     }
@@ -50,6 +60,10 @@ function makeTask(form) {
                 var form = $("#task-form-"+data.task.issue_id);
                 form.slideUp(350);
                 form.html("");
+                toastr["success"]("Task " + data.task.id + " was successfully created");
+            },
+            error:      function() {
+                toastr["error"]("invalid task");
             }
         });
         event.preventDefault();
@@ -66,11 +80,16 @@ function makeTask(form) {
                 var form = $("#edit-task");
                 form.slideUp(400);
                 form.html("");
+                toastr["success"]("Task " + data.task.id + " was successfully updated");
+            },
+            error:      function() {
+                toastr["error"]("invalid task");
             }
         });
         event.preventDefault();
     }
 }
+
 
 //takes in json of a task
 // returns a string that is fully rendered HTML of a task

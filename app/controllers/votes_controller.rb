@@ -22,15 +22,14 @@ before_action :logged_in
     @retro = Retro.find(@vote.retro_id)
     respond_to do |format|
       if maxed_out < 3 && @vote.save
-        flash[:success] = "Vote #{@vote.id} was successfully created."
         @index = Issue.where("retro_id = #{@vote.retro_id} AND issue_type = '#{@issue.issue_type}'").order('votes_count DESC').index @issue
         format.html { redirect_to @retro }
-        format.json { render json: @issue.id }
+        format.json { render json: {id: @issue.id, description: @issue.description } }
         Pusher.trigger('retro_channel', 'new-vote-event', @issue.id)
       else
-        flash[:error] = "invalid vote"
         format.html { redirect_to @retro }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
+
       end
     end
   end
@@ -41,7 +40,6 @@ before_action :logged_in
   def destroy
     @vote.destroy
     respond_to do |format|
-      flash[:success] = "Vote #{@vote.id} was successfully destroyed."
       format.html { redirect_to @retro }
       format.json { head :no_content }
     end

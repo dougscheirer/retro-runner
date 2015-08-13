@@ -70,7 +70,6 @@ class OutstandingsController < ApplicationController
                                                              user_size: @outstanding.users.size })
         end
       else
-        flash[:error] = "invalid outstanding"
         format.html { redirect_to @retro }
         format.json { render json: @outstanding.errors, status: :unprocessable_entity }
       end
@@ -94,7 +93,6 @@ class OutstandingsController < ApplicationController
           @outstanding.users.clear
           @outstanding.users << @assigned_users
         end
-        flash[:success] = "Outstanding #{@outstanding.id} was successfully updated."
         format.html { redirect_to @retro }
         if params[:assigned_to].include? ("-1")
           format.json { render json: {task: @outstanding,
@@ -114,7 +112,6 @@ class OutstandingsController < ApplicationController
                                                                 user_size: @outstanding.users.size })
         end
       else
-        flash[:error] = "invalid update"
         format.html { render :edit }
         format.json { render json: @outstanding.errors, status: :unprocessable_entity }
       end
@@ -130,7 +127,6 @@ class OutstandingsController < ApplicationController
     @outstanding.save!
     @retro = Retro.find(params[:retro_id])
     respond_to do |format|
-      flash[:success] = "Outstanding #{@outstanding.id} marked as complete"
       format.html { redirect_to @retro }
       format.json { render json: @outstanding.id }
       Pusher.trigger('retro_channel', 'complete-task-event', {id: @outstanding.id, complete: @outstanding.complete})
@@ -140,7 +136,6 @@ class OutstandingsController < ApplicationController
   def destroy
     @outstanding.destroy
     respond_to do |format|
-      flash[:success] = "Outstanding #{params[:id]} was successfully destroyed."
       format.html { redirect_to @retro }
       format.json { render json: params[:id] }
       Pusher.trigger('retro_channel', 'delete-task-event', params[:id])
