@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :set_users, only: [:edit, :update, :new]
   skip_before_action :authenticate!, only: [ :index, :show ]
-  before_action :is_admin
+  skip_before_action :is_admin, only: [:index, :show]
 
   # GET /projects
   # GET /projects.json
