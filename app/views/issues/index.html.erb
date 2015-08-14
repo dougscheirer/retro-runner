@@ -148,7 +148,7 @@
     <% end %>
 <% end %>
 
-<% if @retro.status == "adding_issues" %>
+<% if @retro.status == "adding_issues" || @retro.status == "in_review" %>
     <a href="/retros/<%=@retro.id%>/issues/new" data-remote="true" id="general-new-issue">New Issue</a> |
 <% end %>
 <%= link_to 'All Retros', project_retros_path(@project) %>

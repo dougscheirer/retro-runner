@@ -1,8 +1,8 @@
-<form class="form-horizontal" method="POST" action="<%= users_path %>">
+<form class="form-horizontal" method="<%=action_method%>" action="<%=action%>">
   <fieldset>
 
     <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden" />
-
+    <input name="_method" type="hidden" value="<%=action_method%>"/>
     <!-- Text input-->
     <div class="form-group">
       <label class="col-md-4 control-label" for="email">Email</label>

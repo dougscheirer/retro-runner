@@ -1,5 +1,9 @@
 <h2>Create user</h2>
 
-<%= render 'form' %>
+<%= render partial: "users/form", locals: {
+title: "Create User",
+button_title: "Save",
+action: users_path(@user),
+action_method: "POST" } %>
 
 <%= link_to 'Cancel', users_path %>
