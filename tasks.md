@@ -32,3 +32,9 @@
 1. (done) Close retro's outstanding tasks
 1. Nag task targets
 1. (done) Pick retro icons
+
+REMAINING ISSUES:
+1. Workflow for creating and interacting with projects is weird and flawed. This isn't gonna be relevant much since projects are only rarely modified, but
+   I may go back and fix it at some point. 
+2. There is currently no way to edit user attributes (updating your password fails)
+3. inputs for project/issue/task descriptions aren't sanitized until they hit the server, so people can still be trolled by it.
