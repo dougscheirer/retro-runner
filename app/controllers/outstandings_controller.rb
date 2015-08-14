@@ -162,8 +162,7 @@ class OutstandingsController < ApplicationController
     @outstanding = Outstanding.find(params[:id])
     redirect_to owner_access_required_path if (
         @outstanding.creator_id != @current_user.id &&
-        !@current_user.admin? &&
-        !@outstanding.users.exists?(@current_user.id))
+        !@current_user.admin?)
   end
 
 end

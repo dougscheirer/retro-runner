@@ -3,7 +3,7 @@
 <% else %>
     <tr id="task-<%= task.id %>">
 <% end %>
-<td><a href="<%= outstanding_path(task) %>"><%= task.description %></a></td>
+<td><%= task.description %></td>
 <% if user_page %>
     <td><a href="<%= retro_path(Retro.find(Issue.find(task.issue_id).retro_id)) %>"><%= Retro.find(Issue.find(task.issue_id).retro_id).meeting_date %></a></td>
 <% elsif task.users == User.all %>
