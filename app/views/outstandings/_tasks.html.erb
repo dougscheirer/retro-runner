@@ -21,8 +21,8 @@
     <%= render partial: "outstandings/singletask", locals: {task:  task,
                                                 title: title,
                                                 user_page: user_page} %>
+      <!--<tr class="row"><td><div id="edit-task-<%=task.id%>" style="display:none; position:absolute;"></div></td></tr>-->
   <% end %>
   </tbody>
 </table>
-
-<div id="edit-task" style="display: none;"></div>
+<div id="edit-task" style="display:none; position:absolute;"></div>

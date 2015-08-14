@@ -4,7 +4,6 @@ $(function() {
     $(".tbody").append("content");
 });
 
-
 function startTimer(duration, display) {
 
     var timer = duration, minutes, seconds;

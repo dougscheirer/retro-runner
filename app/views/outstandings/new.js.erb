@@ -4,9 +4,9 @@ if ($("#task-form-<%= @issue.id %>").html() == "") {
     button_title: "Add outstanding",
     action: issue_outstandings_path(@issue),
     action_method: "POST" }) %>");
-    $("#task-form-<%= @issue.id %>").slideDown(350);
+    $("#task-form-<%= @issue.id %>").slideDown(400);
 }
 else {
-    $("#task-form-<%= @issue.id %>").slideUp(350);
+    $("#task-form-<%= @issue.id %>").slideUp(400);
     $("#task-form-<%= @issue.id %>").html("");
 }

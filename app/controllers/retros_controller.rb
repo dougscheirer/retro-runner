@@ -11,7 +11,7 @@ class RetrosController < ApplicationController
   before_action :set_project, only: [ :index ]
   skip_before_action :authenticate!, only: [ :index, :show ]
   before_action :admin_access?, only: [ :destroy ]
-  before_action :owner_access, only: [ :edit, :update, :destroy, :transition_status]
+  before_action :owner_access, only: [ :edit, :update, :destroy, :transition_status, :increment_discussed_review, :increment_discussed_followup]
 
   # GET /retros
   # GET /retros.json
