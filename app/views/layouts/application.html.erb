@@ -37,8 +37,7 @@
       channel.bind('create-issue-event', function(data) {
           var template = renderIssue(data);
           var issuelist = $("#" + data.issue.issue_type + "_issues");
-          issuelist.append($(template));
-          issuelist.append($("#" + data.issue.issue_type + "_adder"));
+          $(template).insertBefore($("#" + data.issue.issue_type + "_adder"))
       });
       channel.bind('update-issue-event', function(data) {
           var template = renderIssue(data);

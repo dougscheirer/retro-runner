@@ -6,7 +6,8 @@ if (editform.html() == "") {
     button_title: "Modify",
     action: outstanding_path(@outstanding),
     action_method: "PATCH" }) %>");
-    editform.slideDown(400);
+    editform.slideDown({duration: 400, progress: function() {window.scrollTo(0,document.body.scrollHeight);}});
+
 }
 else {
     editform.slideUp(400, function() {editform.html("");});

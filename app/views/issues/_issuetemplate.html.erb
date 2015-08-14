@@ -10,7 +10,7 @@
               (@retro.discussed_index == index) && (@retro.discussed_type == type)%>
           <b id='discussed'><span id="description"><%= issue.description %></span></b>
       <% else %>
-          <span id="description"><%= issue.description %></span>
+          <span id="description"><%=h issue.description %></span>
       <% end %>
 
 

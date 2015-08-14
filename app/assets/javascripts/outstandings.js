@@ -90,7 +90,6 @@ function makeTask(form) {
     }
 }
 
-
 //takes in json of a task
 // returns a string that is fully rendered HTML of a task
 function renderTask(taskData) {
