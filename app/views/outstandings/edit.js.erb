@@ -9,6 +9,5 @@ if (editform.html() == "") {
     editform.slideDown(400);
 }
 else {
-    editform.slideUp(400);
-    editform.html("");
+    editform.slideUp(400, function() {editform.html("");});
 }
