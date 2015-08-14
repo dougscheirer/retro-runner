@@ -220,6 +220,6 @@ class RetrosController < ApplicationController
     end
 
   def owner_access
-    redirect_to owner_access_required_path if ((@retro.creator_id != @current_user.id) && !@current_user.admin?)
+    redirect_to :back if ((@retro.creator_id != @current_user.id) && !@current_user.admin?)
   end
 end

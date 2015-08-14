@@ -149,11 +149,12 @@
 <% end %>
 
 <% if @retro.status == "adding_issues" %>
-    <%= link_to 'New Issue', new_retro_issue_path(@retro) %> |
+    <%= link_to 'New Issue', new_retro_issue_path(@retro), remote: true %> |
 <% end %>
 <%= link_to 'All Retros', project_retros_path(@project) %>
 
 </div>
+<div id="add-issue-general" style="display:none;"></div>
 
 <script type="text/javascript">
   function setHeight() {

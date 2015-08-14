@@ -106,6 +106,7 @@ class IssuesController < ApplicationController
     @type = @issue.type_to_int
     @issue.destroy
     respond_to do |format|
+
       format.html { redirect_to @retro }
       format.json { render json: {index: @index, type: @type } }
       Pusher.trigger('retro_channel', 'delete-issue-event', {index: @index, type: @type })

@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  has_many :retros
+  has_many :retros, dependent: :destroy
 
   validates :owner_id, presence: true
   #validates :description, presence: true

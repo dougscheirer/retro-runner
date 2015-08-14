@@ -96,6 +96,11 @@ function makeIssue(form) {
                 var form = $("#add-issue-" + data.issue.issue_type);
                 form.slideUp(400);
                 form.html("");
+                form = $("#add-issue-general");
+                if (form.html() != "") {
+                    form.html("");
+                    form.slideUp(400);
+                }
                 toastr["success"]("Issue " + data.issue.id + " was successfully created");
             },
             error: function() {

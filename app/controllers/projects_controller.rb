@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :set_users, only: [:edit, :update, :new]
   skip_before_action :authenticate!, only: [ :index, :show ]
+  skip_before_action :is_admin, only: [ :destroy, :update, :create ]
 
   # GET /projects
   # GET /projects.json
@@ -82,4 +83,8 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:project).permit(:name, :description, :owner_id)
     end
+
+  def is_admin
+    redirect_to owner_access_required_path if !@current_user.admin?
+  end
 end

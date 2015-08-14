@@ -1,4 +1,18 @@
-if ($("#add-issue-<%= @issue.issue_type %>").html() == "") {
+if (<%= @issue.issue_type.nil? %>) {
+    if ($("#add-issue-general").html() == "") {
+        $("#add-issue-general").html("<%= j (render partial: "issues/form", locals: {
+        title: "New issue",
+        button_title: "Add item",
+        action: retro_issues_path(@retro),
+        action_method: "POST" }) %>");
+        $("#add-issue-general").slideDown(400);
+    }
+    else {
+        $("#add-issue-general").slideUp(400);
+        $("#add-issue-general").html("");
+    }
+}
+else if ($("#add-issue-<%= @issue.issue_type %>").html() == "") {
     $("#add-issue-<%= @issue.issue_type %>").html("<%= j (render partial: "issues/form", locals: {
     title: "New issue",
     button_title: "Add item",
