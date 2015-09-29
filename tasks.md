@@ -38,3 +38,4 @@ REMAINING ISSUES:
    I may go back and fix it at some point. 
 2. There is currently no way to edit user attributes (updating your password fails)
 3. inputs for project/issue/task descriptions aren't sanitized until they hit the server, so people can still be trolled by it.
+
