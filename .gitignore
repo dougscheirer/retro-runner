@@ -21,3 +21,6 @@
 
 
 /.DS_Store
+
+# ignore vagrant stuff
+/.vagrant
