@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150724162803) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "issues", force: true do |t|
     t.integer  "retro_id"
     t.string   "issue_type"
@@ -38,7 +41,7 @@ ActiveRecord::Schema.define(version: 20150724162803) do
     t.integer "user_id"
   end
 
-  add_index "outstandings_users", ["outstanding_id", "user_id"], name: "index_outstandings_users_on_outstanding_id_and_user_id"
+  add_index "outstandings_users", ["outstanding_id", "user_id"], name: "index_outstandings_users_on_outstanding_id_and_user_id", using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "name"
@@ -79,7 +82,7 @@ ActiveRecord::Schema.define(version: 20150724162803) do
     t.integer  "retro_id"
   end
 
-  add_index "votes", ["issue_id"], name: "index_votes_on_issue_id"
-  add_index "votes", ["user_id"], name: "index_votes_on_user_id"
+  add_index "votes", ["issue_id"], name: "index_votes_on_issue_id", using: :btree
+  add_index "votes", ["user_id"], name: "index_votes_on_user_id", using: :btree
 
 end

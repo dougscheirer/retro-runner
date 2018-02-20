@@ -54,6 +54,7 @@ class RetrosController < ApplicationController
   # POST /retros
   # POST /retros.json
   def create
+    puts retro_params
     @retro = Retro.new(retro_params)
     @retro.creator_id = current_user.id
     @retro.project_id = params[:project_id]
