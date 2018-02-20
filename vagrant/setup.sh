@@ -5,7 +5,11 @@ function die()
 	echo "$*" && exit 1
 }
 
+echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc
 echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bash_profile
+echo 'export PATH=$PATH:/usr/local/bin' >> /home/vagrant/.bashrc
+echo 'export PATH=$PATH:/usr/local/bin' >> /home/vagrant/.bash_profile
+
 RUSER=retro
 
 RHOME=/home/$RUSER
@@ -17,13 +21,6 @@ yum install -y git-core zlib zlib-devel gcc-c++ patch \
 							  openssl-devel make bzip2 autoconf automake libtool \
 							  bison postgresql-devel wget glibc-static || die "failed to install base packages"
 
-if [ ! -e /usr/local/bin/rvm/bin/rvm ]; then
-	gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB || die "Failed to add rvm key"
-	curl -sSL https://get.rvm.io | bash -s stable --ruby || die "Failed to install rvm"
-else
-	echo "Skipping rvm install"
-fi
-
 MAKEUSER=$(cut -d: -f1 /etc/passwd | grep -w $RUSER)
 if [ "$MAKEUSER" == "" ]; then
 	# add a retro user
@@ -32,6 +29,17 @@ if [ "$MAKEUSER" == "" ]; then
 else
 	echo "Skipping $USER user creation"
 fi
+
+if [ ! -e /usr/local/bin/rvm/bin/rvm ]; then
+	gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB || die "Failed to add rvm key"
+	curl -sSL https://get.rvm.io | bash -s stable || die "Failed to install rvm"
+else
+	echo "Skipping rvm install"
+fi
+
+source /etc/profile.d/rvm.sh
+rvm install 2.1.2
+gem install bundler
 
 if [ ! -e /usr/local/bin/node ] ; then
 	cd /tmp
@@ -76,7 +84,7 @@ if [ ! -e /usr/local/bin/runsv ] ; then
  	gunzip runit-2.1.2.tar && tar -xpf runit-2.1.2.tar &&	rm runit-2.1.2.tar || die "Failed to unpack runit source"
  	pushd admin/runit-2.1.2 && package/install && popd || die "Failed to install runit"
 
-	install -m0750 /package/admin/runit/etc/2 /sbin/runsvdir-start && mkdir -p /var/service /etc/service && ln -s /etc/service /service || die "failed to install runit startup"
+	install -m0750 /package/admin/runit/etc/2 /sbin/runsvdir-start && mkdir -p /etc/service && ln -s /etc/service /service || die "failed to install runit startup"
 	cat > /etc/systemd/system/runit.service <<EOT
 [Unit]
 Description=Runit service supervision
@@ -84,7 +92,7 @@ Documentation=http://smarden.org/runit/
 
 [Service]
 Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/bin"
-ExecStart=/usr/local/bin/runsvdir -P /var/service 'log: ...........................................................................................................................................................................................................................................................................................................................................................................................................'
+ExecStart=/usr/local/bin/runsvdir -P /etc/service 'log: ...........................................................................................................................................................................................................................................................................................................................................................................................................'
 KillSignal=SIGHUP
 KillMode=process
 Restart=always
@@ -100,7 +108,7 @@ else
 fi
 
 # make a run file
-mkdir -p /etc/sv/rails
+mkdir -p /etc/sv/rails /etc/sv/rails/log
 cat > /etc/sv/rails/run <<EOF
 #!/usr/bin/env bash
  
@@ -110,19 +118,30 @@ source $RHOME/.bashrc
 exec 2>&1
  
 cd $DEPLOY
- 
+export RAILS_ENV=development
+
 if [ ! -d /var/run/rails ]
 then
   mkdir /var/run/rails
   chown $RUSER:$RUSER /var/run/rails
 fi
- 
+
+# run bundle install
+/usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
+	bundle install --path vendor/bundle
+
+# db:create and migrate
+/usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
+	bundle exec rake db:create
+/usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
+	bundle exec rake db:migrate
+
 # Start the rails process
-exec /usr/local/bin/chpst -u$RUSER \
+exec /usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
   bundle exec rails server
 EOF
 
-cat > /etc/sv/rails/run_log <<EOF
+cat > /etc/sv/rails/log/run <<EOF
 #!/usr/bin/env bash
  
 exec 2>&1
@@ -132,7 +151,14 @@ mkdir -p /var/log/rails
 exec svlogd /var/log/rails
 EOF
 
+# make them executable
+chmod +x /etc/sv/rails/run /etc/sv/rails/log/run
+
+# clone the first one
+git clone https://github.com/dougscheirer/retro-runner $DEPLOY
+chown $RUSER:$RUSER -R $DEPLOY
+
 # enable the runsv tasks?
-ln -s /etc/sv/rails /service/rails || die "Failed to enable rails as a runit task"
+ln -s /etc/sv/rails /etc/service/rails || die "Failed to enable rails as a runit task"
 
 # init from somewhere?
