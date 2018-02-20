@@ -27,4 +27,4 @@ production:
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
-  database: db/production
+  # database: db/production
