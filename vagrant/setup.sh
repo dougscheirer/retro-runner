@@ -25,6 +25,7 @@ MAKEUSER=$(cut -d: -f1 /etc/passwd | grep -w $RUSER)
 if [ "$MAKEUSER" == "" ]; then
 	# add a retro user
 	adduser --home=$RHOME -m $RUSER || die "Failed to add user"
+	mkdir $RHOME/.ssh && chown $RUSER:$RUSER $RHOME/.ssh || die "Failed to create .ssh dir for keys"
 	echo "export PATH=$PATH:/usr/local/bin" >> $RHOME/.bash_profile || die "Failed to add /usr/local/bin path"
 else
 	echo "Skipping $USER user creation"
