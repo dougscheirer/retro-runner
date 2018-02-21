@@ -44,6 +44,7 @@ gem install bundler
 
 if [ ! -e /usr/local/bin/node ] ; then
 	cd /tmp
+	echo "wget nodejs..."
 	wget -q http://nodejs.org/dist/latest/node-v9.5.0-linux-x64.tar.gz || die "Failed to download node tarball"
 	tar --strip-components 1 -xzvf node-v* -C /usr/local || die "Failed to unpack node tarball"
 else
@@ -68,7 +69,7 @@ do
     then
       echo "Master ref received.  Deploying master branch to production..."
 			git --work-tree=$DEPLOY --git-dir=$GITDIR checkout -f
-
+			sv restart rails
     else
       echo "Ref \$ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
     fi
@@ -134,8 +135,12 @@ else
 fi
 
 # make a run file
-mkdir -p /etc/sv/rails /etc/sv/rails/log
-cat > /etc/sv/rails/run <<EOF
+RUNIT=/etc/sv/rails
+RUNITLOG=$RUNIT/log
+
+mkdir -p $RUNIT $RUNITLOG || die "Failed to create runit dirs for rails"
+
+cat > $RUNIT/run <<EOF
 #!/usr/bin/env bash
 
 source /usr/local/rvm/scripts/rvm
@@ -168,7 +173,7 @@ exec /usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
   bundle exec rails server -b 0.0.0.0
 EOF
 
-cat > /etc/sv/rails/log/run <<EOF
+cat > $RUNITLOG/run <<EOF
 #!/usr/bin/env bash
 
 exec 2>&1
@@ -179,12 +184,23 @@ exec svlogd /var/log/rails
 EOF
 
 # make them executable
-chmod +x /etc/sv/rails/run /etc/sv/rails/log/run
+chmod +x $RUNIT/run $RUNITLOG/run
 
 # clone the first one
 git clone https://github.com/dougscheirer/retro-runner $DEPLOY || die "failed to init the git deploy dir"
 chown $RUSER:$RUSER -R $RHOME || die "Failed to own $RHOME for $RUSER"
 
 # enable the runsv tasks
-ln -s /etc/sv/rails /etc/service/rails || die "Failed to enable rails as a runit task"
+ln -s $RUNIT /etc/service/rails || die "Failed to enable rails as a runit task"
 
+# we need to wait for the service to start, then modify the supervise bits
+for ((i=0;i<20;i++)) ; do
+	if [ -e $RUNIT/supervise ] ; then
+		# make it so $RUSER can restart the service (in the post-receive hook)
+		chmod 755 $RUNIT/supervise $RUNITLOG/supervise && chown $RUSER:$RUSER $RUNIT/supervise/* $RUNITLOG/supervise/*
+		break
+	else
+		echo "Waiting for rails to have a supervise directory ($i)"
+		sleep 1
+	fi
+done
