@@ -19,7 +19,7 @@ DEPLOY=$RHOME/retro-runner.deploy
 yum install -y git-core zlib zlib-devel gcc-c++ patch \
 								readline readline-devel libyaml-devel libffi-devel \
 							  openssl-devel make bzip2 autoconf automake libtool \
-							  bison postgresql-devel wget glibc-static || die "failed to install base packages"
+							  bison postgresql-devel wget glibc-static docker || die "failed to install base packages"
 
 MAKEUSER=$(cut -d: -f1 /etc/passwd | grep -w $RUSER)
 if [ "$MAKEUSER" == "" ]; then
@@ -38,7 +38,7 @@ else
 fi
 
 source /etc/profile.d/rvm.sh
-rvm install 2.1.2
+rvm install 2.3.6
 gem install bundler
 
 if [ ! -e /usr/local/bin/node ] ; then
@@ -107,18 +107,42 @@ else
 	echo "Skipping runit installation"
 fi
 
+# start a docker DB
+service docker start || die "Failed to start docker service"
+systemctl enable docker || die "Failed to enable docker to run at boot"
+
+DOCKER_NAME=pg_retrorunner
+DBPORT=5432
+DBPASS='pa55word'
+DB='retrorunner_dev'
+DBURL="postgres://postgres:$DBPASS@localhost:$DBPORT/$DB"
+
+DOCKER_DB=$(docker ps -qf name=$DOCKER_NAME)
+if [ "$DOCKER_DB" == "" ]; then
+	DOCKER_DB=$(docker ps -aqf name=$DOCKER_NAME)
+
+	if [ "$DOCKER_DB" == "" ]; then
+		docker run --restart on-failure --name $DOCKER_NAME -p $DBPORT:$DBPORT -e POSTGRES_PASSWORD=$DBPASS -d postgres
+	else
+		docker start $DOCKER_NAME
+	fi
+else
+	echo "already running: $DOCKER_DB"
+fi
+
 # make a run file
 mkdir -p /etc/sv/rails /etc/sv/rails/log
 cat > /etc/sv/rails/run <<EOF
 #!/usr/bin/env bash
- 
+
 source /usr/local/rvm/scripts/rvm
 source $RHOME/.bashrc
- 
+
 exec 2>&1
- 
+
 cd $DEPLOY
 export RAILS_ENV=development
+export DATABASE_URL=$DBURL
 
 if [ ! -d /var/run/rails ]
 then
@@ -130,7 +154,7 @@ fi
 /usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
 	bundle install --path vendor/bundle
 
-# db:create and migrate
+# db:create (?) and migrate
 /usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
 	bundle exec rake db:create
 /usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
@@ -138,16 +162,16 @@ fi
 
 # Start the rails process
 exec /usr/local/bin/chpst -u$RUSER env HOME=/home/$RUSER \
-  bundle exec rails server
+  bundle exec rails server -b 0.0.0.0
 EOF
 
 cat > /etc/sv/rails/log/run <<EOF
 #!/usr/bin/env bash
- 
+
 exec 2>&1
- 
+
 mkdir -p /var/log/rails
- 
+
 exec svlogd /var/log/rails
 EOF
 
@@ -158,7 +182,6 @@ chmod +x /etc/sv/rails/run /etc/sv/rails/log/run
 git clone https://github.com/dougscheirer/retro-runner $DEPLOY
 chown $RUSER:$RUSER -R $DEPLOY
 
-# enable the runsv tasks?
+# enable the runsv tasks
 ln -s /etc/sv/rails /etc/service/rails || die "Failed to enable rails as a runit task"
 
-# init from somewhere?
