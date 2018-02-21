@@ -78,6 +78,8 @@ else
 	echo "Skipping post-receive hook creation"
 fi
 
+chmod +x $GITDIR/hooks/post-receive || die "Failed to +x post-receive hook"
+
 # set up runsv for the rails app
 if [ ! -e /usr/local/bin/runsv ] ; then
 	mkdir -p /package && chmod 1755 /package || die "Failed to make package dir"
@@ -180,8 +182,8 @@ EOF
 chmod +x /etc/sv/rails/run /etc/sv/rails/log/run
 
 # clone the first one
-git clone https://github.com/dougscheirer/retro-runner $DEPLOY
-chown $RUSER:$RUSER -R $DEPLOY
+git clone https://github.com/dougscheirer/retro-runner $DEPLOY || die "failed to init the git deploy dir"
+chown $RUSER:$RUSER -R $RHOME || die "Failed to own $RHOME for $RUSER"
 
 # enable the runsv tasks
 ln -s /etc/sv/rails /etc/service/rails || die "Failed to enable rails as a runit task"
