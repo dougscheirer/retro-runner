@@ -64,13 +64,13 @@ if [ ! -e $GITDIR/hooks/post-receive ]; then
 
 while read oldrev newrev ref
 do
-    if [[ $ref =~ .*/master$ ]];
+    if [[ \$ref =~ .*/master$ ]];
     then
       echo "Master ref received.  Deploying master branch to production..."
 			git --work-tree=$DEPLOY --git-dir=$GITDIR checkout -f
 
     else
-      echo "Ref $ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
+      echo "Ref \$ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
     fi
 done
 EOF
